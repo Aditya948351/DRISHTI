@@ -1,301 +1,799 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drishti - National Grievance Redressal Platform</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>DRISHTI 2.0 | AI-Driven National Grievance Redressal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Public+Sans:wght@400;600;700&display=swap');
+        
+        :root {
+            --gov-blue: #0b4a8f;
+            --gov-dark: #072a53;
+            --gov-saffron: #f39200;
+            --gov-green: #2e7d32;
+            --gov-light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: var(--gov-light);
+            color: #1e293b;
+        }
+
+        .gov-card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+        }
+
+        .gradient-header {
+            background: linear-gradient(135deg, #0b4a8f 0%, #072a53 100%);
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.2s;
+            color: #cbd5e1;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+
+        .sidebar-item.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-left: 4px solid var(--gov-saffron);
+        }
+
+        .status-pill {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .timeline-step::after {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 2rem;
+            bottom: -1rem;
+            width: 2px;
+            background: #e2e8f0;
+        }
+        
+        .timeline-step:last-child::after { display: none; }
+
+        /* Animation for AI Processing */
+        .ai-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+
+        canvas { max-width: 100% !important; height: auto !important; }
+    </style>
 </head>
+<body class="antialiased overflow-hidden">
 
-<body>
-    <!-- Government Header -->
-    <div class="gov-header">
-        <div class="gov-emblem">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Emblem"
-                style="height: 30px;">
-            GOVERNMENT OF INDIA
+<div id="app" class="h-screen flex flex-col">
+    <!-- Role Switcher (Simulator Tool) -->
+    <div class="bg-slate-900 text-white text-[10px] py-1.5 px-6 flex justify-between items-center z-[100]">
+        <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            SYSTEM ONLINE: <span class="text-saffron-400 font-bold" id="roleDisplay">CITIZEN</span>
         </div>
-        <div>
-            Ministry of Electronics & Information Technology
+        <div class="flex gap-4">
+            <button onclick="switchRole('citizen')" class="hover:text-saffron-400 transition">Citizen Portal</button>
+            <button onclick="switchRole('officer')" class="hover:text-saffron-400 transition">State Officer</button>
+            <button onclick="switchRole('admin')" class="hover:text-saffron-400 transition">National Admin</button>
         </div>
     </div>
 
-    <!-- Dynamic Background -->
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
+    <!-- Official Header -->
+    <header class="gradient-header text-white flex-shrink-0">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-5 cursor-pointer" onclick="goHome()">
+                <div class="bg-white p-2 rounded-lg">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Emblem" class="h-12">
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-tight leading-none">DRISHTI 2.0</h1>
+                    <p class="text-[11px] font-semibold opacity-80 uppercase mt-1 tracking-widest">Digital Grievance & Case Management</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-8">
+                <div class="hidden lg:flex flex-col items-end">
+                    <span id="currentDate" class="text-[10px] opacity-70">Thursday, 08 Jan 2026</span>
+                    <span class="text-sm font-medium">Department of Administrative Reforms</span>
+                </div>
+                <div class="flex items-center gap-3 pl-6 border-l border-blue-400/30">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold" id="navUserName">Rahul Sharma</p>
+                        <p class="text-[10px] opacity-70" id="navUserRole">Identity Verified (Aadhar)</p>
+                    </div>
+                    <div id="userAvatar" class="h-10 w-10 bg-orange-500 rounded-full flex items-center justify-center font-bold text-lg border-2 border-white/20">RS</div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <!-- Navigation -->
-    <nav class="glass-nav">
-        <div class="logo">
-            <i class="fa-solid fa-eye"></i> Drishti
-        </div>
-        <div class="nav-links">
-            <a href="index.html" class="active">Home</a>
-            <a href="#dashboard">Public Dashboard</a>
-            <a href="#features">Features</a>
-            <a href="complaint.html">File Complaint</a>
-        </div>
-        <button onclick="openLogin()" class="btn btn-primary">
-            Login / Register
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <nav class="w-72 bg-slate-800 text-white flex-shrink-0 flex flex-col">
+            <div id="sidebarMenu" class="flex-1 py-8">
+                <!-- Dynamic Content -->
+            </div>
+            <div class="p-6 bg-slate-900/50 border-t border-slate-700">
+                <button class="flex items-center gap-2 text-sm opacity-60 hover:opacity-100 transition">
+                    <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-slate-50 relative" id="mainContent">
+            <!-- Content will be injected here -->
+        </main>
+    </div>
+</div>
+
+<!-- Modal Overlay -->
+<div id="modalOverlay" class="fixed inset-0 bg-slate-900/60 hidden z-[200] flex items-center justify-center p-4 backdrop-blur-sm">
+    <div id="modalContainer" class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative animate-in fade-in zoom-in duration-200">
+        <button onclick="closeModal()" class="sticky top-4 left-[95%] text-slate-400 hover:text-slate-600 z-10 p-2">
+            <i data-lucide="x" class="w-6 h-6"></i>
         </button>
-    </nav>
+        <div id="modalBody" class="p-8 pt-0"></div>
+    </div>
+</div>
 
-    <!-- Flex Screens System Flow -->
-    <div class="system-flow">
-        <div class="flex-screen">
-            <img src="images/ai_analysis.png" alt="AI Analysis">
-            <div class="screen-content">
-                <h3>01. AI Triage</h3>
-                <p>Advanced NLP algorithms automatically categorize and prioritize every citizen grievance in real-time.
-                </p>
+<!-- Floating AI Assistant -->
+<div id="aiChat" class="fixed bottom-6 right-6 z-50 group">
+    <div id="chatWindow" class="hidden absolute bottom-20 right-0 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col animate-in slide-in-from-bottom-4 duration-300">
+        <div class="gradient-header p-4 text-white">
+            <h4 class="font-bold flex items-center gap-2">
+                <i data-lucide="bot" class="w-5 h-5"></i> 
+                DRISHTI Assistant
+            </h4>
+            <p class="text-[10px] opacity-80">AI Guide & FAQ Support</p>
+        </div>
+        <div id="chatMessages" class="h-64 overflow-y-auto p-4 space-y-3 text-xs">
+            <div class="bg-slate-100 p-2 rounded-lg rounded-tl-none mr-8">
+                Namaste! I am your DRISHTI Assistant. How can I help you today?
             </div>
         </div>
-        <div class="flex-screen">
-            <img src="images/city_map.png" alt="Tracking">
-            <div class="screen-content">
-                <h3>02. Smart Tracking</h3>
-                <p>Geospatial monitoring and live status updates ensure full transparency and accountability.</p>
-            </div>
-        </div>
-        <div class="flex-screen">
-            <img src="images/control_room.png" alt="Resolution">
-            <div class="screen-content">
-                <h3>03. Rapid Resolution</h3>
-                <p>Connected departments and automated workflows reduce turnaround time by 60%.</p>
-            </div>
+        <div class="p-3 border-t flex gap-2">
+            <input type="text" placeholder="Ask about your complaint..." class="flex-1 text-xs p-2 bg-slate-50 border rounded-lg focus:outline-none">
+            <button class="bg-gov-blue text-white p-2 rounded-lg"><i data-lucide="send" class="w-4 h-4"></i></button>
         </div>
     </div>
+    <button onclick="toggleAIChat()" class="h-14 w-14 rounded-full bg-saffron-500 shadow-lg flex items-center justify-center text-white hover:scale-110 transition active:scale-95 bg-gradient-to-tr from-orange-600 to-yellow-400">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </button>
+</div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Empowering Citizens.<br>Enabling Governance.</h1>
-        <p>
-            A unified, AI-driven platform for seamless grievance redressal, connecting citizens directly to the PMO and
-            State Authorities.
-        </p>
-        <div style="display: flex; gap: 1rem; justify-content: center;">
-            <a href="complaint.html" class="btn btn-primary">
-                <i class="fa-solid fa-pen-to-square"></i> File a Complaint
+<script>
+    // --- SQL EMULATION ENGINE ---
+    const DB = {
+        users: {
+            citizen: { id: 'U-7721', name: 'Rahul Sharma', state: 'Delhi', district: 'South Delhi', role: 'citizen', avatar: 'RS' },
+            officer: { id: 'O-1104', name: 'Dr. V. K. Singh', state: 'Delhi', dept: 'Electricity', role: 'officer', avatar: 'VS' },
+            admin: { id: 'A-0001', name: 'Anita Deshpande', state: 'National', role: 'admin', avatar: 'AD' }
+        },
+        complaints: [
+            { id: 'GRV-2026-001', citizenId: 'U-7721', category: 'Electricity', title: 'Smart Meter Overbilling', status: 'In Progress', priority: 'High', date: '2026-01-02', slaRemaining: '12h', description: 'My monthly bill jumped from ₹2000 to ₹18000 without change in usage.', updates: 3, state: 'Delhi' },
+            { id: 'GRV-2026-002', citizenId: 'U-7721', category: 'Water Supply', title: 'Water Contamination', status: 'Pending', priority: 'Critical', date: '2026-01-05', slaRemaining: '4h', description: 'Drinking water is coming out muddy and smelling of sewage.', updates: 1, state: 'Delhi' },
+            { id: 'GRV-2026-003', citizenId: 'U-9900', category: 'Roads', title: 'Pothole on Main Highway', status: 'Resolved', priority: 'Medium', date: '2025-12-28', slaRemaining: 'Completed', description: 'Large pothole near Sector 4 crossover causing accidents.', updates: 5, state: 'Delhi' }
+        ],
+        threads: [
+            { id: 'TH-01', title: 'Street Light Issues in Ward 4', author: 'Suresh Raina', comments: 12, category: 'Infrastructure', votes: 45 },
+            { id: 'TH-02', title: 'New Garbage Collection Timings?', author: 'Meena K.', comments: 8, category: 'Sanitation', votes: 12 }
+        ],
+        aiLogs: [
+            { id: 1, type: 'Categorization', model: 'BERT-Gov-v2', confidence: '98.4%', status: 'Correct' },
+            { id: 2, type: 'Priority Prediction', model: 'RiskScore-v1', confidence: '82.1%', status: 'Overridden' }
+        ]
+    };
+
+    let currentRole = 'citizen';
+    let currentUser = DB.users.citizen;
+
+    function refreshIcons() {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function switchRole(role) {
+        currentRole = role;
+        currentUser = DB.users[role];
+        document.getElementById('roleDisplay').innerText = role.toUpperCase();
+        document.getElementById('navUserName').innerText = currentUser.name;
+        document.getElementById('navUserRole').innerText = role === 'admin' ? 'National System Admin' : (role === 'officer' ? `State Dept Officer (${currentUser.state})` : 'Aadhar Verified Citizen');
+        document.getElementById('userAvatar').innerText = currentUser.avatar;
+        
+        renderSidebar();
+        renderMain();
+    }
+
+    function renderSidebar() {
+        const menu = document.getElementById('sidebarMenu');
+        let html = '';
+        
+        const navItems = {
+            citizen: [
+                { id: 'dash', label: 'My Dashboard', icon: 'layout-dashboard' },
+                { id: 'lodge', label: 'File Grievance', icon: 'plus-square', action: 'showLodgeModal()' },
+                { id: 'history', label: 'Case History', icon: 'clock' },
+                { id: 'community', label: 'Community Board', icon: 'users' },
+                { id: 'docs', label: 'Official Guidelines', icon: 'book' }
+            ],
+            officer: [
+                { id: 'worklist', label: 'My Worklist', icon: 'clipboard-list' },
+                { id: 'sla', label: 'SLA Monitoring', icon: 'timer' },
+                { id: 'field', label: 'Field Assignments', icon: 'map-pin' },
+                { id: 'stats', label: 'State Performance', icon: 'bar-chart' }
+            ],
+            admin: [
+                { id: 'national', label: 'National Stats', icon: 'globe' },
+                { id: 'dept', label: 'Dept Analysis', icon: 'layers' },
+                { id: 'ai', label: 'AI Audit Center', icon: 'cpu' },
+                { id: 'config', label: 'System Configuration', icon: 'settings' }
+            ]
+        };
+
+        html = navItems[currentRole].map(item => `
+            <a href="#" onclick="${item.action || `Maps('${item.id}')`}" class="sidebar-item ${item.id === 'dash' || item.id === 'worklist' || item.id === 'national' ? 'active' : ''}">
+                <i data-lucide="${item.icon}" class="w-5 h-5"></i>
+                <span class="text-sm font-medium">${item.label}</span>
             </a>
-            <button onclick="openLogin()" class="btn btn-glass">
-                <i class="fa-solid fa-user-shield"></i> Official Login
-            </button>
-        </div>
-    </section>
+        `).join('');
+        
+        menu.innerHTML = html;
+        refreshIcons();
+    }
 
-    <!-- Public Dashboard Section -->
-    <section id="dashboard" style="padding: 4rem 2rem; max-width: 1400px; margin: 0 auto;">
-        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;">National Grievance Dashboard</h2>
+    function renderMain() {
+        const container = document.getElementById('mainContent');
+        if (currentRole === 'citizen') renderCitizenView(container);
+        if (currentRole === 'officer') renderOfficerView(container);
+        if (currentRole === 'admin') renderAdminView(container);
+        refreshIcons();
+    }
 
-        <div class="stats-grid">
-            <div class="glass-card stat-card">
-                <div class="stat-value">1.2M+</div>
-                <div style="color: var(--text-muted);">Total Grievances</div>
-            </div>
-            <div class="glass-card stat-card">
-                <div class="stat-value" style="color: #34d399; -webkit-text-fill-color: #34d399;">98.5%</div>
-                <div style="color: var(--text-muted);">Resolution Rate</div>
-            </div>
-            <div class="glass-card stat-card">
-                <div class="stat-value" style="color: #60a5fa; -webkit-text-fill-color: #60a5fa;">24h</div>
-                <div style="color: var(--text-muted);">Avg Response Time</div>
-            </div>
-            <div class="glass-card stat-card">
-                <div class="stat-value" style="color: #f472b6; -webkit-text-fill-color: #f472b6;">4.8/5</div>
-                <div style="color: var(--text-muted);">Citizen Satisfaction</div>
-            </div>
-        </div>
+    // --- CITIZEN VIEW ---
+    function renderCitizenView(container) {
+        container.innerHTML = `
+            <div class="p-8">
+                <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">Citizen Dashboard</h2>
+                        <p class="text-slate-500 mt-1">Grievances filed in ${currentUser.district}, ${currentUser.state}</p>
+                    </div>
+                    <button onclick="showLodgeModal()" class="bg-gov-saffron text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-orange-200 hover:scale-105 transition flex items-center gap-2">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i> New Grievance
+                    </button>
+                </div>
 
-        <div class="glass-card" style="margin-top: 2rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h3>Live Grievance Feed</h3>
-                <span style="display: flex; align-items: center; gap: 0.5rem; color: #34d399; font-size: 0.9rem;">
-                    <span
-                        style="width: 8px; height: 8px; background: #34d399; border-radius: 50%; animation: pulse 2s infinite;"></span>
-                    Live Updates
-                </span>
-            </div>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Location</th>
-                            <th>Category</th>
-                            <th>Status</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#GR-2025-8892</td>
-                            <td>New Delhi, DL</td>
-                            <td>Sanitation</td>
-                            <td><span class="status-badge status-new">New</span></td>
-                            <td>2 mins ago</td>
-                        </tr>
-                        <tr>
-                            <td>#GR-2025-8891</td>
-                            <td>Mumbai, MH</td>
-                            <td>Roads & Transport</td>
-                            <td><span class="status-badge status-pending">In Progress</span></td>
-                            <td>5 mins ago</td>
-                        </tr>
-                        <tr>
-                            <td>#GR-2025-8890</td>
-                            <td>Bangalore, KA</td>
-                            <td>Water Supply</td>
-                            <td><span class="status-badge status-resolved">Resolved</span></td>
-                            <td>12 mins ago</td>
-                        </tr>
-                        <tr>
-                            <td>#GR-2025-8889</td>
-                            <td>Hyderabad, TS</td>
-                            <td>Electricity</td>
-                            <td><span class="status-badge status-pending">In Progress</span></td>
-                            <td>15 mins ago</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+                    ${renderStatCard('Open Cases', 2, 'blue', 'file-text')}
+                    ${renderStatCard('Under Action', 1, 'orange', 'activity')}
+                    ${renderStatCard('Resolved', 12, 'green', 'check-check')}
+                    ${renderStatCard('Pending Feedback', 1, 'purple', 'message-square')}
+                </div>
 
-    <!-- Login Modal -->
-    <div class="login-modal" id="loginModal">
-        <div style="position: absolute; top: 2rem; right: 2rem;">
-            <button onclick="closeLogin()" class="btn btn-glass" style="padding: 0.5rem;"><i
-                    class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="login-container">
-            <!-- Citizen Login -->
-            <div class="login-card" onclick="autofillLogin('citizen')">
-                <div class="login-icon"><i class="fa-solid fa-users"></i></div>
-                <h3>Citizen</h3>
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">File and track your personal grievances.</p>
-                <form onsubmit="event.preventDefault(); window.location.href='complaint.html'">
-                    <input type="text" class="form-input" id="citizen-user" placeholder="Mobile / Email"
-                        style="margin-bottom: 1rem;">
-                    <input type="password" class="form-input" id="citizen-pass" placeholder="Password"
-                        style="margin-bottom: 1rem;">
-                    <button class="btn btn-primary" style="width: 100%; justify-content: center;">Login</button>
-                </form>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">Click card to autofill demo
-                </p>
-            </div>
-
-            <!-- Officer Login -->
-            <div class="login-card" onclick="autofillLogin('officer')">
-                <div class="login-icon"><i class="fa-solid fa-user-shield"></i></div>
-                <h3>State Officer</h3>
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Manage ward-level complaints and updates.
-                </p>
-                <form onsubmit="event.preventDefault(); window.location.href='dashboard.html'">
-                    <input type="text" class="form-input" id="officer-user" placeholder="Officer ID"
-                        style="margin-bottom: 1rem;">
-                    <input type="password" class="form-input" id="officer-pass" placeholder="Password"
-                        style="margin-bottom: 1rem;">
-                    <button class="btn btn-primary" style="width: 100%; justify-content: center;">Login</button>
-                </form>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">Click card to autofill demo
-                </p>
-            </div>
-
-            <!-- Admin Login -->
-            <div class="login-card" onclick="autofillLogin('admin')">
-                <div class="login-icon"><i class="fa-solid fa-building-columns"></i></div>
-                <h3>National Admin</h3>
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">PMO / Central Monitoring Dashboard.</p>
-                <form onsubmit="event.preventDefault(); window.location.href='dashboard.html'">
-                    <input type="text" class="form-input" id="admin-user" placeholder="Admin ID"
-                        style="margin-bottom: 1rem;">
-                    <input type="password" class="form-input" id="admin-pass" placeholder="Password"
-                        style="margin-bottom: 1rem;">
-                    <button class="btn btn-primary" style="width: 100%; justify-content: center;">Login</button>
-                </form>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">Click card to autofill demo
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="gov-footer">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>Drishti Platform</h4>
-                <p style="line-height: 1.6;">
-                    An initiative by the Government of India to ensure transparent, efficient, and AI-driven grievance
-                    redressal for every citizen.
-                </p>
-            </div>
-            <div class="footer-col">
-                <h4>Quick Links</h4>
-                <div class="footer-links">
-                    <a href="#">Home</a>
-                    <a href="#">About Us</a>
-                    <a href="#">File Complaint</a>
-                    <a href="#">Track Status</a>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="gov-card p-6">
+                            <h3 class="font-bold text-lg mb-6 flex items-center gap-2">
+                                <i data-lucide="list" class="text-gov-blue"></i> 
+                                Active Grievances
+                            </h3>
+                            <div class="space-y-4">
+                                ${DB.complaints.filter(c => c.citizenId === currentUser.id).map(c => `
+                                    <div class="border rounded-xl p-5 hover:bg-slate-50 transition cursor-pointer" onclick="viewCaseDetail('${c.id}')">
+                                        <div class="flex justify-between items-start mb-3">
+                                            <div class="flex items-center gap-3">
+                                                <span class="font-mono text-[10px] text-slate-400 font-bold">${c.id}</span>
+                                                <h4 class="font-bold text-slate-800">${c.title}</h4>
+                                            </div>
+                                            <span class="status-pill ${c.status === 'Resolved' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}">${c.status}</span>
+                                        </div>
+                                        <div class="flex items-center justify-between mt-4 text-[11px] text-slate-500 font-medium">
+                                            <div class="flex gap-4">
+                                                <span class="flex items-center gap-1"><i data-lucide="tag" class="w-3 h-3"></i> ${c.category}</span>
+                                                <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> Filed: ${c.date}</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-red-500 font-bold">SLA: ${c.slaRemaining}</span>
+                                                <div class="w-24 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                                                    <div class="bg-gov-blue h-full" style="width: 65%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="gov-card p-6 bg-slate-800 text-white">
+                            <h4 class="font-bold mb-4 flex items-center gap-2 text-saffron-400">
+                                <i data-lucide="users"></i> Community Pulse
+                            </h4>
+                            <div class="space-y-4">
+                                ${DB.threads.map(th => `
+                                    <div class="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition cursor-pointer">
+                                        <p class="text-xs font-bold leading-tight">${th.title}</p>
+                                        <div class="flex items-center gap-3 mt-2 opacity-60 text-[10px]">
+                                            <span><i data-lucide="thumbs-up" class="inline w-3 h-3"></i> ${th.votes}</span>
+                                            <span><i data-lucide="message-circle" class="inline w-3 h-3"></i> ${th.comments}</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button class="w-full mt-4 text-xs font-bold text-saffron-400 hover:underline">View All Community Topics →</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="footer-col">
-                <h4>Legal & Policy</h4>
-                <div class="footer-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">SLA Guidelines</a>
-                    <a href="#">RTI</a>
+        `;
+    }
+
+    // --- OFFICER VIEW ---
+    function renderOfficerView(container) {
+        container.innerHTML = `
+            <div class="p-8">
+                <div class="mb-8 flex justify-between items-end">
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-800 tracking-tight uppercase">Officer Command Center</h2>
+                        <p class="text-slate-500">Department: ${currentUser.dept} | Region: ${currentUser.state}</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="bg-red-50 border border-red-100 p-3 rounded-xl">
+                            <p class="text-[10px] text-red-600 font-bold uppercase">SLA Breaches</p>
+                            <p class="text-xl font-black text-red-700">02</p>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-100 p-3 rounded-xl">
+                            <p class="text-[10px] text-blue-600 font-bold uppercase">Open Tickets</p>
+                            <p class="text-xl font-black text-blue-700">14</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gov-card overflow-hidden">
+                    <div class="bg-slate-50 border-b p-4 flex justify-between items-center">
+                        <div class="flex gap-4">
+                            <button class="text-xs font-bold text-gov-blue border-b-2 border-gov-blue pb-1">Assigned (12)</button>
+                            <button class="text-xs font-medium text-slate-500 pb-1">Unassigned (2)</button>
+                            <button class="text-xs font-medium text-slate-500 pb-1">Escalated (1)</button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold">Sort By:</span>
+                            <select class="text-xs border rounded p-1"><option>Priority</option><option>SLA Deadline</option></select>
+                        </div>
+                    </div>
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-bold tracking-widest">
+                            <tr>
+                                <th class="px-6 py-4">Complaint ID</th>
+                                <th class="px-6 py-4">AI Prediction</th>
+                                <th class="px-6 py-4">Time Elapsed</th>
+                                <th class="px-6 py-4">Status</th>
+                                <th class="px-6 py-4 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y text-sm">
+                            ${DB.complaints.map(c => `
+                                <tr class="hover:bg-slate-50/80 transition">
+                                    <td class="px-6 py-4">
+                                        <p class="font-bold text-slate-700">${c.id}</p>
+                                        <p class="text-[10px] text-slate-400 truncate w-48">${c.title}</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full ${c.priority === 'Critical' ? 'bg-red-500 ai-pulse' : 'bg-orange-500'}"></span>
+                                            <span class="font-bold">${c.priority}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-slate-500">2h 45m</td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold border border-slate-200">${c.status}</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button onclick="handleGrievance('${c.id}')" class="bg-gov-blue text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-gov-dark shadow-sm">Process Case</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="footer-col">
-                <h4>Contact</h4>
-                <div class="footer-links">
-                    <a href="#">Helpdesk: 1800-11-0000</a>
-                    <a href="#">Email: support@drishti.gov.in</a>
-                    <a href="#">PMO Office, New Delhi</a>
+        `;
+    }
+
+    // --- ADMIN VIEW ---
+    function renderAdminView(container) {
+        container.innerHTML = `
+            <div class="p-8">
+                <div class="mb-10">
+                    <h2 class="text-3xl font-black text-slate-800 tracking-tighter uppercase">National Governance Dashboard</h2>
+                    <p class="text-slate-500">Unified Monitoring for all States & Central Departments</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+                    <div class="lg:col-span-2 gov-card p-8">
+                        <div class="flex justify-between items-center mb-8">
+                            <h4 class="font-bold text-slate-700 uppercase tracking-wider text-sm">Grievance Hotspots (Last 30 Days)</h4>
+                            <div class="flex gap-2">
+                                <span class="text-[10px] bg-red-100 text-red-600 px-2 rounded">High Alert</span>
+                                <span class="text-[10px] bg-green-100 text-green-600 px-2 rounded">Optimal</span>
+                            </div>
+                        </div>
+                        <div class="h-80">
+                            <canvas id="heatmapChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="gov-card p-6 border-l-4 border-gov-saffron">
+                            <h4 class="font-bold text-sm mb-4">AI Triage Efficiency</h4>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-slate-500">Auto-Categorization Accuracy</span>
+                                <span class="text-xs font-bold text-gov-green">94.2%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-6">
+                                <div class="bg-gov-green h-full" style="width: 94%"></div>
+                            </div>
+                            
+                            <h4 class="font-bold text-sm mb-4">SLA Compliance Rate</h4>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-slate-500">Target: 95%</span>
+                                <span class="text-xs font-bold text-orange-500">82.8%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-orange-500 h-full" style="width: 82%"></div>
+                            </div>
+                        </div>
+
+                        <div class="gov-card p-6 bg-slate-900 text-white">
+                            <h4 class="font-bold text-sm mb-4 flex items-center gap-2">
+                                <i data-lucide="shield-alert" class="text-saffron-400"></i> Critical Alerts
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="text-[11px] p-2 bg-white/5 border border-white/10 rounded">
+                                    <p class="font-bold">UP - Water Supply</p>
+                                    <p class="opacity-60">SLA Breach predicted in 14 cases over next 6h.</p>
+                                </div>
+                                <div class="text-[11px] p-2 bg-white/5 border border-white/10 rounded">
+                                    <p class="font-bold">Bihar - Road Transport</p>
+                                    <p class="opacity-60">High override detected on AI Categorization.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gov-card p-8">
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-wider">Departmental Health Overview</h4>
+                    <div class="h-64">
+                        <canvas id="deptHealthChart"></canvas>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div
-            style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
-            &copy; 2025 Drishti Platform. All Rights Reserved. Government of India.
-        </div>
-    </footer>
+        `;
+        setTimeout(initAdminCharts, 100);
+    }
 
-    <script>
-        function openLogin() {
-            document.getElementById('loginModal').classList.add('active');
-        }
-
-        function closeLogin() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
-
-        function autofillLogin(role) {
-            if (role === 'citizen') {
-                document.getElementById('citizen-user').value = 'citizen@example.com';
-                document.getElementById('citizen-pass').value = 'password123';
-            } else if (role === 'officer') {
-                document.getElementById('officer-user').value = 'OFFICER_DL_01';
-                document.getElementById('officer-pass').value = 'securepass';
-            } else if (role === 'admin') {
-                document.getElementById('admin-user').value = 'ADMIN_PMO';
-                document.getElementById('admin-pass').value = 'adminsecure';
-            }
-        }
-
-        // Close modal on outside click
-        document.getElementById('loginModal').addEventListener('click', function (e) {
-            if (e.target === this) {
-                closeLogin();
-            }
+    function initAdminCharts() {
+        // Heatmap
+        const ctx1 = document.getElementById('heatmapChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [
+                    { label: 'Delhi', data: [450, 520, 610, 590], borderColor: '#0b4a8f', tension: 0.4 },
+                    { label: 'Mumbai', data: [310, 480, 420, 500], borderColor: '#f39200', tension: 0.4 },
+                    { label: 'UP', data: [650, 710, 890, 820], borderColor: '#ef4444', tension: 0.4 }
+                ]
+            },
+            options: { maintainAspectRatio: false }
         });
-    </script>
-</body>
 
+        // Dept Health
+        const ctx2 = document.getElementById('deptHealthChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Electricity', 'Water', 'Sanitation', 'Education', 'Transport'],
+                datasets: [
+                    { label: 'Resolved', data: [88, 72, 65, 91, 74], backgroundColor: '#0b4a8f' },
+                    { label: 'Pending', data: [12, 28, 35, 9, 26], backgroundColor: '#e2e8f0' }
+                ]
+            },
+            options: { maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }
+        });
+    }
+
+    // --- MODALS & WORKFLOWS ---
+    function showLodgeModal() {
+        const body = document.getElementById('modalBody');
+        body.innerHTML = `
+            <div class="mb-8 pt-8 text-center">
+                <div class="h-16 w-16 bg-blue-100 text-gov-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="plus" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Lodge New Grievance</h2>
+                <p class="text-slate-500 text-sm">Fill in the details below. Our AI will automatically route it.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-xs font-black uppercase text-slate-400 mb-2">Subject / Title</label>
+                        <input id="newTitle" type="text" class="w-full border-2 border-slate-100 rounded-xl p-3 text-sm focus:border-gov-blue outline-none transition" placeholder="Short summary of issue">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase text-slate-400 mb-2">Detailed Description</label>
+                        <textarea id="newDesc" rows="6" class="w-full border-2 border-slate-100 rounded-xl p-3 text-sm focus:border-gov-blue outline-none transition" placeholder="Provide as much detail as possible..." onblur="triggerAI()"></textarea>
+                    </div>
+                    <div id="aiAssist" class="hidden bg-blue-900 text-white p-5 rounded-xl shadow-xl animate-in fade-in slide-in-from-left-4">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i data-lucide="bot" class="w-5 h-5 text-saffron-400"></i>
+                            <span class="text-xs font-bold uppercase tracking-widest">AI Triage In-Progress</span>
+                        </div>
+                        <p class="text-[11px] opacity-80" id="aiFeedback">Analyzing text for Department & Priority mapping...</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-xs font-black uppercase text-slate-400 mb-2">Department (AI Suggested)</label>
+                        <select id="newDept" class="w-full border-2 border-slate-100 rounded-xl p-3 text-sm outline-none bg-slate-50">
+                            <option>Electricity</option>
+                            <option>Water Supply</option>
+                            <option>Roads & Highway</option>
+                            <option>Sanitation</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase text-slate-400 mb-2">Upload Proof (Images/Videos)</label>
+                        <div class="border-2 border-dashed border-slate-200 rounded-xl h-32 flex flex-col items-center justify-center text-slate-400 hover:border-gov-blue hover:text-gov-blue cursor-pointer transition">
+                            <i data-lucide="camera" class="w-8 h-8 mb-2"></i>
+                            <span class="text-xs font-bold">Drop files here or Click</span>
+                        </div>
+                    </div>
+                    <div class="pt-4 flex gap-4">
+                        <button onclick="closeModal()" class="flex-1 px-6 py-3 border-2 border-slate-100 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition">Cancel</button>
+                        <button onclick="finalSubmit()" class="flex-1 px-6 py-3 bg-gov-blue text-white rounded-xl font-bold shadow-lg hover:bg-gov-dark transition">Submit Portal</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.getElementById('modalOverlay').classList.remove('hidden');
+        refreshIcons();
+    }
+
+    function triggerAI() {
+        const desc = document.getElementById('newDesc').value;
+        if (desc.length < 15) return;
+        
+        const panel = document.getElementById('aiAssist');
+        panel.classList.remove('hidden');
+        
+        setTimeout(() => {
+            document.getElementById('aiFeedback').innerHTML = "Detected: <strong class='text-saffron-400'>Infrastructure/Roads</strong>. Urgency: <strong class='text-saffron-400'>Medium</strong>. Predictive SLA: 72 Hours.";
+            document.getElementById('newDept').value = "Roads & Highway";
+        }, 1200);
+    }
+
+    function finalSubmit() {
+        const title = document.getElementById('newTitle').value;
+        const desc = document.getElementById('newDesc').value;
+        const id = 'GRV-2026-' + (DB.complaints.length + 1).toString().padStart(3, '0');
+        
+        DB.complaints.unshift({
+            id: id,
+            citizenId: currentUser.id,
+            category: document.getElementById('newDept').value,
+            title: title || 'New Grievance',
+            status: 'Pending',
+            priority: 'Medium',
+            date: '2026-01-08',
+            slaRemaining: '48h',
+            description: desc,
+            updates: 0,
+            state: currentUser.state
+        });
+        
+        closeModal();
+        renderMain();
+        showNotification('Grievance ' + id + ' filed successfully via AI Triage.');
+    }
+
+    function viewCaseDetail(id) {
+        const c = DB.complaints.find(comp => comp.id === id);
+        const body = document.getElementById('modalBody');
+        body.innerHTML = `
+            <div class="pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-start gap-6 mb-10">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="bg-gov-blue text-white px-3 py-1 rounded text-[10px] font-black">${c.id}</span>
+                            <span class="status-pill bg-slate-100 text-slate-600">${c.category}</span>
+                        </div>
+                        <h2 class="text-3xl font-black text-slate-800 tracking-tight">${c.title}</h2>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-black uppercase text-slate-400 mb-1">Current Status</p>
+                        <span class="status-pill bg-orange-100 text-orange-700 font-black text-sm">${c.status}</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                    <div class="lg:col-span-2 space-y-8">
+                        <div class="bg-slate-50 p-6 rounded-2xl border-l-8 border-slate-300">
+                            <h4 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">Incident Description</h4>
+                            <p class="text-slate-700 leading-relaxed italic">"${c.description}"</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xs font-black uppercase text-slate-400 mb-6 tracking-widest">Action Timeline</h4>
+                            <div class="space-y-10 pl-4">
+                                ${renderTimelineStep('Grievance Filed', '08 Jan, 10:45 AM', 'AI Triage completed categorization.', true)}
+                                ${renderTimelineStep('Department Acknowledged', '08 Jan, 11:20 AM', 'Sent to Executive Engineer (Ward 4).', true)}
+                                ${renderTimelineStep('Field Investigation', 'Scheduled', 'Officer assignment in-progress.', false)}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="gov-card p-6 border-t-4 border-red-500">
+                            <h4 class="text-xs font-black uppercase text-slate-400 mb-4">SLA Commitment</h4>
+                            <div class="text-center">
+                                <p class="text-4xl font-black text-red-600 mb-2">${c.slaRemaining}</p>
+                                <p class="text-[10px] text-slate-500 font-bold">Remaining for Resolution</p>
+                            </div>
+                        </div>
+                        
+                        <div class="gov-card p-6">
+                            <h4 class="text-xs font-black uppercase text-slate-400 mb-4">Officer In-Charge</h4>
+                            <div class="flex items-center gap-4">
+                                <div class="h-12 w-12 bg-slate-200 rounded-full flex items-center justify-center font-bold">VS</div>
+                                <div>
+                                    <p class="text-sm font-bold">Dr. V. K. Singh</p>
+                                    <p class="text-[10px] text-slate-500">EE, South Delhi Dept.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.getElementById('modalOverlay').classList.remove('hidden');
+        refreshIcons();
+    }
+
+    function renderTimelineStep(title, date, desc, completed) {
+        return `
+            <div class="relative timeline-step pl-10">
+                <div class="absolute left-0 top-0 h-6 w-6 rounded-full ${completed ? 'bg-gov-green text-white' : 'bg-slate-200 text-slate-400'} flex items-center justify-center z-10">
+                    <i data-lucide="${completed ? 'check' : 'circle'}" class="w-3 h-3"></i>
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <h5 class="text-sm font-bold ${completed ? 'text-slate-800' : 'text-slate-400'}">${title}</h5>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase">${date}</span>
+                    </div>
+                    <p class="text-xs text-slate-500">${desc}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderStatCard(label, val, color, icon) {
+        const colors = {
+            blue: 'border-blue-500 text-blue-600 bg-blue-50',
+            orange: 'border-orange-500 text-orange-600 bg-orange-50',
+            green: 'border-green-500 text-green-600 bg-green-50',
+            purple: 'border-purple-500 text-purple-600 bg-purple-50'
+        };
+        return `
+            <div class="gov-card p-6 border-l-4 ${colors[color]}">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-black uppercase opacity-60 mb-2">${label}</p>
+                        <h3 class="text-3xl font-black">${val}</h3>
+                    </div>
+                    <div class="p-2 bg-white/50 rounded-lg"><i data-lucide="${icon}"></i></div>
+                </div>
+            </div>
+        `;
+    }
+
+    function showNotification(msg) {
+        const div = document.createElement('div');
+        div.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl z-[300] font-bold text-sm animate-in slide-in-from-bottom-10 fade-in duration-300';
+        div.innerHTML = `<div class="flex items-center gap-3"><i data-lucide="check-circle" class="text-green-400"></i> ${msg}</div>`;
+        document.body.appendChild(div);
+        refreshIcons();
+        setTimeout(() => {
+            div.classList.add('animate-out', 'slide-out-to-bottom-10', 'fade-out');
+            setTimeout(() => div.remove(), 500);
+        }, 3000);
+    }
+
+    function toggleAIChat() {
+        const chat = document.getElementById('chatWindow');
+        chat.classList.toggle('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.add('hidden');
+    }
+
+    function goHome() {
+        renderMain();
+    }
+
+    function navigate(id) {
+        // UI logic for navigation sidebar state
+        const items = document.querySelectorAll('.sidebar-item');
+        items.forEach(el => el.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        
+        if (id === 'community') {
+            // Placeholder for community board view
+            document.getElementById('mainContent').innerHTML = `
+                <div class="p-8">
+                    <h2 class="text-3xl font-black text-slate-800 tracking-tight mb-8 uppercase">Community Issues Board</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        ${DB.threads.map(th => `
+                            <div class="gov-card p-6 hover:border-gov-blue transition cursor-pointer">
+                                <div class="flex justify-between items-start mb-4">
+                                    <span class="text-[10px] bg-slate-100 px-2 py-1 rounded font-bold">${th.category}</span>
+                                    <div class="flex items-center gap-1 text-slate-400 text-xs"><i data-lucide="thumbs-up" class="w-3 h-3"></i> ${th.votes}</div>
+                                </div>
+                                <h4 class="font-bold text-lg mb-2">${th.title}</h4>
+                                <p class="text-xs text-slate-500 mb-6">Started by ${th.author}</p>
+                                <div class="flex justify-between items-center border-t pt-4">
+                                    <span class="text-[10px] font-bold text-gov-blue">${th.comments} Official Responses</span>
+                                    <button class="text-[10px] font-black uppercase text-slate-400 hover:text-gov-blue">Join Discussion →</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            refreshIcons();
+        } else {
+            renderMain();
+        }
+    }
+
+    // Initialize
+    window.onload = () => {
+        switchRole('citizen');
+        const now = new Date();
+        document.getElementById('currentDate').innerText = now.toLocaleDateString('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' });
+    };
+</script>
+
+</body>
 </html>
