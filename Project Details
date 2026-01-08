@@ -1,0 +1,182 @@
+DRISHTI name
+
+AI-Driven Government Complaint & Case Management System
+📌 Problem Statement
+In many cities and towns, citizen complaints related to essential public services such as water supply,
+roads, electricity, sanitation, streetlights, and drainage are still handled through fragmented channels like
+phone calls, emails, walk-in counters, or basic portals. Existing grievance systems primarily register
+complaints and generate a ticket number, but they lack intelligent mechanisms for automatic
+categorization, prioritization, routing to the right department, SLA-based monitoring, and analytics for
+governance. As a result, high-impact issues get delayed, complaints are misrouted or manually handled,
+SLA breaches go unnoticed, and citizens experience low transparency and reduced trust in public
+institutions.[1][2][3][4][5][6]
+Recent work on AI-driven grievance systems shows that techniques like NLP-based categorization,
+urgency prediction, and AI assistants can significantly improve routing accuracy, response times, and
+citizen engagement. However, many of these solutions focus on automation and do not clearly embed
+human oversight, multi-layer governance, or community participation. There is a need for a centralized,
+AI-assisted, role-based complaint and case management platform that supports the complete
+lifecycle from complaint intake to closure, while ensuring transparency, accountability, and human
+control over final decisions.[7][8][9][2][10][11][12]
+This project proposes an AI-Driven Government Complaint & Case Management System built using
+Django and an SQL database, which allows citizens to file complaints digitally, assists officials with AIbased categorization and prioritization, supports SLA tracking and escalation, enables community
+discussion, and provides monitoring dashboards to authorities—while keeping humans in charge at every
+decision point.[8][6][13]
+🎯 Objectives of the Project
+• To digitize and standardize the entire government grievance redressal workflow from complaint
+registration to closure, with proper audit trails and SLAs.[3][6]
+• To assist officials using AI-based complaint categorization, priority prediction, and routing
+suggestions (not full automation).[9][7][8]
+• To ensure transparency and accountability through real-time status tracking, escalation logs, and
+citizen feedback mechanisms.[2][10][3]
+• To improve citizen engagement using a community discussion space and an AI guidance assistant
+that explains processes and status.[10][14][15]
+• To provide data-driven insights (trends, hotspots, SLA reports) that support administrative and
+policy-level decisions.[16][11][2]
+⚙️ Key Features (Detailed)
+1️⃣ Citizen Complaint Management
+• Online complaint submission:
+o Citizens submit complaints with category, textual description, optional attachment
+(image/video link), and location (area + optional GPS coordinates).[17][3]
+o Forms are mobile-friendly for easy access.
+• Complaint lifecycle and tracking:
+o Status flow: New → AI_Triage_Suggested → Assigned → In_Progress → Resolved (and
+optional Rejected / Closed_No_Action).[6][1]
+o Citizens can view a detailed timeline: who handled the complaint, when it was updated, and
+what action was taken.
+• Notifications:
+o Email/SMS/in-app notifications when complaint is registered, assigned, updated, escalated, or
+resolved (can be simulated in prototype).[14][3]
+• Feedback and rating:
+o After resolution, citizens rate the resolution, add comments, and mark “satisfied / not
+satisfied”, feeding into analytics and quality metrics.[18][19]
+2️⃣ AI-Assisted Decision Support
+(All AI is assistive; officers can override suggestions.)
+• Automatic complaint categorization:
+o NLP model processes complaint text and predicts category (e.g., water, road, power,
+sanitation, streetlight, drainage, other).[7][8][9]
+• Priority prediction:
+o Model predicts urgency level (Low / Medium / High) using features like keywords, sentiment,
+location, and historical patterns.[11][9][7]
+• SLA breach risk prediction:
+o Based on current backlog, previous delays, and complaint type, the system flags complaints
+that are likely to breach SLA if not acted on soon.[9][11][7]
+• Department routing recommendation:
+o Suggests the most appropriate department and possibly sub-unit (e.g., “Water Department →
+Pipeline Maintenance”) for each complaint.[20][12][8]
+• Human-in-loop:
+o Officers see AI suggestions (category, priority, department) with confidence scores and can
+accept, modify, or reject them; changes are logged for model improvement and audit.[21][2][10]
+3️⃣ Role-Based Governance & Workflow
+The platform implements a multi-role, multi-layer governance structure.
+• Citizen Layer
+o File and track complaints, participate in discussions, interact with AI assistant for
+guidance.[14][3]
+• Local Officer Layer
+o Sees assigned complaints, updates status, adds field notes, attaches action photos, and records
+actual resolution details.[1][3]
+o Can escalate complaints to Department Admin if blocked.
+• Department Admin Layer
+o Manages all complaints within a specific department (e.g., Water, Roads, Electricity).[22][3]
+o Assigns/reassigns complaints to officers, monitors SLA compliance, and handles escalations.
+o Moderates community discussions for their department.
+• City / State Authority Layer
+o Read-only access to aggregated dashboards across all departments: trends, hotspots, SLA
+statistics, and escalation patterns.[23][2][10]
+o Uses insights for policy and planning.
+• System Super Admin Layer
+o Manages users, roles, departments, configuration (SLA rules, AI thresholds) and system
+logs.[6][1]
+o Deploys/updates AI models and monitors system health, but does not change complaint
+outcomes.
+Django’s authentication, groups, and permissions system will be used to enforce this role-based access
+control clearly at the view and API level.[24][6]
+4️⃣ Community Discussion Module
+• Public issue threads:
+o Citizens can create discussion threads for broader civic issues (e.g., “Water supply issue in
+Ward 10”, “Garbage collection timing”).[25][14]
+• Linking with complaints:
+o Complaints can optionally be linked to relevant discussion threads to reduce duplicates and
+centralize information.
+• Officer participation:
+o Local Officers and Department Admins can respond with clarifications, updates, and official
+statements visible to all.
+• Moderation:
+o Department Admins and System Admin can moderate posts, remove abusive content, and
+close threads when issues are resolved.
+This module increases transparency and provides context beyond individual tickets, similar to civic-tech
+initiatives that combine grievance redressal with public discourse.[10][14]
+5️⃣ AI Talking Assistant (Guidance Only)
+• Citizen guidance:
+o Conversational assistant helps users choose the right category, explains what information to
+provide, and clarifies how SLAs and escalation work.[26][2][7]
+• Status explanation:
+o When a citizen asks “What is happening with my complaint?”, the assistant reads status and
+timeline from the database and explains it in simple language.[27][7]
+• FAQs:
+o Answers common questions about departments, services, timelines, and escalation rules
+based on a curated knowledge base.[16][2]
+• No direct actions:
+o The assistant cannot close, modify, or reassign complaints; it can only guide or suggest,
+reinforcing that final actions are human-controlled.[2][21][10]
+6️⃣ Analytics & Monitoring Dashboards
+• Department-wise statistics:
+o Number of complaints received, resolved, pending, and reopened per category and per time
+period.[3][6]
+• SLA and escalation reports:
+o SLA compliance percentage, average resolution time, and number of escalated cases by
+department and area.[13][11][2]
+• Hotspot and trend analysis:
+o High-complaint areas (wards/localities), recurring issues, seasonal patterns (e.g., drainage
+complaints in monsoon).[11][16][2]
+• AI performance metrics:
+o Accuracy of categorization, routing, and priority predictions, plus override statistics (how
+often humans changed AI suggestions).[19][20][7]
+These dashboards are built via SQL aggregation queries and visualized in Django views, inspired by
+modern AI-enabled grievance dashboards.[16][2][11]
+🧱 System Layers & Technology Stack
+• Frontend:
+o Django templates / minimal SPA (HTML, CSS, JS) for dashboards and forms.
+• Backend:
+o Django for REST-style APIs, business logic, role-based workflows.
+• Database (SQL):
+o PostgreSQL/MySQL for relational schema: Users, Roles, Departments, Complaints, SLA Rules,
+AI Suggestions, Discussion Threads, Feedback, Audit Logs.[24][6]
+• AI/NLP Services:
+o Python models (could be separate microservice or integrated module) for categorization,
+priority prediction, and FAQ answering, similar to other AI grievance systems.[8][7][9]
+1. https://ijarsct.co.in/Paper29754.pdf
+2. https://www.csm.tech/blog-details/how-ai-can-humanize-government-response-to-citizen-grievances
+3. https://www.ijprems.com/ijprems-paper/smart-complaint-management-system
+4. https://www.ijraset.com/research-paper/review-on-online-complaints-registration-and-management-system-tomunicipal-corporation
+5. https://www.irjmets.com/upload_newfiles/irjmets70500252030/paper_file/irjmets70500252030.pdf
+6. https://www.jetir.org/papers/JETIR2506925.pdf
+7. https://www.irjet.net/archives/V12/i4/IRJET-V12I4260.pdf
+8. https://www.atlantis-press.com/article/126012595.pdf
+9. https://www.ijcrt.org/papers/IJCRT2504794.pdf
+10. https://blogs.worldbank.org/en/governance/civic--amplifying-citizens--voice-through-ai-powered-grievance-r
+11. https://www.nitiforstates.gov.in/best-practice-detail?id=100413
+12. https://www.atlantis-press.com/proceedings/icaaai-25/126012595
+13. https://ijctjournal.org/wp-content/uploads/2025/06/DIGITAL-GRIEVANCE-REDRESSAL-FOR-CLEANERSMARTER-INDIA.pdf
+14. https://foundryjournal.net/wp-content/uploads/2025/08/20.FJ25C761.pdf
+15. https://x.com/IITKanpur/status/1870137299713044585
+16. https://ahex.co/empowering-consumers-through-ai-the-next-gen-web-based-grievance-redressal-system/
+17. https://ijsdr.org/papers/IJSDR2403133.pdf
+18. https://www.leewayhertz.com/ai-in-complaint-management/
+19. https://www.civica.com/en-gb/insights/enhancing-complaints-management-with-artificial-intelligence/
+20. https://kpmg.com/in/en/services/advisory/ai-services/case-study-making-grievance-redressal-faster-and-moretrustworthy-in-public-service.html
+21. https://ieeexplore.ieee.org/iel8/11031246/11031251/11031909.pdf
+22. https://www.ijsred.com/volume8/issue1/IJSRED-V8I1P56.pdf
+23. https://www.smartcity311.com
+24. https://phpgurukul.com/complaint-management-system-using-python-django-and-mysql/
+25. https://www.ijset.in/civic-complaint-tracker/
+26. https://www.rapidinnovation.io/post/ai-agents-for-complaint-management-benefits-use-cases-and-challenges
+27. https://indiaai.gov.in/article/ai-enabled-national-consumer-helpline-transforming-grievance-redressal-in-india
+28. https://www.sprinklr.com/products/customer-service/complaint-management/
+29. https://docs.tgdex.telangana.gov.in/docs/accessing_help_support_services/grievance_system/
+30. https://www.civica.com/en-us/insights/enhancing-complaints-management-with-artificial-intelligence/
+https://www.spartasystems.com/complaint-management-software/
+Why this Project:
+Directly aligned with current government and civic-tech trends like AI-powered grievance redressal
+(CPGRAMS, state-level pilots, AI NCH, IGMS).
+• Emphasizes human-in-loop, ethical AI and real multi-layer governance logic, which is rare in
+typical student projects.
