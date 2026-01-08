@@ -1,0 +1,281 @@
+CPGRAMS uses a very simple, government-style UI: a clean header with logo and name, a top menu for key actions (Lodge Grievance, View Status, Login), and form-centric pages for registration and tracking.
+​
+
+Below is a UI breakdown you can reuse for DRISHTI while clearly showing you took inspiration from CPGRAMS.
+
+CPGRAMS-style home and header
+Header layout
+CPGRAMS usually shows: emblem/ministry on the left, portal name and tagline in the center, and utility links (login, language, help) on the right.
+​
+
+For DRISHTI, mirror this:
+
+Left:
+
+🇮🇳 small India emblem placeholder
+
+Center:
+
+Line 1 (big): “DRISHTI”
+
+Line 2 (small): “Digital Redressal Intelligent System with Human-in-loop Tracking Interface”
+
+Right:
+
+Links: Home, Lodge Complaint, Track Status, Login, Help
+
+This matches how CPGRAMS places “Centralized Public Grievance Redress And Monitoring System” as a clear full-form under the acronym.
+​
+
+CPGRAMS main navigation structure
+CPGRAMS uses a top menu bar with options such as:
+​
+
+Home
+
+Lodge Public Grievance
+
+Lodge Pension Grievance
+
+View Status
+
+Reminder / Clarification
+
+Rate Grievance
+
+Help / FAQ
+
+Login / Sign In
+
+For DRISHTI, adopt the same information architecture, renamed:
+
+Home
+
+Lodge Complaint
+
+Track Status
+
+Reminder / Clarification (optional but nice)
+
+Rate Resolution
+
+Community (new in DRISHTI)
+
+Help / FAQ
+
+Login
+
+The pattern “Lodge → View Status → Rate” is exactly how CPGRAMS guides users and you can keep this linear flow.
+​
+
+CPGRAMS lodge grievance page UI
+From the CPENGRAMS and CPGRAMS manuals, the grievance registration form has:
+​
+
+Clear title: “Grievance Registration Form”
+
+Note: “Fields marked with * are mandatory”
+
+Sections:
+
+Complainant details: Name, Address, Email, Phone, State, etc.
+
+Grievance details: Category, Department, Description, attachment (PDF in CPENGRAMS; you can do image/video links).
+​
+
+Buttons:
+
+“Submit”
+
+“Reset”
+
+For DRISHTI’s Lodge Complaint page, copy this UX:
+
+Top:
+
+Page title: “Complaint Registration Form – DRISHTI”
+
+Small note: “Fields marked with * are mandatory.”
+
+Section 1: Citizen details (if logged in, prefill)
+
+Section 2: Complaint details
+
+Category (select)
+
+Department (optional if AI fills later)
+
+Title
+
+Description
+
+Location
+
+Attachment upload
+
+Bottom:
+
+Submit button (primary)
+
+Reset/Cancel (secondary)
+
+CPENGRAMS also shows that the main content changes in the central area depending on which top menu option is chosen, while the menu itself stays fixed. You should mirror that layout in your base template.
+​
+
+CPGRAMS “View Status” page UI
+The CPGRAMS status page is extremely simple:
+​
+
+Heading: “View Status”
+
+Info text: “Fields marked with * are mandatory.”
+
+Form:
+
+Registration Number *
+
+Grievance Password * or Email/Mobile (alternative)
+​
+
+Captcha / Security code
+
+Button: “Submit”
+
+For DRISHTI’s Track Status:
+
+Keep a similar minimal layout:
+
+Registration Number (e.g., AIG-2026-000123) *
+
+Email or Mobile *
+
+Captcha or simple code (optional for prototype)
+
+After submit, show:
+
+Status (New / In Progress / Resolved etc.)
+
+Department, Category, Priority
+
+Simple timeline (you can add more detail than CPGRAMS).
+​
+
+This page should look like a single centered card with no sidebar, similar to CPGRAMS’ standalone status form.
+​
+
+CPGRAMS logged-in home/dashboard UI
+The CPENGRAMS user manual describes the home page after login with:
+​
+
+Top Menu (tabs): Home, Lodge New Grievance, Attach Document, Reminder/Clarification, Reports, User Profile, Help, Logout.
+
+Main content:
+
+“Status of Grievance” section showing:
+
+Total Grievances
+
+Pending Grievances
+
+Disposed of cases
+
+The central content changes when you click each tab, but the header/top menu stays fixed.
+​
+
+For DRISHTI:
+
+Citizen dashboard:
+
+Above: DRISHTI header + CPGRAMS-like tabs (Dashboard, Lodge Complaint, My Complaints, Profile, Help).
+
+Central cards:
+
+Total Complaints = Pending + Resolved (exact formula CPENGRAMS documentation mentions for total = pending + disposed).
+​
+
+Pending
+
+Resolved
+
+Below: Table of recent complaints.
+
+Officer dashboard:
+
+Same header, but tabs: Home, Assigned Complaints, Escalations, Reports, Profile, Logout.
+
+Central panel: list of new/assigned grievances first, with counts similar to CPGRAMS “New / Pending / Disposed” desk view.
+​
+
+CPGRAMS help/FAQ and rate grievance
+CPGRAMS provides:
+​
+
+FAQ/Help page explaining:
+
+What CPGRAMS is
+
+How to lodge grievances
+
+How to track status
+
+Appeal/feedback process
+
+“Rate Grievance” or “Rate Resolution” option after closure, enabling feedback and appeal if rating is poor.
+​
+
+For DRISHTI:
+
+Make a Help/FAQ page with:
+
+“What is DRISHTI?”
+
+“Who can lodge complaints?”
+
+“How is AI used?” (explain human-in-loop)
+
+“What is SLA?” (simple explanation)
+
+Make a Rate Resolution page accessible:
+
+From Track Status (if resolved)
+
+From email link
+
+Fields:
+
+Rating (1–5)
+
+“Are you satisfied?” yes/no
+
+Comment
+
+If rating ≤ 2 → show an extra “Request review / escalate” option (like CPGRAMS appeal).
+​
+
+How to use this for DRISHTI quickly
+When you design in Antigravity / Django templates:
+
+Base template:
+
+CPGRAMS-style header with DRISHTI branding.
+
+Top horizontal menu with the same item order: Home, Lodge Complaint, Track Status, Reminder/Clarification, Rate Resolution, Help, Login.
+​
+
+No heavy sidebars on public pages:
+
+CPGRAMS mainly uses full-width content with top navigation, not complex sidebars for citizens.
+​
+
+Use sidebar only on officer/admin dashboards if you want extra modern structure.
+
+Form-first design:
+
+Every important action is a clean form with a plain label + input + mandatory field star.
+
+Place “Submit” and “Reset” buttons clearly, like in CPENGRAMS forms.
+​
+
+If you want, the next step can be:
+
+A concrete home.html, lodge_complaint.html, and track_status.html template that look like CPGRAMS but branded as DRISHTI, ready to paste into your project.
