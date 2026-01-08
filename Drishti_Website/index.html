@@ -1,82 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drishti - Vision for the Future</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Drishti - National Grievance Redressal Platform</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">Drishti</a>
-            <div class="nav-links">
-                <a href="index.html" class="active">Home</a>
-                <a href="about.html">About</a>
-                <a href="services.html">Services</a>
-                <a href="contact.html">Contact</a>
-            </div>
-            <a href="contact.html" class="btn btn-primary">Get Started</a>
+<body>
+    <!-- Government Header -->
+    <div class="gov-header">
+        <div class="gov-emblem">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Emblem"
+                style="height: 30px;">
+            GOVERNMENT OF INDIA
         </div>
+        <div>
+            Ministry of Electronics & Information Technology
+        </div>
+    </div>
+
+    <!-- Dynamic Background -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="logo">
+            <i class="fa-solid fa-eye"></i> Drishti
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="#dashboard">Public Dashboard</a>
+            <a href="#features">Features</a>
+            <a href="complaint.html">File Complaint</a>
+        </div>
+        <button onclick="openLogin()" class="btn btn-primary">
+            Login / Register
+        </button>
     </nav>
+
+    <!-- Flex Screens System Flow -->
+    <div class="system-flow">
+        <div class="flex-screen">
+            <img src="images/ai_analysis.png" alt="AI Analysis">
+            <div class="screen-content">
+                <h3>01. AI Triage</h3>
+                <p>Advanced NLP algorithms automatically categorize and prioritize every citizen grievance in real-time.
+                </p>
+            </div>
+        </div>
+        <div class="flex-screen">
+            <img src="images/city_map.png" alt="Tracking">
+            <div class="screen-content">
+                <h3>02. Smart Tracking</h3>
+                <p>Geospatial monitoring and live status updates ensure full transparency and accountability.</p>
+            </div>
+        </div>
+        <div class="flex-screen">
+            <img src="images/control_room.png" alt="Resolution">
+            <div class="screen-content">
+                <h3>03. Rapid Resolution</h3>
+                <p>Connected departments and automated workflows reduce turnaround time by 60%.</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Clarifying Your <br><span>Digital Vision</span></h1>
-                <p>We build premium digital experiences that empower your business to see further. Modern, fast, and designed for impact.</p>
-                <div class="hero-buttons">
-                    <a href="services.html" class="btn btn-primary">Explore Services</a>
-                    <a href="about.html" class="btn btn-outline">Learn More</a>
-                </div>
+        <h1>Empowering Citizens.<br>Enabling Governance.</h1>
+        <p>
+            A unified, AI-driven platform for seamless grievance redressal, connecting citizens directly to the PMO and
+            State Authorities.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <a href="complaint.html" class="btn btn-primary">
+                <i class="fa-solid fa-pen-to-square"></i> File a Complaint
+            </a>
+            <button onclick="openLogin()" class="btn btn-glass">
+                <i class="fa-solid fa-user-shield"></i> Official Login
+            </button>
+        </div>
+    </section>
+
+    <!-- Public Dashboard Section -->
+    <section id="dashboard" style="padding: 4rem 2rem; max-width: 1400px; margin: 0 auto;">
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;">National Grievance Dashboard</h2>
+
+        <div class="stats-grid">
+            <div class="glass-card stat-card">
+                <div class="stat-value">1.2M+</div>
+                <div style="color: var(--text-muted);">Total Grievances</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-value" style="color: #34d399; -webkit-text-fill-color: #34d399;">98.5%</div>
+                <div style="color: var(--text-muted);">Resolution Rate</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-value" style="color: #60a5fa; -webkit-text-fill-color: #60a5fa;">24h</div>
+                <div style="color: var(--text-muted);">Avg Response Time</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-value" style="color: #f472b6; -webkit-text-fill-color: #f472b6;">4.8/5</div>
+                <div style="color: var(--text-muted);">Citizen Satisfaction</div>
+            </div>
+        </div>
+
+        <div class="glass-card" style="margin-top: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3>Live Grievance Feed</h3>
+                <span style="display: flex; align-items: center; gap: 0.5rem; color: #34d399; font-size: 0.9rem;">
+                    <span
+                        style="width: 8px; height: 8px; background: #34d399; border-radius: 50%; animation: pulse 2s infinite;"></span>
+                    Live Updates
+                </span>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Location</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#GR-2025-8892</td>
+                            <td>New Delhi, DL</td>
+                            <td>Sanitation</td>
+                            <td><span class="status-badge status-new">New</span></td>
+                            <td>2 mins ago</td>
+                        </tr>
+                        <tr>
+                            <td>#GR-2025-8891</td>
+                            <td>Mumbai, MH</td>
+                            <td>Roads & Transport</td>
+                            <td><span class="status-badge status-pending">In Progress</span></td>
+                            <td>5 mins ago</td>
+                        </tr>
+                        <tr>
+                            <td>#GR-2025-8890</td>
+                            <td>Bangalore, KA</td>
+                            <td>Water Supply</td>
+                            <td><span class="status-badge status-resolved">Resolved</span></td>
+                            <td>12 mins ago</td>
+                        </tr>
+                        <tr>
+                            <td>#GR-2025-8889</td>
+                            <td>Hyderabad, TS</td>
+                            <td>Electricity</td>
+                            <td><span class="status-badge status-pending">In Progress</span></td>
+                            <td>15 mins ago</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Why Choose Drishti?</h2>
-            <p class="section-subtitle">We bring clarity to complex problems with innovative solutions.</p>
-            
-            <div class="features-grid">
-                <!-- Feature 1 -->
-                <div class="glass-card">
-                    <i class="fas fa-layer-group feature-icon"></i>
-                    <h3 class="feature-title">Modern Design</h3>
-                    <p class="feature-desc">Cutting-edge aesthetics using the latest design trends like glassmorphism and neomorphism.</p>
-                </div>
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div style="position: absolute; top: 2rem; right: 2rem;">
+            <button onclick="closeLogin()" class="btn btn-glass" style="padding: 0.5rem;"><i
+                    class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="login-container">
+            <!-- Citizen Login -->
+            <div class="login-card" onclick="autofillLogin('citizen')">
+                <div class="login-icon"><i class="fa-solid fa-users"></i></div>
+                <h3>Citizen</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">File and track your personal grievances.</p>
+                <form onsubmit="event.preventDefault(); window.location.href='complaint.html'">
+                    <input type="text" class="form-input" id="citizen-user" placeholder="Mobile / Email"
+                        style="margin-bottom: 1rem;">
+                    <input type="password" class="form-input" id="citizen-pass" placeholder="Password"
+                        style="margin-bottom: 1rem;">
+                    <button class="btn btn-primary" style="width: 100%; justify-content: center;">Login</button>
+                </form>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">Click card to autofill demo
+                </p>
+            </div>
 
-                <!-- Feature 2 -->
-                <div class="glass-card">
-                    <i class="fas fa-bolt feature-icon"></i>
-                    <h3 class="feature-title">Lightning Fast</h3>
-                    <p class="feature-desc">Optimized performance ensuring your website loads instantly on all devices.</p>
-                </div>
+            <!-- Officer Login -->
+            <div class="login-card" onclick="autofillLogin('officer')">
+                <div class="login-icon"><i class="fa-solid fa-user-shield"></i></div>
+                <h3>State Officer</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Manage ward-level complaints and updates.
+                </p>
+                <form onsubmit="event.preventDefault(); window.location.href='dashboard.html'">
+                    <input type="text" class="form-input" id="officer-user" placeholder="Officer ID"
+                        style="margin-bottom: 1rem;">
+                    <input type="password" class="form-input" id="officer-pass" placeholder="Password"
+                        style="margin-bottom: 1rem;">
+                    <button class="btn btn-primary" style="width: 100%; justify-content: center;">Login</button>
+                </form>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">Click card to autofill demo
+                </p>
+            </div>
 
-                <!-- Feature 3 -->
-                <div class="glass-card">
-                    <i class="fas fa-mobile-alt feature-icon"></i>
-                    <h3 class="feature-title">Fully Responsive</h3>
-                    <p class="feature-desc">Looks perfect on desktops, tablets, and mobile phones without compromise.</p>
-                </div>
+            <!-- Admin Login -->
+            <div class="login-card" onclick="autofillLogin('admin')">
+                <div class="login-icon"><i class="fa-solid fa-building-columns"></i></div>
+                <h3>National Admin</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">PMO / Central Monitoring Dashboard.</p>
+                <form onsubmit="event.preventDefault(); window.location.href='dashboard.html'">
+                    <input type="text" class="form-input" id="admin-user" placeholder="Admin ID"
+                        style="margin-bottom: 1rem;">
+                    <input type="password" class="form-input" id="admin-pass" placeholder="Password"
+                        style="margin-bottom: 1rem;">
+                    <button class="btn btn-primary" style="width: 100%; justify-content: center;">Login</button>
+                </form>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">Click card to autofill demo
+                </p>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Drishti. All rights reserved. Designed for Excellence.</p>
+    <footer class="gov-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Drishti Platform</h4>
+                <p style="line-height: 1.6;">
+                    An initiative by the Government of India to ensure transparent, efficient, and AI-driven grievance
+                    redressal for every citizen.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <div class="footer-links">
+                    <a href="#">Home</a>
+                    <a href="#">About Us</a>
+                    <a href="#">File Complaint</a>
+                    <a href="#">Track Status</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Legal & Policy</h4>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">SLA Guidelines</a>
+                    <a href="#">RTI</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <div class="footer-links">
+                    <a href="#">Helpdesk: 1800-11-0000</a>
+                    <a href="#">Email: support@drishti.gov.in</a>
+                    <a href="#">PMO Office, New Delhi</a>
+                </div>
+            </div>
+        </div>
+        <div
+            style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+            &copy; 2025 Drishti Platform. All Rights Reserved. Government of India.
         </div>
     </footer>
 
+    <script>
+        function openLogin() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLogin() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function autofillLogin(role) {
+            if (role === 'citizen') {
+                document.getElementById('citizen-user').value = 'citizen@example.com';
+                document.getElementById('citizen-pass').value = 'password123';
+            } else if (role === 'officer') {
+                document.getElementById('officer-user').value = 'OFFICER_DL_01';
+                document.getElementById('officer-pass').value = 'securepass';
+            } else if (role === 'admin') {
+                document.getElementById('admin-user').value = 'ADMIN_PMO';
+                document.getElementById('admin-pass').value = 'adminsecure';
+            }
+        }
+
+        // Close modal on outside click
+        document.getElementById('loginModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeLogin();
+            }
+        });
+    </script>
 </body>
+
 </html>

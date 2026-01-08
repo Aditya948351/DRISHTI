@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Drishti</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="bg-orb orb-1" style="top: -200px; left: 20%;"></div>
+    <div class="bg-orb orb-2" style="bottom: -100px; right: 10%;"></div>
+
+    <nav class="glass-nav">
+        <div class="logo">
+            <i class="fa-solid fa-eye"></i> Drishti
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="complaint.html">File Complaint</a>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="text-align: right;">
+                <div style="font-weight: 600;">Officer Sharma</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Ward 12 Admin</div>
+            </div>
+            <div
+                style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-user"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div style="padding: 2rem; max-width: 1400px; margin: 0 auto;">
+        <h2 style="margin-bottom: 2rem;">Overview</h2>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="glass-card stat-card">
+                <div class="stat-value">128</div>
+                <div style="color: var(--text-muted);">Total Complaints</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-value" style="color: #fbbf24; -webkit-text-fill-color: #fbbf24;">42</div>
+                <div style="color: var(--text-muted);">Pending</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-value" style="color: #34d399; -webkit-text-fill-color: #34d399;">86</div>
+                <div style="color: var(--text-muted);">Resolved</div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-value" style="color: #ef4444; -webkit-text-fill-color: #ef4444;">5</div>
+                <div style="color: var(--text-muted);">SLA Breaches</div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+            <!-- Recent Complaints Table -->
+            <div class="glass-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3>Recent Complaints</h3>
+                    <button class="btn btn-glass" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View All</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Subject</th>
+                                <th>Category</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#1024</td>
+                                <td>Water Leakage in Sector 4</td>
+                                <td>Water Supply</td>
+                                <td><span style="color: #ef4444;">High</span></td>
+                                <td><span class="status-badge status-new">New</span></td>
+                                <td><button class="btn btn-primary"
+                                        style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>#1023</td>
+                                <td>Streetlight Malfunction</td>
+                                <td>Electricity</td>
+                                <td><span style="color: #fbbf24;">Medium</span></td>
+                                <td><span class="status-badge status-pending">In Progress</span></td>
+                                <td><button class="btn btn-primary"
+                                        style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>#1022</td>
+                                <td>Garbage Pileup near Park</td>
+                                <td>Sanitation</td>
+                                <td><span style="color: #ef4444;">High</span></td>
+                                <td><span class="status-badge status-pending">In Progress</span></td>
+                                <td><button class="btn btn-primary"
+                                        style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>#1021</td>
+                                <td>Pothole on Main Road</td>
+                                <td>Roads</td>
+                                <td><span style="color: #fbbf24;">Medium</span></td>
+                                <td><span class="status-badge status-resolved">Resolved</span></td>
+                                <td><button class="btn btn-glass"
+                                        style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">Details</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Activity Feed -->
+            <div class="glass-card">
+                <h3>Recent Activity</h3>
+                <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="width: 2px; background: var(--glass-border); position: relative;">
+                            <div
+                                style="width: 10px; height: 10px; background: var(--primary); border-radius: 50%; position: absolute; left: -4px; top: 5px;">
+                            </div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 500;">Status Updated</div>
+                            <div style="font-size: 0.9rem; color: var(--text-muted);">Complaint #1023 moved to In
+                                Progress</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">10 mins ago
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="width: 2px; background: var(--glass-border); position: relative;">
+                            <div
+                                style="width: 10px; height: 10px; background: var(--secondary); border-radius: 50%; position: absolute; left: -4px; top: 5px;">
+                            </div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 500;">New Comment</div>
+                            <div style="font-size: 0.9rem; color: var(--text-muted);">Citizen replied to #1022</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">1 hour ago
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="width: 2px; background: var(--glass-border); position: relative;">
+                            <div
+                                style="width: 10px; height: 10px; background: var(--accent); border-radius: 50%; position: absolute; left: -4px; top: 5px;">
+                            </div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 500;">SLA Warning</div>
+                            <div style="font-size: 0.9rem; color: var(--text-muted);">Complaint #1019 is approaching
+                                deadline</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">2 hours ago
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ complaint.title }} - Drishti Platform{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+    <div class="glass-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+            <div>
+                <h2 style="margin-bottom: 0.5rem;">{{ complaint.title }}</h2>
+                <p style="color: #cbd5e1;">
+                    Filed on {{ complaint.created_at|date:"M d, Y H:i" }}
+                </p>
+            </div>
+            <div style="text-align: right;">
+                <span
+                    style="display: inline-block; padding: 0.5rem 1rem; border-radius: 8px; background: rgba(79, 70, 229, 0.2); border: 1px solid rgba(79, 70, 229, 0.4); font-weight: 600;">
+                    {{ complaint.get_status_display }}
+                </span>
+                <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #cbd5e1;">
+                    Priority: {{ complaint.get_priority_display }}
+                </div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+            <div>
+                <h4 style="margin-bottom: 0.5rem; color: var(--accent);">Description</h4>
+                <p style="margin-bottom: 1.5rem; line-height: 1.6;">{{ complaint.description }}</p>
+
+                <h4 style="margin-bottom: 0.5rem; color: var(--accent);">Location</h4>
+                <p style="margin-bottom: 1.5rem;">{{ complaint.location }}</p>
+
+                {% if complaint.attachment %}
+                <h4 style="margin-bottom: 0.5rem; color: var(--accent);">Attachment</h4>
+                <a href="{{ complaint.attachment.url }}" target="_blank" class="btn"
+                    style="background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; font-size: 0.9rem;">View
+                    Attachment</a>
+                {% endif %}
+            </div>
+
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px;">
+                <h4 style="margin-bottom: 1rem;">Details</h4>
+                <div style="margin-bottom: 0.75rem;">
+                    <span style="display: block; font-size: 0.85rem; color: #cbd5e1;">Category</span>
+                    {{ complaint.category.name|default:"Pending Classification" }}
+                </div>
+                <div style="margin-bottom: 0.75rem;">
+                    <span style="display: block; font-size: 0.85rem; color: #cbd5e1;">Department</span>
+                    {{ complaint.department.name|default:"Pending Assignment" }}
+                </div>
+                <div style="margin-bottom: 0.75rem;">
+                    <span style="display: block; font-size: 0.85rem; color: #cbd5e1;">Assigned Officer</span>
+                    {{ complaint.assigned_officer.username|default:"Unassigned" }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
