@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DRISHTI 2.0 | AI-Driven National Grievance Redressal</title>
+    <title>DRISHTI 2.0 | National AI Grievance Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Public+Sans:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Public+Sans:wght@400;600;700;800&display=swap');
         
         :root {
             --gov-blue: #0b4a8f;
@@ -22,13 +22,19 @@
             font-family: 'Public Sans', sans-serif;
             background-color: var(--gov-light);
             color: #1e293b;
+            height: 100vh;
         }
 
         .gov-card {
             background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px -2px rgba(0,0,0,0.05);
             border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .gov-card:hover {
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.08);
         }
 
         .gradient-header {
@@ -38,96 +44,110 @@
         .sidebar-item {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1.5rem;
-            transition: all 0.2s;
-            color: #cbd5e1;
+            gap: 1rem;
+            padding: 0.85rem 1.5rem;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #94a3b8;
+            cursor: pointer;
+            border-left: 4px solid transparent;
         }
 
         .sidebar-item:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.08);
             color: white;
         }
 
         .sidebar-item.active {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.12);
             color: white;
-            border-left: 4px solid var(--gov-saffron);
+            border-left-color: var(--gov-saffron);
+            font-weight: 700;
         }
 
         .status-pill {
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 700;
+            padding: 0.35rem 0.85rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.025em;
             text-transform: uppercase;
         }
 
-        .timeline-step::after {
-            content: '';
+        .timeline-line {
             position: absolute;
-            left: 0.75rem;
+            left: 1.25rem;
             top: 2rem;
             bottom: -1rem;
             width: 2px;
             background: #e2e8f0;
         }
-        
-        .timeline-step:last-child::after { display: none; }
 
-        /* Animation for AI Processing */
-        .ai-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .ai-glow {
+            box-shadow: 0 0 15px rgba(243, 146, 0, 0.3);
+            border: 1px solid rgba(243, 146, 0, 0.5);
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
         }
 
-        canvas { max-width: 100% !important; height: auto !important; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-view { animation: fadeIn 0.4s ease-out forwards; }
     </style>
 </head>
-<body class="antialiased overflow-hidden">
+<body class="antialiased overflow-hidden flex flex-col">
 
-<div id="app" class="h-screen flex flex-col">
-    <!-- Role Switcher (Simulator Tool) -->
-    <div class="bg-slate-900 text-white text-[10px] py-1.5 px-6 flex justify-between items-center z-[100]">
-        <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            SYSTEM ONLINE: <span class="text-saffron-400 font-bold" id="roleDisplay">CITIZEN</span>
+<div id="app" class="flex-1 flex flex-col overflow-hidden">
+    <!-- Platform Simulator Top Bar -->
+    <div class="bg-slate-950 text-white text-[10px] py-2 px-6 flex justify-between items-center z-[100] border-b border-white/5">
+        <div class="flex items-center gap-3">
+            <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
+                LIVE CORE
+            </span>
+            <span class="opacity-40">|</span>
+            <span>Uptime: 99.99%</span>
+            <span class="opacity-40">|</span>
+            <span>Active Instance: <span id="roleDisplay" class="text-saffron-400 font-black">CITIZEN</span></span>
         </div>
-        <div class="flex gap-4">
-            <button onclick="switchRole('citizen')" class="hover:text-saffron-400 transition">Citizen Portal</button>
-            <button onclick="switchRole('officer')" class="hover:text-saffron-400 transition">State Officer</button>
-            <button onclick="switchRole('admin')" class="hover:text-saffron-400 transition">National Admin</button>
+        <div class="flex gap-6 font-bold uppercase tracking-tighter">
+            <button onclick="switchRole('citizen')" class="hover:text-saffron-400 transition cursor-pointer">Citizen</button>
+            <button onclick="switchRole('officer')" class="hover:text-saffron-400 transition cursor-pointer">State Officer</button>
+            <button onclick="switchRole('admin')" class="hover:text-saffron-400 transition cursor-pointer">National Admin</button>
         </div>
     </div>
 
-    <!-- Official Header -->
-    <header class="gradient-header text-white flex-shrink-0">
+    <!-- Official Branding Header -->
+    <header class="gradient-header text-white flex-shrink-0 shadow-xl relative z-50">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-5 cursor-pointer" onclick="goHome()">
-                <div class="bg-white p-2 rounded-lg">
+            <div class="flex items-center gap-6 cursor-pointer group" onclick="navigate('dash')">
+                <div class="bg-white p-2 rounded-xl transition-transform group-hover:scale-105 shadow-inner">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Emblem" class="h-12">
                 </div>
                 <div>
-                    <h1 class="text-2xl font-extrabold tracking-tight leading-none">DRISHTI 2.0</h1>
-                    <p class="text-[11px] font-semibold opacity-80 uppercase mt-1 tracking-widest">Digital Grievance & Case Management</p>
+                    <h1 class="text-2xl font-extrabold tracking-tighter leading-none">DRISHTI 2.0</h1>
+                    <p class="text-[10px] font-bold opacity-70 uppercase mt-1 tracking-[0.2em]">National AI Grievance Ecosystem</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-8">
-                <div class="hidden lg:flex flex-col items-end">
-                    <span id="currentDate" class="text-[10px] opacity-70">Thursday, 08 Jan 2026</span>
-                    <span class="text-sm font-medium">Department of Administrative Reforms</span>
+            <div class="flex items-center gap-10">
+                <div class="hidden xl:flex flex-col items-end">
+                    <span id="liveClock" class="text-xs font-mono opacity-80">--:--:--</span>
+                    <span class="text-[10px] font-black opacity-60 uppercase tracking-widest" id="liveDate">Loading...</span>
                 </div>
-                <div class="flex items-center gap-3 pl-6 border-l border-blue-400/30">
+                <div class="flex items-center gap-4 pl-8 border-l border-white/10">
                     <div class="text-right hidden sm:block">
-                        <p class="text-sm font-bold" id="navUserName">Rahul Sharma</p>
-                        <p class="text-[10px] opacity-70" id="navUserRole">Identity Verified (Aadhar)</p>
+                        <p class="text-sm font-black" id="userName">Rahul Sharma</p>
+                        <p class="text-[10px] opacity-60 font-bold" id="userTitle">Aadhar Verified Citizen</p>
                     </div>
-                    <div id="userAvatar" class="h-10 w-10 bg-orange-500 rounded-full flex items-center justify-center font-bold text-lg border-2 border-white/20">RS</div>
+                    <div id="userAvatar" class="h-11 w-11 bg-orange-500 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg border-2 border-white/20">RS</div>
                 </div>
             </div>
         </div>
@@ -135,219 +155,207 @@
 
     <div class="flex flex-1 overflow-hidden">
         <!-- Sidebar Navigation -->
-        <nav class="w-72 bg-slate-800 text-white flex-shrink-0 flex flex-col">
-            <div id="sidebarMenu" class="flex-1 py-8">
-                <!-- Dynamic Content -->
+        <nav class="w-72 bg-slate-900 text-white flex-shrink-0 flex flex-col border-r border-white/5 shadow-2xl z-40">
+            <div class="p-6">
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-6">Navigation Control</p>
+                <div id="sidebarMenu" class="space-y-1">
+                    <!-- Dynamic Items -->
+                </div>
             </div>
-            <div class="p-6 bg-slate-900/50 border-t border-slate-700">
-                <button class="flex items-center gap-2 text-sm opacity-60 hover:opacity-100 transition">
-                    <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+            
+            <div class="mt-auto p-6 space-y-4">
+                <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                    <p class="text-[10px] font-bold text-slate-400 mb-2 uppercase">Helpline 24/7</p>
+                    <p class="text-lg font-black text-saffron-400">1800-11-2345</p>
+                </div>
+                <button class="flex items-center gap-3 text-sm font-bold text-slate-500 hover:text-white transition w-full p-2">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    Secure Logout
                 </button>
             </div>
         </nav>
 
-        <!-- Main Content Area -->
-        <main class="flex-1 overflow-y-auto bg-slate-50 relative" id="mainContent">
-            <!-- Content will be injected here -->
+        <!-- Main Display Content -->
+        <main class="flex-1 overflow-y-auto bg-slate-50 custom-scrollbar" id="mainDisplay">
+            <!-- Dynamic Content Injected Here -->
         </main>
     </div>
 </div>
 
-<!-- Modal Overlay -->
-<div id="modalOverlay" class="fixed inset-0 bg-slate-900/60 hidden z-[200] flex items-center justify-center p-4 backdrop-blur-sm">
-    <div id="modalContainer" class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative animate-in fade-in zoom-in duration-200">
-        <button onclick="closeModal()" class="sticky top-4 left-[95%] text-slate-400 hover:text-slate-600 z-10 p-2">
-            <i data-lucide="x" class="w-6 h-6"></i>
+<!-- Modal Engine Overlay -->
+<div id="modalOverlay" class="fixed inset-0 bg-slate-900/80 hidden z-[200] flex items-center justify-center p-6 backdrop-blur-md">
+    <div id="modalFrame" class="bg-white rounded-[2rem] shadow-2xl max-w-5xl w-full max-h-[85vh] overflow-y-auto relative animate-view">
+        <button onclick="closeModal()" class="sticky top-6 left-[95%] text-slate-300 hover:text-slate-900 z-[210] transition-colors">
+            <i data-lucide="x-circle" class="w-10 h-10"></i>
         </button>
-        <div id="modalBody" class="p-8 pt-0"></div>
+        <div id="modalContent" class="p-10 pt-0"></div>
     </div>
-</div>
-
-<!-- Floating AI Assistant -->
-<div id="aiChat" class="fixed bottom-6 right-6 z-50 group">
-    <div id="chatWindow" class="hidden absolute bottom-20 right-0 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col animate-in slide-in-from-bottom-4 duration-300">
-        <div class="gradient-header p-4 text-white">
-            <h4 class="font-bold flex items-center gap-2">
-                <i data-lucide="bot" class="w-5 h-5"></i> 
-                DRISHTI Assistant
-            </h4>
-            <p class="text-[10px] opacity-80">AI Guide & FAQ Support</p>
-        </div>
-        <div id="chatMessages" class="h-64 overflow-y-auto p-4 space-y-3 text-xs">
-            <div class="bg-slate-100 p-2 rounded-lg rounded-tl-none mr-8">
-                Namaste! I am your DRISHTI Assistant. How can I help you today?
-            </div>
-        </div>
-        <div class="p-3 border-t flex gap-2">
-            <input type="text" placeholder="Ask about your complaint..." class="flex-1 text-xs p-2 bg-slate-50 border rounded-lg focus:outline-none">
-            <button class="bg-gov-blue text-white p-2 rounded-lg"><i data-lucide="send" class="w-4 h-4"></i></button>
-        </div>
-    </div>
-    <button onclick="toggleAIChat()" class="h-14 w-14 rounded-full bg-saffron-500 shadow-lg flex items-center justify-center text-white hover:scale-110 transition active:scale-95 bg-gradient-to-tr from-orange-600 to-yellow-400">
-        <i data-lucide="message-circle" class="w-8 h-8"></i>
-    </button>
 </div>
 
 <script>
-    // --- SQL EMULATION ENGINE ---
+    // --- SQL-LIKE SESSION DATABASE ---
     const DB = {
         users: {
-            citizen: { id: 'U-7721', name: 'Rahul Sharma', state: 'Delhi', district: 'South Delhi', role: 'citizen', avatar: 'RS' },
-            officer: { id: 'O-1104', name: 'Dr. V. K. Singh', state: 'Delhi', dept: 'Electricity', role: 'officer', avatar: 'VS' },
-            admin: { id: 'A-0001', name: 'Anita Deshpande', state: 'National', role: 'admin', avatar: 'AD' }
+            citizen: { name: 'Rahul Sharma', id: 'CIT-8821', state: 'Delhi', district: 'South Delhi', avatar: 'RS', role: 'citizen' },
+            officer: { name: 'Dr. Vikram Seth', id: 'OFF-4001', state: 'Delhi', dept: 'Electricity', avatar: 'VS', role: 'officer' },
+            admin: { name: 'Smt. Kavita Rao', id: 'ADM-0001', state: 'National', dept: 'Central Systems', avatar: 'KR', role: 'admin' }
         },
         complaints: [
-            { id: 'GRV-2026-001', citizenId: 'U-7721', category: 'Electricity', title: 'Smart Meter Overbilling', status: 'In Progress', priority: 'High', date: '2026-01-02', slaRemaining: '12h', description: 'My monthly bill jumped from ₹2000 to ₹18000 without change in usage.', updates: 3, state: 'Delhi' },
-            { id: 'GRV-2026-002', citizenId: 'U-7721', category: 'Water Supply', title: 'Water Contamination', status: 'Pending', priority: 'Critical', date: '2026-01-05', slaRemaining: '4h', description: 'Drinking water is coming out muddy and smelling of sewage.', updates: 1, state: 'Delhi' },
-            { id: 'GRV-2026-003', citizenId: 'U-9900', category: 'Roads', title: 'Pothole on Main Highway', status: 'Resolved', priority: 'Medium', date: '2025-12-28', slaRemaining: 'Completed', description: 'Large pothole near Sector 4 crossover causing accidents.', updates: 5, state: 'Delhi' }
+            { id: 'GRV-2026-001', userId: 'CIT-8821', title: 'Invalid Electricity Meter Reading', dept: 'Electricity', status: 'In Progress', priority: 'High', date: '2026-01-02', deadline: '2026-01-10', desc: 'My bill for Dec is 5x higher than normal.', state: 'Delhi' },
+            { id: 'GRV-2026-002', userId: 'CIT-8821', title: 'Water Pipe Leakage Main Road', dept: 'Water Supply', status: 'Pending', priority: 'Critical', date: '2026-01-05', deadline: '2026-01-08', desc: 'Massive leak causing road damage near Ward 4.', state: 'Delhi' },
+            { id: 'GRV-2026-003', userId: 'CIT-9900', title: 'Pothole Repair Request', dept: 'Roads', status: 'Resolved', priority: 'Medium', date: '2025-12-20', deadline: '2025-12-30', desc: 'Repair required near Metro Pillar 114.', state: 'Delhi' }
         ],
         threads: [
-            { id: 'TH-01', title: 'Street Light Issues in Ward 4', author: 'Suresh Raina', comments: 12, category: 'Infrastructure', votes: 45 },
-            { id: 'TH-02', title: 'New Garbage Collection Timings?', author: 'Meena K.', comments: 8, category: 'Sanitation', votes: 12 }
+            { id: 'T1', title: 'Street lighting in Saket Sector 4', author: 'Suresh Raina', votes: 42, comments: 8, cat: 'Infrastructure' },
+            { id: 'T2', title: 'New Garbage Collection Routes', author: 'Megha J.', votes: 15, comments: 22, cat: 'Sanitation' }
         ],
-        aiLogs: [
-            { id: 1, type: 'Categorization', model: 'BERT-Gov-v2', confidence: '98.4%', status: 'Correct' },
-            { id: 2, type: 'Priority Prediction', model: 'RiskScore-v1', confidence: '82.1%', status: 'Overridden' }
-        ]
+        aiMetrics: { accuracy: 94.8, overrides: 12, totalProcessed: 14500 },
+        slaConfig: {
+            'Electricity': 48, // hours
+            'Water Supply': 24,
+            'Roads': 120,
+            'Sanitation': 12
+        }
     };
 
     let currentRole = 'citizen';
     let currentUser = DB.users.citizen;
+    let activeTab = 'dash';
 
-    function refreshIcons() {
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
+    // --- ENGINE CORE ---
 
     function switchRole(role) {
         currentRole = role;
         currentUser = DB.users[role];
+        activeTab = role === 'citizen' ? 'dash' : (role === 'officer' ? 'worklist' : 'national');
+        
         document.getElementById('roleDisplay').innerText = role.toUpperCase();
-        document.getElementById('navUserName').innerText = currentUser.name;
-        document.getElementById('navUserRole').innerText = role === 'admin' ? 'National System Admin' : (role === 'officer' ? `State Dept Officer (${currentUser.state})` : 'Aadhar Verified Citizen');
+        document.getElementById('userName').innerText = currentUser.name;
         document.getElementById('userAvatar').innerText = currentUser.avatar;
+        document.getElementById('userTitle').innerText = role === 'admin' ? 'National System Administrator' : (role === 'officer' ? `State Dept Officer (${currentUser.state})` : 'Aadhar Verified Citizen');
         
         renderSidebar();
-        renderMain();
+        navigate(activeTab);
     }
 
     function renderSidebar() {
         const menu = document.getElementById('sidebarMenu');
-        let html = '';
-        
-        const navItems = {
+        const items = {
             citizen: [
                 { id: 'dash', label: 'My Dashboard', icon: 'layout-dashboard' },
-                { id: 'lodge', label: 'File Grievance', icon: 'plus-square', action: 'showLodgeModal()' },
-                { id: 'history', label: 'Case History', icon: 'clock' },
-                { id: 'community', label: 'Community Board', icon: 'users' },
-                { id: 'docs', label: 'Official Guidelines', icon: 'book' }
+                { id: 'lodge', label: 'Lodge Grievance', icon: 'plus-square', special: true },
+                { id: 'history', label: 'History & Archive', icon: 'archive' },
+                { id: 'community', label: 'Community Hub', icon: 'users-2' },
+                { id: 'guidelines', label: 'Govt Guidelines', icon: 'book-open' }
             ],
             officer: [
-                { id: 'worklist', label: 'My Worklist', icon: 'clipboard-list' },
-                { id: 'sla', label: 'SLA Monitoring', icon: 'timer' },
-                { id: 'field', label: 'Field Assignments', icon: 'map-pin' },
-                { id: 'stats', label: 'State Performance', icon: 'bar-chart' }
+                { id: 'worklist', label: 'Active Worklist', icon: 'list-checks' },
+                { id: 'sla_monitor', label: 'SLA Tracking', icon: 'clock' },
+                { id: 'field_maps', label: 'Field Assignments', icon: 'map' },
+                { id: 'state_stats', label: 'Analytics Dashboard', icon: 'bar-chart-3' }
             ],
             admin: [
-                { id: 'national', label: 'National Stats', icon: 'globe' },
-                { id: 'dept', label: 'Dept Analysis', icon: 'layers' },
-                { id: 'ai', label: 'AI Audit Center', icon: 'cpu' },
-                { id: 'config', label: 'System Configuration', icon: 'settings' }
+                { id: 'national', label: 'National Dashboard', icon: 'globe' },
+                { id: 'dept_audit', label: 'Department Audit', icon: 'shield-check' },
+                { id: 'ai_center', label: 'AI Control Center', icon: 'cpu' },
+                { id: 'sys_config', label: 'System Config', icon: 'settings-2' }
             ]
         };
 
-        html = navItems[currentRole].map(item => `
-            <a href="#" onclick="${item.action || `Maps('${item.id}')`}" class="sidebar-item ${item.id === 'dash' || item.id === 'worklist' || item.id === 'national' ? 'active' : ''}">
+        menu.innerHTML = items[currentRole].map(item => `
+            <div onclick="navigate('${item.id}')" class="sidebar-item ${activeTab === item.id ? 'active' : ''} ${item.special ? 'text-saffron-400 font-black' : ''}">
                 <i data-lucide="${item.icon}" class="w-5 h-5"></i>
-                <span class="text-sm font-medium">${item.label}</span>
-            </a>
+                <span class="text-sm font-medium tracking-tight">${item.label}</span>
+            </div>
         `).join('');
         
-        menu.innerHTML = html;
-        refreshIcons();
+        lucide.createIcons();
     }
 
-    function renderMain() {
-        const container = document.getElementById('mainContent');
-        if (currentRole === 'citizen') renderCitizenView(container);
-        if (currentRole === 'officer') renderOfficerView(container);
-        if (currentRole === 'admin') renderAdminView(container);
-        refreshIcons();
+    function navigate(id) {
+        activeTab = id;
+        renderSidebar();
+        const display = document.getElementById('mainDisplay');
+        display.innerHTML = '<div class="p-20 flex justify-center"><div class="animate-spin h-10 w-10 border-4 border-gov-blue border-t-transparent rounded-full"></div></div>';
+        
+        setTimeout(() => {
+            switch(id) {
+                // Citizen Routes
+                case 'dash': renderCitizenDashboard(display); break;
+                case 'lodge': showLodgeGrievance(); break;
+                case 'history': renderHistoryView(display); break;
+                case 'community': renderCommunityView(display); break;
+                case 'guidelines': renderGuidelinesView(display); break;
+                
+                // Officer Routes
+                case 'worklist': renderOfficerWorklist(display); break;
+                case 'sla_monitor': renderSLAMonitor(display); break;
+                case 'field_maps': renderFieldMaps(display); break;
+                case 'state_stats': renderStateStats(display); break;
+                
+                // Admin Routes
+                case 'national': renderNationalDashboard(display); break;
+                case 'dept_audit': renderDeptAudit(display); break;
+                case 'ai_center': renderAICenter(display); break;
+                case 'sys_config': renderSystemConfig(display); break;
+            }
+            lucide.createIcons();
+        }, 300);
     }
 
-    // --- CITIZEN VIEW ---
-    function renderCitizenView(container) {
+    // --- CITIZEN PAGES ---
+
+    function renderCitizenDashboard(container) {
+        const userComplaints = DB.complaints.filter(c => c.userId === currentUser.id);
+        const resolved = userComplaints.filter(c => c.status === 'Resolved').length;
+        
         container.innerHTML = `
-            <div class="p-8">
-                <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="p-10 animate-view">
+                <div class="mb-10 flex justify-between items-end">
                     <div>
-                        <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">Citizen Dashboard</h2>
-                        <p class="text-slate-500 mt-1">Grievances filed in ${currentUser.district}, ${currentUser.state}</p>
+                        <h2 class="text-4xl font-black text-slate-800 tracking-tighter">Citizen Dashboard</h2>
+                        <p class="text-slate-500 font-medium mt-1">Grievances filed in ${currentUser.district}, ${currentUser.state}</p>
                     </div>
-                    <button onclick="showLodgeModal()" class="bg-gov-saffron text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-orange-200 hover:scale-105 transition flex items-center gap-2">
-                        <i data-lucide="plus-circle" class="w-5 h-5"></i> New Grievance
+                    <button onclick="navigate('lodge')" class="bg-gov-saffron text-white px-8 py-4 rounded-2xl font-black shadow-2xl shadow-orange-200 hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
+                        <i data-lucide="plus-circle" class="w-6 h-6"></i> NEW GRIEVANCE
                     </button>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-                    ${renderStatCard('Open Cases', 2, 'blue', 'file-text')}
-                    ${renderStatCard('Under Action', 1, 'orange', 'activity')}
-                    ${renderStatCard('Resolved', 12, 'green', 'check-check')}
-                    ${renderStatCard('Pending Feedback', 1, 'purple', 'message-square')}
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                    ${renderStatCard('Open Cases', userComplaints.length - resolved, 'blue', 'folder-open')}
+                    ${renderStatCard('Resolution Rate', '84%', 'green', 'trending-up')}
+                    ${renderStatCard('Resolved Total', resolved, 'indigo', 'check-square')}
+                    ${renderStatCard('Average SLA', '2.4 Days', 'orange', 'timer')}
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2 space-y-6">
-                        <div class="gov-card p-6">
-                            <h3 class="font-bold text-lg mb-6 flex items-center gap-2">
-                                <i data-lucide="list" class="text-gov-blue"></i> 
-                                Active Grievances
-                            </h3>
-                            <div class="space-y-4">
-                                ${DB.complaints.filter(c => c.citizenId === currentUser.id).map(c => `
-                                    <div class="border rounded-xl p-5 hover:bg-slate-50 transition cursor-pointer" onclick="viewCaseDetail('${c.id}')">
-                                        <div class="flex justify-between items-start mb-3">
-                                            <div class="flex items-center gap-3">
-                                                <span class="font-mono text-[10px] text-slate-400 font-bold">${c.id}</span>
-                                                <h4 class="font-bold text-slate-800">${c.title}</h4>
-                                            </div>
-                                            <span class="status-pill ${c.status === 'Resolved' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}">${c.status}</span>
-                                        </div>
-                                        <div class="flex items-center justify-between mt-4 text-[11px] text-slate-500 font-medium">
-                                            <div class="flex gap-4">
-                                                <span class="flex items-center gap-1"><i data-lucide="tag" class="w-3 h-3"></i> ${c.category}</span>
-                                                <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> Filed: ${c.date}</span>
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <span class="text-red-500 font-bold">SLA: ${c.slaRemaining}</span>
-                                                <div class="w-24 h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                                                    <div class="bg-gov-blue h-full" style="width: 65%"></div>
-                                                </div>
-                                            </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                    <div class="lg:col-span-2 gov-card p-8">
+                        <div class="flex justify-between items-center mb-8">
+                            <h3 class="text-xl font-black text-slate-800 uppercase tracking-widest">Active Cases</h3>
+                            <button onclick="navigate('history')" class="text-xs font-bold text-gov-blue hover:underline">View All Archive</button>
+                        </div>
+                        <div class="space-y-4">
+                            ${userComplaints.filter(c => c.status !== 'Resolved').map(c => renderComplaintRow(c)).join('')}
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="gov-card p-8 bg-slate-900 text-white border-none">
+                            <h3 class="text-sm font-black text-saffron-400 uppercase tracking-widest mb-6">Community Pulse</h3>
+                            <div class="space-y-5">
+                                ${DB.threads.map(t => `
+                                    <div class="group cursor-pointer">
+                                        <p class="text-sm font-bold leading-tight group-hover:text-saffron-400 transition-colors">${t.title}</p>
+                                        <div class="flex gap-4 mt-2 opacity-50 text-[10px] font-black uppercase">
+                                            <span><i data-lucide="thumbs-up" class="inline w-3 h-3 mb-0.5"></i> ${t.votes} Votes</span>
+                                            <span><i data-lucide="message-square" class="inline w-3 h-3 mb-0.5"></i> ${t.comments}</span>
                                         </div>
                                     </div>
                                 `).join('')}
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <div class="gov-card p-6 bg-slate-800 text-white">
-                            <h4 class="font-bold mb-4 flex items-center gap-2 text-saffron-400">
-                                <i data-lucide="users"></i> Community Pulse
-                            </h4>
-                            <div class="space-y-4">
-                                ${DB.threads.map(th => `
-                                    <div class="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition cursor-pointer">
-                                        <p class="text-xs font-bold leading-tight">${th.title}</p>
-                                        <div class="flex items-center gap-3 mt-2 opacity-60 text-[10px]">
-                                            <span><i data-lucide="thumbs-up" class="inline w-3 h-3"></i> ${th.votes}</span>
-                                            <span><i data-lucide="message-circle" class="inline w-3 h-3"></i> ${th.comments}</span>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <button class="w-full mt-4 text-xs font-bold text-saffron-400 hover:underline">View All Community Topics →</button>
+                        <div class="gov-card p-8 bg-blue-50 border-blue-100">
+                            <h4 class="text-xs font-black text-gov-blue uppercase mb-2">Did You Know?</h4>
+                            <p class="text-xs leading-relaxed text-blue-800 opacity-80">DRISHTI uses advanced NLP to categorize your grievance in under 2 seconds, ensuring it reaches the correct state department instantly.</p>
                         </div>
                     </div>
                 </div>
@@ -355,69 +363,284 @@
         `;
     }
 
-    // --- OFFICER VIEW ---
-    function renderOfficerView(container) {
+    function renderHistoryView(container) {
         container.innerHTML = `
-            <div class="p-8">
-                <div class="mb-8 flex justify-between items-end">
-                    <div>
-                        <h2 class="text-2xl font-black text-slate-800 tracking-tight uppercase">Officer Command Center</h2>
-                        <p class="text-slate-500">Department: ${currentUser.dept} | Region: ${currentUser.state}</p>
+            <div class="p-10 animate-view">
+                <h2 class="text-3xl font-black text-slate-800 mb-8 tracking-tight">Grievance History & Archive</h2>
+                <div class="gov-card overflow-hidden">
+                    <div class="p-6 bg-slate-50 border-b flex gap-4">
+                        <input type="text" placeholder="Search by ID or Title..." class="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm">
+                        <select class="border rounded-xl px-4 py-2 text-sm"><option>All Categories</option></select>
+                        <select class="border rounded-xl px-4 py-2 text-sm"><option>Sort: Newest First</option></select>
                     </div>
-                    <div class="flex gap-4">
-                        <div class="bg-red-50 border border-red-100 p-3 rounded-xl">
-                            <p class="text-[10px] text-red-600 font-bold uppercase">SLA Breaches</p>
-                            <p class="text-xl font-black text-red-700">02</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-400 tracking-widest">
+                                <tr>
+                                    <th class="px-8 py-4">Complaint ID</th>
+                                    <th class="px-8 py-4">Title & Subject</th>
+                                    <th class="px-8 py-4">Department</th>
+                                    <th class="px-8 py-4">Status</th>
+                                    <th class="px-8 py-4 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y">
+                                ${DB.complaints.map(c => `
+                                    <tr class="hover:bg-slate-50 transition-colors cursor-pointer">
+                                        <td class="px-8 py-5 font-mono text-xs font-bold text-slate-400">${c.id}</td>
+                                        <td class="px-8 py-5">
+                                            <p class="text-sm font-black text-slate-800">${c.title}</p>
+                                            <p class="text-[10px] text-slate-400 font-medium">Filed: ${c.date}</p>
+                                        </td>
+                                        <td class="px-8 py-5 text-xs font-bold text-slate-600 uppercase">${c.dept}</td>
+                                        <td class="px-8 py-5">
+                                            <span class="status-pill ${c.status === 'Resolved' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}">${c.status}</span>
+                                        </td>
+                                        <td class="px-8 py-5 text-right">
+                                            <button onclick="viewCaseDetail('${c.id}')" class="text-gov-blue font-black text-[10px] uppercase hover:underline">View File</button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderCommunityView(container) {
+        container.innerHTML = `
+            <div class="p-10 animate-view">
+                <div class="flex justify-between items-center mb-10">
+                    <h2 class="text-3xl font-black text-slate-800 tracking-tight">Community Forum</h2>
+                    <button class="bg-gov-blue text-white px-6 py-2 rounded-xl text-xs font-black shadow-lg">START DISCUSSION</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    ${DB.threads.map(t => `
+                        <div class="gov-card p-8 group">
+                            <div class="flex justify-between items-start mb-6">
+                                <span class="bg-slate-100 px-3 py-1 rounded text-[10px] font-black text-slate-500 uppercase">${t.cat}</span>
+                                <div class="flex items-center gap-1.5 text-slate-300 font-bold text-xs"><i data-lucide="thumbs-up" class="w-4 h-4"></i> ${t.votes}</div>
+                            </div>
+                            <h4 class="text-xl font-black text-slate-800 mb-2 leading-tight group-hover:text-gov-blue transition-colors">${t.title}</h4>
+                            <p class="text-xs text-slate-400 font-medium mb-6">Started by <span class="text-slate-600 font-bold">${t.author}</span> • 2 days ago</p>
+                            <div class="flex justify-between items-center pt-6 border-t border-slate-100">
+                                <span class="text-[10px] font-black text-gov-blue uppercase">${t.comments} OFFICIAL REPLIES</span>
+                                <button class="text-[10px] font-black text-slate-400 hover:text-gov-blue uppercase">Join Conversation →</button>
+                            </div>
                         </div>
-                        <div class="bg-blue-50 border border-blue-100 p-3 rounded-xl">
-                            <p class="text-[10px] text-blue-600 font-bold uppercase">Open Tickets</p>
-                            <p class="text-xl font-black text-blue-700">14</p>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderGuidelinesView(container) {
+        container.innerHTML = `
+            <div class="p-10 animate-view">
+                <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">Official Citizen Guidelines</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    ${['Filing a Complaint', 'Tracking Status', 'Escalation Rules'].map(title => `
+                        <div class="gov-card p-8">
+                            <div class="h-12 w-12 bg-blue-50 text-gov-blue rounded-xl flex items-center justify-center mb-6"><i data-lucide="book" class="w-6 h-6"></i></div>
+                            <h4 class="text-lg font-black text-slate-800 mb-4">${title}</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">Detailed instructions on how the digital governance model handles ${title.toLowerCase()} via the DRISHTI platform.</p>
+                            <button class="text-xs font-black text-gov-blue uppercase hover:tracking-widest transition-all">Download PDF →</button>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    // --- OFFICER PAGES ---
+
+    function renderOfficerWorklist(container) {
+        container.innerHTML = `
+            <div class="p-10 animate-view">
+                <div class="mb-10 flex justify-between items-end">
+                    <div>
+                        <h2 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Field Worklist</h2>
+                        <p class="text-slate-500 font-bold">Region: ${currentUser.state} Central Hub</p>
+                    </div>
+                </div>
+                <div class="gov-card overflow-hidden">
+                    <div class="p-4 bg-slate-50 flex gap-4 border-b">
+                        <button class="text-xs font-black text-gov-blue border-b-2 border-gov-blue pb-1">All Assigned</button>
+                        <button class="text-xs font-bold text-slate-400 pb-1">Urgent Only</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50/50 text-[10px] uppercase font-black text-slate-400">
+                                <tr>
+                                    <th class="px-8 py-5">Case ID</th>
+                                    <th class="px-8 py-5">AI Priority</th>
+                                    <th class="px-8 py-5">Aging (Time)</th>
+                                    <th class="px-8 py-5">Status</th>
+                                    <th class="px-8 py-5 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y">
+                                ${DB.complaints.map(c => `
+                                    <tr class="hover:bg-slate-50/80 transition-all">
+                                        <td class="px-8 py-5 font-mono text-xs font-bold text-slate-400">${c.id}</td>
+                                        <td class="px-8 py-5">
+                                            <div class="flex items-center gap-2">
+                                                <span class="w-2.5 h-2.5 rounded-full ${c.priority === 'Critical' ? 'bg-red-500 animate-pulse' : 'bg-orange-500'}"></span>
+                                                <span class="text-sm font-black text-slate-800">${c.priority}</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-8 py-5 text-sm font-bold text-slate-500 italic">2h 14m left</td>
+                                        <td class="px-8 py-5">
+                                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded text-[10px] font-black uppercase">${c.status}</span>
+                                        </td>
+                                        <td class="px-8 py-5 text-right">
+                                            <button onclick="handleCase('${c.id}')" class="bg-gov-blue text-white px-5 py-2 rounded-xl text-[10px] font-black shadow-lg">MANAGE FILE</button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderSLAMonitor(container) {
+        container.innerHTML = `
+            <div class="p-10 animate-view">
+                <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">SLA Performance Tracker</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    ${renderStatCard('On-Time', '92%', 'green', 'check')}
+                    ${renderStatCard('Late/Overdue', '4', 'red', 'alert-triangle')}
+                    ${renderStatCard('Avg Response', '1.2h', 'blue', 'zap')}
+                    ${renderStatCard('Breach Risk', 'High', 'orange', 'shield-alert')}
+                </div>
+                <div class="gov-card p-10">
+                    <h3 class="text-lg font-black mb-8 uppercase text-slate-700 tracking-widest">Breach Warning List</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-6 bg-red-50 border border-red-100 rounded-2xl">
+                            <div class="flex items-center gap-6">
+                                <div class="bg-red-500 text-white p-3 rounded-xl font-black text-xl">14m</div>
+                                <div>
+                                    <p class="text-sm font-black">GRV-2026-002: Water Leakage</p>
+                                    <p class="text-[10px] font-bold text-red-400">Escalation path active in 14 minutes</p>
+                                </div>
+                            </div>
+                            <button class="bg-red-600 text-white px-4 py-2 rounded-xl text-[10px] font-black">INTERVENE NOW</button>
                         </div>
                     </div>
                 </div>
+            </div>
+        `;
+    }
 
-                <div class="gov-card overflow-hidden">
-                    <div class="bg-slate-50 border-b p-4 flex justify-between items-center">
-                        <div class="flex gap-4">
-                            <button class="text-xs font-bold text-gov-blue border-b-2 border-gov-blue pb-1">Assigned (12)</button>
-                            <button class="text-xs font-medium text-slate-500 pb-1">Unassigned (2)</button>
-                            <button class="text-xs font-medium text-slate-500 pb-1">Escalated (1)</button>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] text-slate-400 uppercase font-bold">Sort By:</span>
-                            <select class="text-xs border rounded p-1"><option>Priority</option><option>SLA Deadline</option></select>
+    function renderFieldMaps(container) {
+        container.innerHTML = `
+            <div class="p-10 animate-view">
+                <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">Geographic Field Mapping</h2>
+                <div class="gov-card h-[600px] flex flex-col items-center justify-center bg-slate-100 border-2 border-dashed border-slate-300">
+                    <i data-lucide="map-pin" class="w-20 h-20 text-slate-300 mb-6"></i>
+                    <p class="text-xl font-black text-slate-400 uppercase tracking-tighter">Live GIS Integration In-Progress</p>
+                    <p class="text-sm text-slate-400 font-bold mt-2">Displaying complaint hotspots across ${currentUser.state} clusters</p>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderStateStats(container) {
+        container.innerHTML = `
+            <div class="p-10 animate-view">
+                <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">State Efficiency Analytics</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    <div class="gov-card p-8">
+                        <h4 class="text-sm font-black uppercase text-slate-500 mb-8">Resolution Trends (Weekly)</h4>
+                        <div class="h-80"><canvas id="stateTrends"></canvas></div>
+                    </div>
+                    <div class="gov-card p-8">
+                        <h4 class="text-sm font-black uppercase text-slate-500 mb-8">Departmental Aging</h4>
+                        <div class="h-80"><canvas id="stateAging"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        `;
+        setTimeout(() => {
+            const ctx1 = document.getElementById('stateTrends').getContext('2d');
+            new Chart(ctx1, {
+                type: 'line',
+                data: { labels: ['M','T','W','T','F','S','S'], datasets: [{ label:'Resolved', data:[12,19,15,22,30,10,5], borderColor:'#0b4a8f', tension:0.4 }] },
+                options: { maintainAspectRatio: false }
+            });
+            const ctx2 = document.getElementById('stateAging').getContext('2d');
+            new Chart(ctx2, {
+                type: 'bar',
+                data: { labels: ['Water','Elec','Road','Sanit'], datasets: [{ label:'Avg Days', data:[1.2, 0.8, 4.5, 0.5], backgroundColor:'#f39200' }] },
+                options: { maintainAspectRatio: false }
+            });
+        }, 100);
+    }
+
+    // --- ADMIN PAGES ---
+
+    function renderNationalDashboard(container) {
+        container.innerHTML = `
+            <div class="p-10 animate-view">
+                <h2 class="text-4xl font-black text-slate-800 mb-10 tracking-tighter uppercase">National Oversight Dashboard</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+                    <div class="lg:col-span-2 gov-card p-10">
+                        <h4 class="text-sm font-black uppercase text-slate-400 mb-10 tracking-widest">Grievance Inflow by Region</h4>
+                        <div class="h-96"><canvas id="nationalMap"></canvas></div>
+                    </div>
+                    <div class="space-y-6">
+                        ${renderStatCard('Total Volume', '1.2M', 'indigo', 'globe-2')}
+                        ${renderStatCard('State Success', 'UP: 98%', 'green', 'trophy')}
+                        ${renderStatCard('Pending Audit', '12', 'orange', 'search')}
+                        <div class="gov-card p-8 bg-slate-900 text-white">
+                            <h4 class="text-xs font-black text-saffron-400 uppercase mb-4">Critical System Alerts</h4>
+                            <div class="space-y-4">
+                                <div class="p-3 border border-white/10 rounded-xl bg-white/5">
+                                    <p class="text-[10px] font-black text-red-400 uppercase">Latency Warning</p>
+                                    <p class="text-xs font-bold">API cluster Mumbai-B showing 250ms delay.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        `;
+        setTimeout(() => {
+            const ctx = document.getElementById('nationalMap').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: { labels: ['Delhi','MH','UP','KA','TN','BR'], datasets: [{ label:'Volume', data:[120,450,980,310,220,540], backgroundColor:'#0b4a8f' }] },
+                options: { maintainAspectRatio: false }
+            });
+        }, 100);
+    }
+
+    function renderDeptAudit(container) {
+        container.innerHTML = `
+            <div class="p-10 animate-view">
+                <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">Departmental Audit Engine</h2>
+                <div class="gov-card p-10">
                     <table class="w-full text-left">
-                        <thead class="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-bold tracking-widest">
+                        <thead class="text-[10px] font-black uppercase text-slate-400">
                             <tr>
-                                <th class="px-6 py-4">Complaint ID</th>
-                                <th class="px-6 py-4">AI Prediction</th>
-                                <th class="px-6 py-4">Time Elapsed</th>
-                                <th class="px-6 py-4">Status</th>
-                                <th class="px-6 py-4 text-right">Action</th>
+                                <th class="pb-6">Department Name</th>
+                                <th class="pb-6">Compliance %</th>
+                                <th class="pb-6">Citizen Feedback</th>
+                                <th class="pb-6">AI Accuracy</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y text-sm">
-                            ${DB.complaints.map(c => `
-                                <tr class="hover:bg-slate-50/80 transition">
-                                    <td class="px-6 py-4">
-                                        <p class="font-bold text-slate-700">${c.id}</p>
-                                        <p class="text-[10px] text-slate-400 truncate w-48">${c.title}</p>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-2">
-                                            <span class="w-2 h-2 rounded-full ${c.priority === 'Critical' ? 'bg-red-500 ai-pulse' : 'bg-orange-500'}"></span>
-                                            <span class="font-bold">${c.priority}</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-slate-500">2h 45m</td>
-                                    <td class="px-6 py-4">
-                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold border border-slate-200">${c.status}</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <button onclick="handleGrievance('${c.id}')" class="bg-gov-blue text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-gov-dark shadow-sm">Process Case</button>
-                                    </td>
+                        <tbody class="divide-y">
+                            ${['Water','Electricity','Telecom','Roads'].map(d => `
+                                <tr>
+                                    <td class="py-6 font-black text-slate-800">${d}</td>
+                                    <td class="py-6 font-bold text-gov-green">98.2%</td>
+                                    <td class="py-6 text-sm">4.8/5</td>
+                                    <td class="py-6 font-mono text-xs font-bold text-slate-500">99.1%</td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -427,258 +650,255 @@
         `;
     }
 
-    // --- ADMIN VIEW ---
-    function renderAdminView(container) {
+    function renderAICenter(container) {
         container.innerHTML = `
-            <div class="p-8">
-                <div class="mb-10">
-                    <h2 class="text-3xl font-black text-slate-800 tracking-tighter uppercase">National Governance Dashboard</h2>
-                    <p class="text-slate-500">Unified Monitoring for all States & Central Departments</p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
-                    <div class="lg:col-span-2 gov-card p-8">
-                        <div class="flex justify-between items-center mb-8">
-                            <h4 class="font-bold text-slate-700 uppercase tracking-wider text-sm">Grievance Hotspots (Last 30 Days)</h4>
-                            <div class="flex gap-2">
-                                <span class="text-[10px] bg-red-100 text-red-600 px-2 rounded">High Alert</span>
-                                <span class="text-[10px] bg-green-100 text-green-600 px-2 rounded">Optimal</span>
-                            </div>
-                        </div>
-                        <div class="h-80">
-                            <canvas id="heatmapChart"></canvas>
-                        </div>
+            <div class="p-10 animate-view">
+                <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">AI Control & Audit</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="gov-card p-10">
+                        <h4 class="text-sm font-black uppercase text-slate-400 mb-8">NLP Categorization Precision</h4>
+                        <div class="h-80"><canvas id="aiChart"></canvas></div>
                     </div>
-                    
-                    <div class="space-y-6">
-                        <div class="gov-card p-6 border-l-4 border-gov-saffron">
-                            <h4 class="font-bold text-sm mb-4">AI Triage Efficiency</h4>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs text-slate-500">Auto-Categorization Accuracy</span>
-                                <span class="text-xs font-bold text-gov-green">94.2%</span>
-                            </div>
-                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-6">
-                                <div class="bg-gov-green h-full" style="width: 94%"></div>
-                            </div>
-                            
-                            <h4 class="font-bold text-sm mb-4">SLA Compliance Rate</h4>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs text-slate-500">Target: 95%</span>
-                                <span class="text-xs font-bold text-orange-500">82.8%</span>
-                            </div>
-                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                                <div class="bg-orange-500 h-full" style="width: 82%"></div>
-                            </div>
-                        </div>
-
-                        <div class="gov-card p-6 bg-slate-900 text-white">
-                            <h4 class="font-bold text-sm mb-4 flex items-center gap-2">
-                                <i data-lucide="shield-alert" class="text-saffron-400"></i> Critical Alerts
-                            </h4>
-                            <div class="space-y-3">
-                                <div class="text-[11px] p-2 bg-white/5 border border-white/10 rounded">
-                                    <p class="font-bold">UP - Water Supply</p>
-                                    <p class="opacity-60">SLA Breach predicted in 14 cases over next 6h.</p>
+                    <div class="gov-card p-10 bg-slate-800 text-white border-none">
+                        <h4 class="text-sm font-black text-saffron-400 uppercase mb-8">Model Hyperparameters</h4>
+                        <div class="space-y-6">
+                            ${['Triage-BERT-v4', 'Sentiment-Risk-v2', 'AutoRoute-G-v1'].map(m => `
+                                <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                                    <span class="text-sm font-bold tracking-tight">${m}</span>
+                                    <span class="text-[10px] font-black bg-blue-500 text-white px-2 py-1 rounded">STABLE</span>
                                 </div>
-                                <div class="text-[11px] p-2 bg-white/5 border border-white/10 rounded">
-                                    <p class="font-bold">Bihar - Road Transport</p>
-                                    <p class="opacity-60">High override detected on AI Categorization.</p>
-                                </div>
-                            </div>
+                            `).join('')}
                         </div>
-                    </div>
-                </div>
-
-                <div class="gov-card p-8">
-                    <h4 class="font-bold mb-6 text-sm uppercase tracking-wider">Departmental Health Overview</h4>
-                    <div class="h-64">
-                        <canvas id="deptHealthChart"></canvas>
                     </div>
                 </div>
             </div>
         `;
-        setTimeout(initAdminCharts, 100);
+        setTimeout(() => {
+            const ctx = document.getElementById('aiChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: { labels: ['Correct','Override','Low Conf'], datasets: [{ data:[94,4,2], backgroundColor:['#22c55e','#ef4444','#f39200'] }] },
+                options: { maintainAspectRatio: false }
+            });
+        }, 100);
     }
 
-    function initAdminCharts() {
-        // Heatmap
-        const ctx1 = document.getElementById('heatmapChart').getContext('2d');
-        new Chart(ctx1, {
-            type: 'line',
-            data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                datasets: [
-                    { label: 'Delhi', data: [450, 520, 610, 590], borderColor: '#0b4a8f', tension: 0.4 },
-                    { label: 'Mumbai', data: [310, 480, 420, 500], borderColor: '#f39200', tension: 0.4 },
-                    { label: 'UP', data: [650, 710, 890, 820], borderColor: '#ef4444', tension: 0.4 }
-                ]
-            },
-            options: { maintainAspectRatio: false }
-        });
-
-        // Dept Health
-        const ctx2 = document.getElementById('deptHealthChart').getContext('2d');
-        new Chart(ctx2, {
-            type: 'bar',
-            data: {
-                labels: ['Electricity', 'Water', 'Sanitation', 'Education', 'Transport'],
-                datasets: [
-                    { label: 'Resolved', data: [88, 72, 65, 91, 74], backgroundColor: '#0b4a8f' },
-                    { label: 'Pending', data: [12, 28, 35, 9, 26], backgroundColor: '#e2e8f0' }
-                ]
-            },
-            options: { maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }
-        });
-    }
-
-    // --- MODALS & WORKFLOWS ---
-    function showLodgeModal() {
-        const body = document.getElementById('modalBody');
-        body.innerHTML = `
-            <div class="mb-8 pt-8 text-center">
-                <div class="h-16 w-16 bg-blue-100 text-gov-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i data-lucide="plus" class="w-8 h-8"></i>
+    function renderSystemConfig(container) {
+        container.innerHTML = `
+            <div class="p-10 animate-view">
+                <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">Global System Configuration</h2>
+                <div class="gov-card p-10">
+                    <h4 class="text-sm font-black uppercase text-slate-500 mb-8">Department SLA Targets (Hours)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${Object.keys(DB.slaConfig).map(dept => `
+                            <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                                <label class="text-[10px] font-black uppercase text-slate-400">${dept}</label>
+                                <div class="flex items-center gap-4 mt-2">
+                                    <input type="number" value="${DB.slaConfig[dept]}" class="w-20 bg-white border rounded-xl p-2 font-black text-gov-blue">
+                                    <span class="text-xs font-bold text-slate-500">HRS</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="mt-12 flex justify-end">
+                        <button class="bg-gov-blue text-white px-10 py-4 rounded-2xl font-black shadow-xl">SAVE CORE CONFIG</button>
+                    </div>
                 </div>
-                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Lodge New Grievance</h2>
-                <p class="text-slate-500 text-sm">Fill in the details below. Our AI will automatically route it.</p>
+            </div>
+        `;
+    }
+
+    // --- SHARED UI COMPONENTS ---
+
+    function renderStatCard(label, val, color, icon) {
+        const theme = {
+            blue: 'border-blue-500 text-blue-600 bg-blue-50/50',
+            green: 'border-green-500 text-green-600 bg-green-50/50',
+            indigo: 'border-indigo-500 text-indigo-600 bg-indigo-50/50',
+            orange: 'border-orange-500 text-orange-600 bg-orange-50/50',
+            red: 'border-red-500 text-red-600 bg-red-50/50'
+        }[color];
+        
+        return `
+            <div class="gov-card p-6 border-l-[6px] ${theme}">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-[10px] font-black uppercase opacity-60 tracking-widest mb-2">${label}</p>
+                        <h3 class="text-3xl font-black tracking-tighter">${val}</h3>
+                    </div>
+                    <div class="p-3 bg-white/60 rounded-xl shadow-sm"><i data-lucide="${icon}" class="w-6 h-6"></i></div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderComplaintRow(c) {
+        return `
+            <div class="p-6 border rounded-2xl hover:bg-slate-50 transition-all cursor-pointer group" onclick="viewCaseDetail('${c.id}')">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-slate-100 text-slate-500 px-2 py-0.5 rounded font-mono text-[9px] font-black">${c.id}</span>
+                        <h4 class="font-bold text-slate-800 group-hover:text-gov-blue transition-colors">${c.title}</h4>
+                    </div>
+                    <span class="status-pill ${c.status === 'Resolved' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}">${c.status}</span>
+                </div>
+                <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-wider text-slate-400">
+                    <div class="flex gap-6">
+                        <span class="flex items-center gap-1.5"><i data-lucide="tag" class="w-3.5 h-3.5"></i> ${c.dept}</span>
+                        <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${c.state}</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-red-500">BREACH: ${c.deadline}</span>
+                        <div class="w-24 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                            <div class="bg-gov-blue h-full" style="width: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function showLodgeGrievance() {
+        const modal = document.getElementById('modalContent');
+        modal.innerHTML = `
+            <div class="pt-10 mb-12 text-center">
+                <div class="h-20 w-20 bg-blue-100 text-gov-blue rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner">
+                    <i data-lucide="plus" class="w-10 h-10"></i>
+                </div>
+                <h2 class="text-3xl font-black text-slate-800 tracking-tighter uppercase">Lodge National Grievance</h2>
+                <p class="text-slate-500 font-bold mt-2">Authenticated via Aadhar Virtual ID: ****-****-9921</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="space-y-6">
-                    <div>
-                        <label class="block text-xs font-black uppercase text-slate-400 mb-2">Subject / Title</label>
-                        <input id="newTitle" type="text" class="w-full border-2 border-slate-100 rounded-xl p-3 text-sm focus:border-gov-blue outline-none transition" placeholder="Short summary of issue">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+                <div class="lg:col-span-3 space-y-8">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Grievance Title</label>
+                        <input id="lod_title" type="text" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-5 font-bold focus:border-gov-blue outline-none transition" placeholder="Short summary of the issue...">
                     </div>
-                    <div>
-                        <label class="block text-xs font-black uppercase text-slate-400 mb-2">Detailed Description</label>
-                        <textarea id="newDesc" rows="6" class="w-full border-2 border-slate-100 rounded-xl p-3 text-sm focus:border-gov-blue outline-none transition" placeholder="Provide as much detail as possible..." onblur="triggerAI()"></textarea>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Incident Description</label>
+                        <textarea id="lod_desc" rows="6" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-5 font-bold focus:border-gov-blue outline-none transition" placeholder="Please provide specific details. AI will automatically route your case..." onblur="simulateAITriage()"></textarea>
                     </div>
-                    <div id="aiAssist" class="hidden bg-blue-900 text-white p-5 rounded-xl shadow-xl animate-in fade-in slide-in-from-left-4">
-                        <div class="flex items-center gap-3 mb-2">
-                            <i data-lucide="bot" class="w-5 h-5 text-saffron-400"></i>
-                            <span class="text-xs font-bold uppercase tracking-widest">AI Triage In-Progress</span>
+                    <div id="aiTriagePanel" class="hidden bg-slate-900 text-white p-8 rounded-3xl shadow-2xl ai-glow animate-view">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i data-lucide="cpu" class="text-saffron-400 w-6 h-6 animate-pulse"></i>
+                            <span class="text-xs font-black uppercase tracking-[0.2em] text-saffron-400">AI Triage Active</span>
                         </div>
-                        <p class="text-[11px] opacity-80" id="aiFeedback">Analyzing text for Department & Priority mapping...</p>
+                        <p class="text-xs opacity-70 leading-relaxed italic" id="aiTriageMsg">Analyzing natural language patterns for departmental routing...</p>
                     </div>
                 </div>
-
-                <div class="space-y-6">
-                    <div>
-                        <label class="block text-xs font-black uppercase text-slate-400 mb-2">Department (AI Suggested)</label>
-                        <select id="newDept" class="w-full border-2 border-slate-100 rounded-xl p-3 text-sm outline-none bg-slate-50">
+                <div class="lg:col-span-2 space-y-8">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Routing Department (Auto)</label>
+                        <select id="lod_dept" class="w-full bg-slate-100 border-2 border-slate-100 rounded-2xl p-5 font-black text-gov-blue outline-none appearance-none">
+                            <option>Awaiting Triage...</option>
                             <option>Electricity</option>
                             <option>Water Supply</option>
-                            <option>Roads & Highway</option>
                             <option>Sanitation</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-xs font-black uppercase text-slate-400 mb-2">Upload Proof (Images/Videos)</label>
-                        <div class="border-2 border-dashed border-slate-200 rounded-xl h-32 flex flex-col items-center justify-center text-slate-400 hover:border-gov-blue hover:text-gov-blue cursor-pointer transition">
-                            <i data-lucide="camera" class="w-8 h-8 mb-2"></i>
-                            <span class="text-xs font-bold">Drop files here or Click</span>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Evidence Upload</label>
+                        <div class="border-4 border-dashed border-slate-100 rounded-3xl h-44 flex flex-col items-center justify-center text-slate-300 hover:text-gov-blue hover:bg-blue-50 transition cursor-pointer">
+                            <i data-lucide="camera" class="w-10 h-10 mb-2"></i>
+                            <span class="text-xs font-black uppercase">Click to Attach Files</span>
                         </div>
                     </div>
-                    <div class="pt-4 flex gap-4">
-                        <button onclick="closeModal()" class="flex-1 px-6 py-3 border-2 border-slate-100 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition">Cancel</button>
-                        <button onclick="finalSubmit()" class="flex-1 px-6 py-3 bg-gov-blue text-white rounded-xl font-bold shadow-lg hover:bg-gov-dark transition">Submit Portal</button>
+                    <div class="pt-6 grid grid-cols-2 gap-4">
+                        <button onclick="closeModal()" class="px-6 py-4 border-2 border-slate-100 rounded-2xl font-black text-slate-400 hover:bg-slate-50 transition">DISCARD</button>
+                        <button onclick="submitGrievance()" class="px-6 py-4 bg-gov-blue text-white rounded-2xl font-black shadow-2xl hover:scale-105 transition">LODGE FILE</button>
                     </div>
                 </div>
             </div>
         `;
         document.getElementById('modalOverlay').classList.remove('hidden');
-        refreshIcons();
+        lucide.createIcons();
     }
 
-    function triggerAI() {
-        const desc = document.getElementById('newDesc').value;
-        if (desc.length < 15) return;
+    function simulateAITriage() {
+        const desc = document.getElementById('lod_desc').value;
+        if (desc.length < 20) return;
         
-        const panel = document.getElementById('aiAssist');
+        const panel = document.getElementById('aiTriagePanel');
         panel.classList.remove('hidden');
         
         setTimeout(() => {
-            document.getElementById('aiFeedback').innerHTML = "Detected: <strong class='text-saffron-400'>Infrastructure/Roads</strong>. Urgency: <strong class='text-saffron-400'>Medium</strong>. Predictive SLA: 72 Hours.";
-            document.getElementById('newDept').value = "Roads & Highway";
-        }, 1200);
+            document.getElementById('aiTriageMsg').innerHTML = `Detected: <span class="text-white font-black">Infrastructure / Utility Leakage</span>. Suggested Urgency: <span class="text-white font-black">HIGH</span>. Routing to <span class="text-saffron-400 font-black">Water Supply Dept</span>.`;
+            document.getElementById('lod_dept').value = "Water Supply";
+        }, 1500);
     }
 
-    function finalSubmit() {
-        const title = document.getElementById('newTitle').value;
-        const desc = document.getElementById('newDesc').value;
-        const id = 'GRV-2026-' + (DB.complaints.length + 1).toString().padStart(3, '0');
-        
+    function submitGrievance() {
+        const title = document.getElementById('lod_title').value || "New Grievance";
+        const id = 'GRV-2026-00' + (DB.complaints.length + 1);
         DB.complaints.unshift({
             id: id,
-            citizenId: currentUser.id,
-            category: document.getElementById('newDept').value,
-            title: title || 'New Grievance',
+            userId: currentUser.id,
+            title: title,
+            dept: document.getElementById('lod_dept').value,
             status: 'Pending',
             priority: 'Medium',
             date: '2026-01-08',
-            slaRemaining: '48h',
-            description: desc,
-            updates: 0,
+            deadline: '2026-01-12',
+            desc: document.getElementById('lod_desc').value,
             state: currentUser.state
         });
-        
         closeModal();
-        renderMain();
-        showNotification('Grievance ' + id + ' filed successfully via AI Triage.');
+        navigate('dash');
+        showNotify('SUCCESS: Grievance ' + id + ' initialized and routed.');
     }
 
     function viewCaseDetail(id) {
         const c = DB.complaints.find(comp => comp.id === id);
-        const body = document.getElementById('modalBody');
-        body.innerHTML = `
-            <div class="pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-start gap-6 mb-10">
+        const modal = document.getElementById('modalContent');
+        modal.innerHTML = `
+            <div class="pt-10">
+                <div class="flex flex-col md:flex-row justify-between items-start gap-10 mb-12">
                     <div>
-                        <div class="flex items-center gap-3 mb-2">
-                            <span class="bg-gov-blue text-white px-3 py-1 rounded text-[10px] font-black">${c.id}</span>
-                            <span class="status-pill bg-slate-100 text-slate-600">${c.category}</span>
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="bg-gov-blue text-white px-4 py-1.5 rounded-xl font-black text-[10px] tracking-widest">${c.id}</span>
+                            <span class="status-pill bg-slate-100 text-slate-500 border border-slate-200">${c.dept}</span>
                         </div>
-                        <h2 class="text-3xl font-black text-slate-800 tracking-tight">${c.title}</h2>
+                        <h2 class="text-4xl font-black text-slate-800 tracking-tighter leading-tight">${c.title}</h2>
                     </div>
                     <div class="text-right">
-                        <p class="text-[10px] font-black uppercase text-slate-400 mb-1">Current Status</p>
-                        <span class="status-pill bg-orange-100 text-orange-700 font-black text-sm">${c.status}</span>
+                        <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Live Case Status</p>
+                        <span class="status-pill bg-blue-100 text-blue-700 font-black text-sm px-6 py-2 shadow-sm">${c.status}</span>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                    <div class="lg:col-span-2 space-y-8">
-                        <div class="bg-slate-50 p-6 rounded-2xl border-l-8 border-slate-300">
-                            <h4 class="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">Incident Description</h4>
-                            <p class="text-slate-700 leading-relaxed italic">"${c.description}"</p>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <div class="lg:col-span-2 space-y-10">
+                        <div class="bg-slate-50 p-8 rounded-3xl border-l-[10px] border-slate-300">
+                            <h4 class="text-[10px] font-black uppercase text-slate-400 mb-6 tracking-widest">Original Description</h4>
+                            <p class="text-slate-700 leading-relaxed italic font-medium">"${c.desc}"</p>
                         </div>
                         
                         <div>
-                            <h4 class="text-xs font-black uppercase text-slate-400 mb-6 tracking-widest">Action Timeline</h4>
-                            <div class="space-y-10 pl-4">
-                                ${renderTimelineStep('Grievance Filed', '08 Jan, 10:45 AM', 'AI Triage completed categorization.', true)}
-                                ${renderTimelineStep('Department Acknowledged', '08 Jan, 11:20 AM', 'Sent to Executive Engineer (Ward 4).', true)}
-                                ${renderTimelineStep('Field Investigation', 'Scheduled', 'Officer assignment in-progress.', false)}
+                            <h4 class="text-[10px] font-black uppercase text-slate-400 mb-8 tracking-widest">Digital Audit Trail</h4>
+                            <div class="space-y-10 pl-6">
+                                ${renderTimelineItem('Complaint Lodged', '08 Jan 2026, 10:15 AM', 'Case initialized via Digital India gateway.', true)}
+                                ${renderTimelineItem('AI Triage Completed', '08 Jan 2026, 10:15 AM', 'Automatically routed to ' + c.dept + ' based on NLP analysis.', true)}
+                                ${renderTimelineItem('Officer Acknowledgement', 'Scheduled', 'Awaiting field officer assignment.', false)}
                             </div>
                         </div>
                     </div>
 
                     <div class="space-y-6">
-                        <div class="gov-card p-6 border-t-4 border-red-500">
-                            <h4 class="text-xs font-black uppercase text-slate-400 mb-4">SLA Commitment</h4>
+                        <div class="gov-card p-8 border-t-8 border-red-500">
+                            <h4 class="text-[10px] font-black uppercase text-slate-400 mb-4 tracking-widest">SLA Deadline</h4>
                             <div class="text-center">
-                                <p class="text-4xl font-black text-red-600 mb-2">${c.slaRemaining}</p>
-                                <p class="text-[10px] text-slate-500 font-bold">Remaining for Resolution</p>
+                                <p class="text-5xl font-black text-red-600 tracking-tighter mb-1">02:14:55</p>
+                                <p class="text-[10px] font-black text-slate-400 uppercase">Hours remaining</p>
                             </div>
                         </div>
-                        
-                        <div class="gov-card p-6">
-                            <h4 class="text-xs font-black uppercase text-slate-400 mb-4">Officer In-Charge</h4>
+                        <div class="gov-card p-8">
+                            <h4 class="text-[10px] font-black uppercase text-slate-400 mb-6 tracking-widest">Stakeholder Info</h4>
                             <div class="flex items-center gap-4">
-                                <div class="h-12 w-12 bg-slate-200 rounded-full flex items-center justify-center font-bold">VS</div>
+                                <div class="h-12 w-12 bg-slate-200 rounded-2xl flex items-center justify-center font-black">VS</div>
                                 <div>
-                                    <p class="text-sm font-bold">Dr. V. K. Singh</p>
-                                    <p class="text-[10px] text-slate-500">EE, South Delhi Dept.</p>
+                                    <p class="text-sm font-black text-slate-800">Dr. Vikram Seth</p>
+                                    <p class="text-[10px] font-bold text-slate-400">EE, South Delhi Dept.</p>
                                 </div>
                             </div>
                         </div>
@@ -687,56 +907,38 @@
             </div>
         `;
         document.getElementById('modalOverlay').classList.remove('hidden');
-        refreshIcons();
+        lucide.createIcons();
     }
 
-    function renderTimelineStep(title, date, desc, completed) {
+    function renderTimelineItem(title, date, msg, done) {
         return `
-            <div class="relative timeline-step pl-10">
-                <div class="absolute left-0 top-0 h-6 w-6 rounded-full ${completed ? 'bg-gov-green text-white' : 'bg-slate-200 text-slate-400'} flex items-center justify-center z-10">
-                    <i data-lucide="${completed ? 'check' : 'circle'}" class="w-3 h-3"></i>
+            <div class="relative pl-12 pb-4">
+                <div class="absolute left-0 top-0 h-6 w-6 rounded-full ${done ? 'bg-gov-green text-white shadow-[0_0_10px_#22c55e]' : 'bg-slate-200 text-slate-400'} flex items-center justify-center z-10">
+                    <i data-lucide="${done ? 'check' : 'circle'}" class="w-3 h-3"></i>
                 </div>
+                ${!done ? '' : '<div class="absolute left-3 top-6 bottom-0 w-[2px] bg-gov-green/20"></div>'}
                 <div>
                     <div class="flex justify-between items-center mb-1">
-                        <h5 class="text-sm font-bold ${completed ? 'text-slate-800' : 'text-slate-400'}">${title}</h5>
+                        <h5 class="text-sm font-black ${done ? 'text-slate-800' : 'text-slate-300'}">${title}</h5>
                         <span class="text-[10px] font-bold text-slate-400 uppercase">${date}</span>
                     </div>
-                    <p class="text-xs text-slate-500">${desc}</p>
+                    <p class="text-xs text-slate-500 font-medium">${msg}</p>
                 </div>
             </div>
         `;
     }
 
-    function renderStatCard(label, val, color, icon) {
-        const colors = {
-            blue: 'border-blue-500 text-blue-600 bg-blue-50',
-            orange: 'border-orange-500 text-orange-600 bg-orange-50',
-            green: 'border-green-500 text-green-600 bg-green-50',
-            purple: 'border-purple-500 text-purple-600 bg-purple-50'
-        };
-        return `
-            <div class="gov-card p-6 border-l-4 ${colors[color]}">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-xs font-black uppercase opacity-60 mb-2">${label}</p>
-                        <h3 class="text-3xl font-black">${val}</h3>
-                    </div>
-                    <div class="p-2 bg-white/50 rounded-lg"><i data-lucide="${icon}"></i></div>
-                </div>
-            </div>
-        `;
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.add('hidden');
     }
 
-    function showNotification(msg) {
-        const div = document.createElement('div');
-        div.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl z-[300] font-bold text-sm animate-in slide-in-from-bottom-10 fade-in duration-300';
-        div.innerHTML = `<div class="flex items-center gap-3"><i data-lucide="check-circle" class="text-green-400"></i> ${msg}</div>`;
-        document.body.appendChild(div);
-        refreshIcons();
-        setTimeout(() => {
-            div.classList.add('animate-out', 'slide-out-to-bottom-10', 'fade-out');
-            setTimeout(() => div.remove(), 500);
-        }, 3000);
+    function showNotify(msg) {
+        const note = document.createElement('div');
+        note.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-950 text-white px-10 py-5 rounded-[2rem] shadow-2xl z-[300] font-black text-xs tracking-widest uppercase animate-view flex items-center gap-4';
+        note.innerHTML = `<i data-lucide="shield-check" class="text-green-500"></i> ${msg}`;
+        document.body.appendChild(note);
+        lucide.createIcons();
+        setTimeout(() => note.remove(), 4000);
     }
 
     function toggleAIChat() {
@@ -744,54 +946,17 @@
         chat.classList.toggle('hidden');
     }
 
-    function closeModal() {
-        document.getElementById('modalOverlay').classList.add('hidden');
-    }
+    // --- SYSTEM INIT ---
 
-    function goHome() {
-        renderMain();
-    }
-
-    function navigate(id) {
-        // UI logic for navigation sidebar state
-        const items = document.querySelectorAll('.sidebar-item');
-        items.forEach(el => el.classList.remove('active'));
-        event.currentTarget.classList.add('active');
-        
-        if (id === 'community') {
-            // Placeholder for community board view
-            document.getElementById('mainContent').innerHTML = `
-                <div class="p-8">
-                    <h2 class="text-3xl font-black text-slate-800 tracking-tight mb-8 uppercase">Community Issues Board</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        ${DB.threads.map(th => `
-                            <div class="gov-card p-6 hover:border-gov-blue transition cursor-pointer">
-                                <div class="flex justify-between items-start mb-4">
-                                    <span class="text-[10px] bg-slate-100 px-2 py-1 rounded font-bold">${th.category}</span>
-                                    <div class="flex items-center gap-1 text-slate-400 text-xs"><i data-lucide="thumbs-up" class="w-3 h-3"></i> ${th.votes}</div>
-                                </div>
-                                <h4 class="font-bold text-lg mb-2">${th.title}</h4>
-                                <p class="text-xs text-slate-500 mb-6">Started by ${th.author}</p>
-                                <div class="flex justify-between items-center border-t pt-4">
-                                    <span class="text-[10px] font-bold text-gov-blue">${th.comments} Official Responses</span>
-                                    <button class="text-[10px] font-black uppercase text-slate-400 hover:text-gov-blue">Join Discussion →</button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-            refreshIcons();
-        } else {
-            renderMain();
-        }
-    }
-
-    // Initialize
     window.onload = () => {
         switchRole('citizen');
-        const now = new Date();
-        document.getElementById('currentDate').innerText = now.toLocaleDateString('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' });
+        
+        // Live Date/Time
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('liveClock').innerText = now.toLocaleTimeString();
+            document.getElementById('liveDate').innerText = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }, 1000);
     };
 </script>
 
