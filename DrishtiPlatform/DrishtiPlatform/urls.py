@@ -17,12 +17,29 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from django.contrib.auth import views as auth_views
+from accounts import views as accounts_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # 1. Public Pages
+    path('home/', TemplateView.as_view(template_name='PublicPages/home.html'), name='home'),
+    path('', TemplateView.as_view(template_name='PublicPages/home.html'), name='root'),
+    path('about/', TemplateView.as_view(template_name='PublicPages/about.html'), name='about'),
+    path('contact/', TemplateView.as_view(template_name='PublicPages/contact.html'), name='contact'),
+    path('track-complaint/', TemplateView.as_view(template_name='PublicPages/track_complaint.html'), name='track_complaint'),
+    path('faq/', TemplateView.as_view(template_name='PublicPages/faq.html'), name='faq'),
+
+    # Auth
+    path('login/', accounts_views.CustomLoginView.as_view(), name='login'),
+    path('register/', accounts_views.register, name='register'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('reset-password/', TemplateView.as_view(template_name='PublicPages/reset_password.html'), name='reset_password'),
+
+    # Existing Includes
     path('accounts/', include('accounts.urls')),
     path('complaints/', include('complaints.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('community/', include('community.urls')),
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
 ]

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Drishti Platform{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <h1 class="hero-title">Drishti - AI-Driven Government Complaint Management</h1>
+    <p class="hero-subtitle">Empowering citizens with transparent, accountable, and efficient grievance resolution.</p>
+    <div class="hero-cta">
+        <a href="{% url 'track_complaint' %}" class="btn btn-primary">Track Complaint</a>
+        <a href="{% url 'register' %}" class="btn btn-secondary">Register Now</a>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value">12,543</div>
+            <div class="stat-label">Total Complaints</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">10,230</div>
+            <div class="stat-label">Resolved</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">48h</div>
+            <div class="stat-label">Avg Resolution</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">4.8/5</div>
+            <div class="stat-label">User Satisfaction</div>
+        </div>
+    </div>
+</section>
+
+<section class="mb-4">
+    <div class="grid-2">
+        <div class="glass-card">
+            <h2 class="mb-2">Our Mission</h2>
+            <p class="text-muted mb-2">To bridge the gap between citizens and administration through technology,
+                ensuring every voice is heard and every grievance is addressed with speed and transparency.</p>
+            <ul style="list-style: none; padding: 0;">
+                <li class="mb-1">✓ Transparent Process</li>
+                <li class="mb-1">✓ Accountable Officers</li>
+                <li class="mb-1">✓ Efficient Resolution</li>
+            </ul>
+        </div>
+        <div class="glass-card">
+            <h2 class="mb-2">Why Drishti?</h2>
+            <div class="grid-2">
+                <div>
+                    <h3 class="feature-icon">🤖</h3>
+                    <h4>AI Powered</h4>
+                    <p class="text-muted" style="font-size: 0.9rem;">Smart categorization and routing of complaints.</p>
+                </div>
+                <div>
+                    <h3 class="feature-icon">⚡</h3>
+                    <h4>Real-time</h4>
+                    <p class="text-muted" style="font-size: 0.9rem;">Track status updates instantly.</p>
+                </div>
+                <div>
+                    <h3 class="feature-icon">📈</h3>
+                    <h4>Scalable</h4>
+                    <p class="text-muted" style="font-size: 0.9rem;">Multi-tier escalation system.</p>
+                </div>
+                <div>
+                    <h3 class="feature-icon">🔒</h3>
+                    <h4>Secure</h4>
+                    <p class="text-muted" style="font-size: 0.9rem;">Data privacy and secure handling.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

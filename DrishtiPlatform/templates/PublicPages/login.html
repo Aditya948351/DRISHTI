@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Drishti Platform{% endblock %}
+
+{% block content %}
+<div style="max-width: 450px; margin: 2rem auto;">
+    <div class="glass-card">
+        <div class="text-center mb-4">
+            <h2 style="margin-bottom: 0.5rem;">Welcome Back</h2>
+            <p class="text-muted">Login to access your dashboard</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Select Role</label>
+                <select class="form-control">
+                    <option>Citizen</option>
+                    <option>Officer</option>
+                    <option>Department Admin</option>
+                    <option>State Admin</option>
+                    <option>National Admin</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Email or Phone</label>
+                <input type="text" name="username" class="form-control" placeholder="Enter your email or phone">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Enter your password">
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
+                    <input type="checkbox"> Remember me
+                </label>
+                <a href="{% url 'reset_password' %}"
+                    style="color: var(--secondary); font-size: 0.9rem; text-decoration: none;">Forgot Password?</a>
+            </div>
+
+            <div class="mb-3" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+                <button type="button" class="btn btn-secondary" onclick="dummyLogin('admin', '123')"
+                    style="font-size: 0.8rem; padding: 0.5rem;">Login as Admin</button>
+                <button type="button" class="btn btn-secondary" onclick="dummyLogin('citizen', '123')"
+                    style="font-size: 0.8rem; padding: 0.5rem;">Login as Citizen</button>
+                <button type="button" class="btn btn-secondary" onclick="dummyLogin('officer', '123')"
+                    style="font-size: 0.8rem; padding: 0.5rem;">Login as Officer</button>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+        </form>
+
+        <script>
+            function dummyLogin(username, password) {
+                document.querySelector('input[name="username"]').value = username;
+                document.querySelector('input[name="password"]').value = password;
+            }
+        </script>
+
+        <div class="text-center mt-4">
+            <p class="text-muted">Don't have an account? <a href="{% url 'register' %}"
+                    style="color: var(--secondary); text-decoration: none;">Register as Citizen</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

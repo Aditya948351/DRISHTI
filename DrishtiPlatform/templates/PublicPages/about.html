@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}About - Drishti Platform{% endblock %}
+
+{% block content %}
+<section class="text-center mb-4">
+    <h1 class="hero-title" style="font-size: 2.5rem;">About Drishti</h1>
+    <p class="hero-subtitle">Revolutionizing Governance through Technology</p>
+</section>
+
+<div class="glass-card">
+    <h2 class="mb-2">Purpose</h2>
+    <p class="text-muted mb-4">
+        Drishti is designed to be the eyes of the administration, providing clear visibility into citizen grievances.
+        Our mission is to create a responsive ecosystem where complaints are not just filed but actively resolved
+        through
+        intelligent workflows and automated accountability measures.
+    </p>
+
+    <h2 class="mb-2">Scope</h2>
+    <div class="grid-3 mb-4">
+        <div class="glass-card" style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
+            <h4>Civic Issues</h4>
+            <p class="text-muted" style="font-size: 0.9rem;">Roads, Water, Sanitation, Streetlights</p>
+        </div>
+        <div class="glass-card" style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
+            <h4>Administrative</h4>
+            <p class="text-muted" style="font-size: 0.9rem;">Delays, Corruption, Service Denial</p>
+        </div>
+        <div class="glass-card" style="padding: 1.5rem; background: rgba(255,255,255,0.02);">
+            <h4>Law & Order</h4>
+            <p class="text-muted" style="font-size: 0.9rem;">Public Nuisance, Safety Concerns</p>
+        </div>
+    </div>
+
+    <h2 class="mb-2">Technology</h2>
+    <p class="text-muted mb-4">
+        Built on a robust Django framework, Drishti integrates advanced AI/ML models to automatically categorize
+        complaints,
+        detect duplicates, and predict resolution timelines.
+    </p>
+</div>
+
+<div class="grid-2">
+    <div class="glass-card">
+        <h3 class="mb-3">Development Timeline</h3>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h5>Phase 1: Concept</h5>
+                <p class="text-muted" style="font-size: 0.9rem;">Ideation and Requirement Gathering</p>
+            </div>
+            <div class="timeline-item">
+                <h5>Phase 2: Prototype</h5>
+                <p class="text-muted" style="font-size: 0.9rem;">Core Architecture and UI Design</p>
+            </div>
+            <div class="timeline-item">
+                <h5>Phase 3: Launch</h5>
+                <p class="text-muted" style="font-size: 0.9rem;">Public Release and Beta Testing</p>
+            </div>
+        </div>
+    </div>
+    <div class="glass-card">
+        <h3 class="mb-3">Workflow</h3>
+        <div style="text-align: center; padding: 2rem; border: 1px dashed var(--glass-border); border-radius: 8px;">
+            <p>Citizen Files Complaint</p>
+            <div style="font-size: 1.5rem; color: var(--secondary);">↓</div>
+            <p>AI Categorization</p>
+            <div style="font-size: 1.5rem; color: var(--secondary);">↓</div>
+            <p>Officer Assignment</p>
+            <div style="font-size: 1.5rem; color: var(--secondary);">↓</div>
+            <p>Resolution & Feedback</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

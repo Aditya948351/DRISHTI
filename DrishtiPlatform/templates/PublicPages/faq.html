@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}FAQ - Drishti Platform{% endblock %}
+
+{% block content %}
+<section class="text-center mb-4">
+    <h1 class="hero-title" style="font-size: 2.5rem;">Frequently Asked Questions</h1>
+    <p class="hero-subtitle">Find answers to common questions about the platform.</p>
+</section>
+
+<div class="glass-card mb-4">
+    <input type="text" class="form-control" placeholder="Search FAQs..." style="padding: 1rem;">
+</div>
+
+<div class="grid-3 mb-4">
+    <button class="btn btn-primary">All</button>
+    <button class="btn btn-secondary">Registration</button>
+    <button class="btn btn-secondary">Complaints</button>
+</div>
+
+<div class="glass-card">
+    <details class="mb-3" style="border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+        <summary style="font-weight: 600; cursor: pointer; padding: 0.5rem 0;">How do I register on Drishti?</summary>
+        <p class="text-muted mt-2">Click on the 'Register' button on the top right, select 'Citizen', and fill in your
+            details including mobile number and address.</p>
+    </details>
+    <details class="mb-3" style="border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+        <summary style="font-weight: 600; cursor: pointer; padding: 0.5rem 0;">How can I track my complaint?</summary>
+        <p class="text-muted mt-2">Go to the 'Track Complaint' page and enter the unique Complaint ID provided to you
+            via SMS/Email.</p>
+    </details>
+    <details class="mb-3" style="border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+        <summary style="font-weight: 600; cursor: pointer; padding: 0.5rem 0;">What if my complaint is not resolved?
+        </summary>
+        <p class="text-muted mt-2">If the resolution time exceeds the SLA, the complaint is automatically escalated to
+            higher authorities. You can also manually escalate it from your dashboard.</p>
+    </details>
+</div>
+
+<div class="text-center mt-4">
+    <p>Still have questions?</p>
+    <a href="{% url 'contact' %}" class="btn btn-secondary mt-2">Contact Support</a>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Drishti Platform{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 2rem auto;">
+    <div class="glass-card">
+        <div class="text-center mb-4">
+            <h2 style="margin-bottom: 0.5rem;">Citizen Registration</h2>
+            <p class="text-muted">Join Drishti to build a better community</p>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative;">
+            <div style="text-align: center; flex: 1;">
+                <div
+                    style="width: 30px; height: 30px; background: var(--primary); border-radius: 50%; margin: 0 auto 0.5rem; line-height: 30px; font-weight: bold;">
+                    1</div>
+                <span style="font-size: 0.8rem;">Personal</span>
+            </div>
+            <div style="text-align: center; flex: 1;">
+                <div
+                    style="width: 30px; height: 30px; background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 auto 0.5rem; line-height: 30px; font-weight: bold;">
+                    2</div>
+                <span style="font-size: 0.8rem;">Contact</span>
+            </div>
+            <div style="text-align: center; flex: 1;">
+                <div
+                    style="width: 30px; height: 30px; background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 auto 0.5rem; line-height: 30px; font-weight: bold;">
+                    3</div>
+                <span style="font-size: 0.8rem;">Account</span>
+            </div>
+        </div>
+
+        <form>
+            <!-- Step 1: Personal Info -->
+            <div id="step1">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" class="form-control" placeholder="Enter your full name">
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select class="form-control">
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" style="width: 100%;">Next Step</button>
+            </div>
+
+            <!-- Steps 2 & 3 hidden for demo, would be toggled via JS -->
+        </form>
+
+        <div class="text-center mt-4">
+            <p class="text-muted">Already have an account? <a href="{% url 'login' %}"
+                    style="color: var(--secondary); text-decoration: none;">Login here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

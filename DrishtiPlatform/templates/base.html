@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Drishti - AI-Driven Complaint Management{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <div class="background-gradient"></div>
+
+    <nav class="glass-nav">
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <span>Drishti</span>
+                <span class="logo-accent">Platform</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'track_complaint' %}">Track</a>
+            <a href="{% url 'faq' %}">FAQ</a>
+            <a href="{% url 'contact' %}">Contact</a>
+        </div>
+        <div class="nav-actions">
+            <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+        </div>
+    </nav>
+
+    <main class="content-wrapper">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="glass-footer">
+        <div class="footer-links">
+            <a href="{% url 'about' %}">About Us</a>
+            <a href="{% url 'contact' %}">Contact</a>
+            <a href="{% url 'faq' %}">FAQ</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <p>&copy; {% now "Y" %} Drishti Platform. All rights reserved.</p>
+        <p class="text-muted" style="font-size: 0.8rem; margin-top: 0.5rem;">Empowering citizens with transparent
+            governance.</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Support - Drishti Platform{% endblock %}
+
+{% block content %}
+<section class="text-center mb-4">
+    <h1 class="hero-title" style="font-size: 2.5rem;">Contact Us</h1>
+    <p class="hero-subtitle">We are here to help you.</p>
+</section>
+
+<div class="grid-2">
+    <div class="glass-card">
+        <h2 class="mb-4">Get in Touch</h2>
+
+        <div class="mb-4">
+            <h4 class="text-muted mb-1">National Helpline</h4>
+            <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">1800-123-4567</p>
+        </div>
+
+        <div class="mb-4">
+            <h4 class="text-muted mb-1">Email Support</h4>
+            <p>support@drishti.gov.in</p>
+            <p>grievance@drishti.gov.in</p>
+        </div>
+
+        <div class="mb-4">
+            <h4 class="text-muted mb-1">Headquarters</h4>
+            <p>Ministry of Electronics & IT,<br>Electronics Niketan, 6, CGO Complex,<br>Lodhi Road, New Delhi - 110003
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h4 class="text-muted mb-1">Working Hours</h4>
+            <p>Monday - Saturday: 9:00 AM - 6:00 PM</p>
+        </div>
+
+        <a href="{% url 'faq' %}" class="btn btn-secondary" style="width: 100%; text-align: center;">Check FAQs</a>
+    </div>
+
+    <div class="glass-card">
+        <h2 class="mb-4">Send a Message</h2>
+        <form>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" class="form-control" placeholder="Enter your name">
+            </div>
+            <div class="grid-2" style="gap: 1rem; margin-bottom: 1.5rem;">
+                <div>
+                    <label>Email</label>
+                    <input type="email" class="form-control" placeholder="Enter email">
+                </div>
+                <div>
+                    <label>Phone</label>
+                    <input type="tel" class="form-control" placeholder="Enter phone">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Subject</label>
+                <select class="form-control">
+                    <option>General Inquiry</option>
+                    <option>Technical Support</option>
+                    <option>Feedback</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea class="form-control" rows="5" placeholder="How can we help?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Request</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
