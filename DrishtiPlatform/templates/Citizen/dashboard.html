@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Citizen Dashboard</title>
+<style>
+body{margin:0;font-family:Poppins,Arial;background:#f1f5f9}
+header{background:#1f3c88;color:white;padding:20px 40px}
+.dashboard{padding:30px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card{
+background:white;padding:25px;border-radius:14px;
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+transition:.3s;text-align:center
+}
+.card:hover{transform:translateY(-6px)}
+.card h2{color:#1f3c88;font-size:36px}
+.badge{padding:6px 12px;border-radius:20px;font-size:14px}
+.pending{background:#fde68a}
+.resolved{background:#bbf7d0}
+</style>
+</head>
+<body>
+
+<header><h2>Welcome, Citizen 👋</h2></header>
+
+<div class="dashboard">
+<div class="cards">
+<div class="card"><h2>14</h2><p>Total Complaints</p></div>
+<div class="card"><h2>6</h2><span class="badge pending">Pending</span></div>
+<div class="card"><h2>8</h2><span class="badge resolved">Resolved</span></div>
+</div>
+</div>
+
+</body>
+</html>

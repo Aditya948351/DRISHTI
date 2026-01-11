@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Complaints</title>
+<style>
+body{font-family:Poppins;background:#f8fafc}
+table{
+width:85%;margin:40px auto;background:white;
+border-radius:14px;overflow:hidden;
+box-shadow:0 15px 30px rgba(0,0,0,.1)
+}
+th,td{padding:14px;text-align:center}
+th{background:#1f3c88;color:white}
+.status{padding:6px 14px;border-radius:20px}
+.open{background:#fde68a}
+.done{background:#bbf7d0}
+.pagination{text-align:center;margin:20px}
+</style>
+</head>
+<body>
+
+<table>
+<tr><th>ID</th><th>Category</th><th>Status</th></tr>
+<tr><td>101</td><td>Water</td><td><span class="status open">Pending</span></td></tr>
+<tr><td>102</td><td>Road</td><td><span class="status done">Resolved</span></td></tr>
+</table>
+
+<div class="pagination">◀ 1 2 3 ▶</div>
+
+</body>
+</html>

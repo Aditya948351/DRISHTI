@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Submit Complaint</title>
+<style>
+body{font-family:Poppins;background:#eef2ff}
+.container{
+max-width:650px;margin:40px auto;background:white;
+padding:35px;border-radius:18px;
+box-shadow:0 20px 40px rgba(0,0,0,.15)
+}
+h2{color:#1f3c88}
+label{margin-top:15px;display:block;font-weight:600}
+input,select,textarea{
+width:100%;padding:12px;margin-top:6px;
+border-radius:10px;border:1px solid #cbd5e1
+}
+textarea{height:120px}
+button{
+margin-top:25px;background:#1f3c88;
+color:white;padding:14px;width:100%;
+border:none;border-radius:12px;font-size:16px;
+cursor:pointer
+}
+button:hover{background:#162f6a}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Submit New Complaint</h2>
+<p>Fill accurate details for faster resolution.</p>
+
+<label>Category</label>
+<select>
+<option>Road</option><option>Water</option>
+<option>Electricity</option><option>Sanitation</option>
+</select>
+
+<label>Location</label>
+<input type="text" placeholder="Area / City">
+
+<label>Description</label>
+<textarea placeholder="Explain your issue clearly"></textarea>
+
+<label>Upload Proof</label>
+<input type="file">
+
+<button>Submit Complaint</button>
+</div>
+
+</body>
+</html>
