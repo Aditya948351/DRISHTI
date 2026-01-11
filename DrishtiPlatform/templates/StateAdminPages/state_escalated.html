@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Escalated Complaints</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI';
+            background: #f1f6fc
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            height: 100%;
+            position: fixed;
+            left: -240px;
+            top: 0;
+            background: #0b2e59;
+            color: white;
+            padding: 15px;
+            transition: .3s;
+            z-index: 1000
+        }
+
+        .sidebar.show {
+            left: 0
+        }
+
+        .sidebar .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px
+        }
+
+        .sidebar .brand button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 14px;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px
+        }
+
+        .sidebar a:hover {
+            background: #ff9933;
+            color: black
+        }
+
+        /* Main */
+        .main {
+            margin-left: 20px;
+            padding-left: 20px;
+            transition: .3s
+        }
+
+        .main.shift {
+            margin-left: 260px
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .08)
+        }
+
+        .toggle-main {
+            background: #0b2e59;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px
+        }
+
+        .toggle-main.hide {
+            display: none
+        }
+
+        /* Table */
+        .table-box {
+            margin: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .1)
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        th,
+        td {
+            padding: 14px;
+            text-align: left
+        }
+
+        th {
+            background: #0b2e59;
+            color: white
+        }
+
+        tr:nth-child(even) {
+            background: #f8fbff
+        }
+
+        /* Priority Colors */
+        .priority-high {
+            color: red;
+            font-weight: bold
+        }
+
+        .priority-medium {
+            color: orange;
+            font-weight: bold
+        }
+
+        .priority-low {
+            color: green;
+            font-weight: bold
+        }
+
+        /* Button */
+        .assign-btn {
+            background: #ff9933;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer
+        }
+
+        .assign-btn:hover {
+            opacity: .8
+        }
+
+        /* Mobile */
+        @media(max-width:700px) {
+
+            th,
+            td {
+                font-size: 13px
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="sidebar" class="sidebar">
+        <div class="brand">
+            <button onclick="toggleSidebar()"><i class="fa fa-bars"></i></button> DRISHTI
+        </div>
+        <a href="{% url 'state_dashboard' %}"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="{% url 'state_escalated' %}"><i class="fa fa-triangle-exclamation"></i> Escalated</a>
+        <a href="{% url 'state_analytics' %}"><i class="fa fa-chart-line"></i> Analytics</a>
+        <a href="{% url 'state_districts' %}"><i class="fa fa-building"></i> District Admins</a>
+        <a href="{% url 'logout' %}"><i class="fa fa-right-from-bracket"></i> Logout</a>
+
+
+    </div>
+
+    <div id="main" class="main">
+
+        <div class="header">
+            <button id="headerBtn" class="toggle-main" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+            <h2>Escalated Complaints</h2>
+            <p style="margin-left:auto">State Level Grievances</p>
+        </div>
+
+        <div class="table-box">
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Citizen</th>
+                    <th>Department</th>
+                    <th>District</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+                <tr>
+                    <td>#ESC1021</td>
+                    <td>Rahul Patil</td>
+                    <td>Road</td>
+                    <td>Nashik</td>
+                    <td class="priority-high">High</td>
+                    <td>Unresolved</td>
+                    <td><button class="assign-btn">Assign Officer</button></td>
+                </tr>
+
+                <tr>
+                    <td>#ESC1034</td>
+                    <td>Neha Deshmukh</td>
+                    <td>Water</td>
+                    <td>Pune</td>
+                    <td class="priority-medium">Medium</td>
+                    <td>In Review</td>
+                    <td><button class="assign-btn">Assign Officer</button></td>
+                </tr>
+
+                <tr>
+                    <td>#ESC1048</td>
+                    <td>Arjun Kulkarni</td>
+                    <td>Health</td>
+                    <td>Solapur</td>
+                    <td class="priority-high">High</td>
+                    <td>Unresolved</td>
+                    <td><button class="assign-btn">Assign Officer</button></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+            document.getElementById('main').classList.toggle('shift');
+            document.getElementById('headerBtn').classList.toggle('hide');
+        }
+
+        /* Active menu highlight */
+        const active = "{{ request.resolver_match.url_name }}";
+        document.querySelectorAll(".sidebar a").forEach(link => {
+            if (link.getAttribute("href").includes(active)) {
+                link.style.background = "#ff9933";
+                link.style.color = "black";
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

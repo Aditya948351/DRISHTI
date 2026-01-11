@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Departments</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI';
+            background: #f1f6fc
+        }
+
+        .sidebar {
+            width: 240px;
+            position: fixed;
+            left: -240px;
+            top: 0;
+            height: 100%;
+            background: #0b2e59;
+            color: white;
+            padding: 15px;
+            transition: .3s
+        }
+
+        .sidebar.show {
+            left: 0
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 14px;
+            border-radius: 6px;
+            text-decoration: none
+        }
+
+        .sidebar a:hover {
+            background: #ff9933;
+            color: black
+        }
+
+        .brand {
+            display: flex;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px
+        }
+
+        .brand button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px
+        }
+
+        .main {
+            margin-left: 20px;
+            padding-left: 20px;
+            transition: .3s
+        }
+
+        .main.shift {
+            margin-left: 260px
+        }
+
+        .header {
+            background: white;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .08)
+        }
+
+        .toggle-main {
+            background: #0b2e59;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px
+        }
+
+        .toggle-main.hide {
+            display: none
+        }
+
+        .table-box {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 14px
+        }
+
+        th {
+            background: #0b2e59;
+            color: white
+        }
+
+        td,
+        th {
+            padding: 14px
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="sidebar" class="sidebar">
+        <div class="brand">
+            <button onclick="toggleSidebar()"><i class="fa fa-bars"></i></button> DRISHTI
+        </div>
+        <a href="{% url 'national_dashboard' %}">Dashboard</a>
+        <a href="{% url 'national_analytics' %}">Analytics</a>
+        <a href="{% url 'manage_departments' %}">Departments</a>
+        <a href="{% url 'manage_admins' %}">Admins</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+
+    <div id="main" class="main">
+        <div class="header">
+            <button id="headerBtn" class="toggle-main" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+            <h2>Manage Departments</h2>
+        </div>
+
+        <div class="table-box">
+            <table width="100%">
+                <tr>
+                    <th>ID</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Road & Transport</td>
+                    <td>Active</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Water Supply</td>
+                    <td>Active</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Health</td>
+                    <td>Active</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            sidebar.classList.toggle("show");
+            main.classList.toggle("shift");
+            headerBtn.classList.toggle("hide");
+        }
+    </script>
+
+</body>
+
+</html>

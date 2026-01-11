@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Analytics | DRISHTI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI';
+            background: #f1f6fc
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            height: 100%;
+            position: fixed;
+            left: -240px;
+            top: 0;
+            background: #0b2e59;
+            color: white;
+            padding: 15px;
+            transition: .3s;
+            z-index: 1000
+        }
+
+        .sidebar.show {
+            left: 0
+        }
+
+        .sidebar .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px
+        }
+
+        .sidebar .brand button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 14px;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px
+        }
+
+        .sidebar a:hover {
+            background: #ff9933;
+            color: black
+        }
+
+        /* Main */
+        .main {
+            margin-left: 20px;
+            padding-left: 20px;
+            transition: .3s
+        }
+
+        .main.shift {
+            margin-left: 260px
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .08)
+        }
+
+        .toggle-main {
+            background: #0b2e59;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px
+        }
+
+        .toggle-main.hide {
+            display: none
+        }
+
+        /* Grid */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px
+        }
+
+        .box {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .1)
+        }
+
+        @media(max-width:900px) {
+            .analytics-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:600px) {
+            .analytics-grid {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="sidebar" class="sidebar">
+        <div class="brand">
+            <button onclick="toggleSidebar()"><i class="fa fa-bars"></i></button> DRISHTI
+        </div>
+        <a href="{% url 'state_dashboard' %}"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="{% url 'state_escalated' %}"><i class="fa fa-triangle-exclamation"></i> Escalated</a>
+        <a href="{% url 'state_analytics' %}"><i class="fa fa-chart-line"></i> Analytics</a>
+        <a href="{% url 'state_districts' %}"><i class="fa fa-building"></i> District Admins</a>
+        <a href="{% url 'logout' %}"><i class="fa fa-right-from-bracket"></i> Logout</a>
+
+
+
+    </div>
+
+    <div id="main" class="main">
+
+        <div class="header">
+            <button id="headerBtn" class="toggle-main" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+            <h2>State Analytics</h2>
+            <p style="margin-left:auto">Live Performance Metrics</p>
+        </div>
+
+        <div class="analytics-grid">
+
+            <div class="box">
+                <h3>Monthly Complaints</h3>
+                <canvas id="monthChart"></canvas>
+            </div>
+
+            <div class="box">
+                <h3>Department Load</h3>
+                <canvas id="deptChart"></canvas>
+            </div>
+
+            <div class="box">
+                <h3>Resolution Speed</h3>
+                <canvas id="speedChart"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+            document.getElementById('main').classList.toggle('shift');
+            document.getElementById('headerBtn').classList.toggle('hide');
+        }
+
+        /* Active Page Highlight */
+        const currentPage = location.pathname.split("/").pop();
+        document.querySelectorAll(".sidebar a").forEach(link => {
+            if (link.getAttribute("href") === currentPage) {
+                link.style.background = "#ff9933";
+                link.style.color = "black";
+            }
+        });
+
+        /* Charts */
+        new Chart(monthChart, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{ label: 'Complaints', data: [1400, 1800, 1600, 2200, 2500, 2300], borderColor: '#ff9933', tension: .4 }]
+            }
+        });
+
+        new Chart(deptChart, {
+            type: 'bar',
+            data: {
+                labels: ['Road', 'Water', 'Electricity', 'Health', 'Education'],
+                datasets: [{ label: 'Cases', data: [420, 380, 290, 220, 180], backgroundColor: '#0b2e59' }]
+            }
+        });
+
+        new Chart(speedChart, {
+            type: 'doughnut',
+            data: {
+                labels: ['<7 Days', '7-15 Days', '>15 Days'],
+                datasets: [{ data: [55, 30, 15], backgroundColor: ['#4caf50', '#ff9933', '#f44336'] }]
+            }
+        });
+
+        /* Active menu highlight */
+        const active = "{{ request.resolver_match.url_name }}";
+        document.querySelectorAll(".sidebar a").forEach(link => {
+            if (link.getAttribute("href").includes(active)) {
+                link.style.background = "#ff9933";
+                link.style.color = "black";
+            }
+        });
+    </script>
+
+</body>
+
+</html>
