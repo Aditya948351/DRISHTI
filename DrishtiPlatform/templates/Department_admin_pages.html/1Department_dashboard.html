@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Department Dashboard</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #eef2f7;
+}
+
+/* ===== BLUE THEME ===== */
+.header {
+    background: #0d47a1;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.nav {
+    background: #08306b;
+    padding: 10px;
+    text-align: center;
+}
+
+.nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 10px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.card h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #0d47a1;
+}
+
+.count {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+}
+
+.badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: white;
+}
+
+.new { background: #2196f3; }
+.assigned { background: #1976d2; }
+.overdue { background: #e53935; }
+.resolved { background: #5e35b1; }
+
+/* Extra Sections */
+.section {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.section h3 {
+    margin-bottom: 15px;
+    color: #0d47a1;
+}
+
+.list-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.list-item:last-child {
+    border-bottom: none;
+}
+
+.progress {
+    background: #ddd;
+    height: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-bar {
+    width: 70%;
+    height: 100%;
+    background: #1976d2;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Department Admin Dashboard</h1>
+    <p>Complaint Monitoring & Officer Management</p>
+</div>
+
+<div class="nav">
+    <a href="/dept/dashboard">Dashboard</a>
+    <a href="/dept/new-complaints">New Complaints</a>
+    <a href="/dept/officer-list">Officers</a>
+    <a href="/dept/reports">Reports</a>
+    <a href="/logout">Logout</a>
+</div>
+
+<div class="container">
+
+    <!-- Stats Cards -->
+    <div class="cards">
+        <div class="card">
+            <h2>New Complaints</h2>
+            <div class="count">20</div>
+            <span class="badge new">Today</span>
+        </div>
+
+        <div class="card">
+            <h2>Assigned Complaints</h2>
+            <div class="count">15</div>
+            <span class="badge assigned">In Progress</span>
+        </div>
+
+        <div class="card">
+            <h2>Overdue Complaints</h2>
+            <div class="count">5</div>
+            <span class="badge overdue">Urgent</span>
+        </div>
+
+        <div class="card">
+            <h2>Resolved Complaints</h2>
+            <div class="count">42</div>
+            <span class="badge resolved">Completed</span>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="section">
+        <h3>Recent Activity</h3>
+        <div class="list-item">Complaint #201 assigned to Officer A</div>
+        <div class="list-item">Complaint #198 marked overdue</div>
+        <div class="list-item">Complaint #190 resolved successfully</div>
+    </div>
+
+    <!-- Performance Section -->
+    <div class="section">
+        <h3>Department Performance (SLA)</h3>
+        <p>Complaints resolved within SLA</p>
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+        <small>70% SLA compliance</small>
+    </div>
+
+</div>
+
+</body>
+</html>

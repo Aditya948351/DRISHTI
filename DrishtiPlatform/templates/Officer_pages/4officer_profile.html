@@ -1,0 +1,158 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officer Profile</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f0f2f7;
+        color: #333;
+    }
+
+    header {
+        background: linear-gradient(90deg, #004080, #1a75ff);
+        color: white;
+        padding: 25px 20px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 2em;
+        letter-spacing: 1px;
+    }
+
+    .profile-card {
+        background: white;
+        max-width: 500px;
+        margin: 30px auto;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        position: relative;
+    }
+
+    .profile-pic {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: #004080;
+        color: white;
+        font-size: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: -70px auto 20px;
+        border: 4px solid white;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    form label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: bold;
+        color: #004080;
+    }
+
+    form input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        transition: 0.3s;
+    }
+
+    form input:focus {
+        border-color: #1a75ff;
+        box-shadow: 0 0 5px rgba(26,117,255,0.5);
+        outline: none;
+    }
+
+    input[readonly] {
+        background: #e9ecef;
+        color: #555;
+        cursor: not-allowed;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(90deg, #1a75ff, #004080);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: linear-gradient(90deg, #004080, #1a75ff);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Success message */
+    .success-msg {
+        display: none;
+        text-align: center;
+        margin-top: 15px;
+        color: #28a745;
+        font-weight: bold;
+        animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @media(max-width: 500px) {
+        .profile-card {
+            margin: 20px;
+            padding: 20px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Officer Profile</h1>
+</header>
+
+<div class="profile-card">
+    <div class="profile-pic">JD</div>
+    <form id="profileForm" method="POST">
+        <label>Name</label>
+        <input type="text" value="John Doe" readonly>
+        <label>Email</label>
+        <input type="email" value="john@example.com" readonly>
+        <label>Phone</label>
+        <input type="text" value="1234567890" required>
+        <button type="submit">Update</button>
+    </form>
+    <div class="success-msg" id="successMsg">Profile Updated Successfully!</div>
+</div>
+
+<script>
+    // Show success message on submit
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const msg = document.getElementById('successMsg');
+        msg.style.display = 'block';
+        setTimeout(() => { msg.style.display = 'none'; }, 3000);
+    });
+</script>
+
+</body>
+</html>
+

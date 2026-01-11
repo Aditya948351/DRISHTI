@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Officers</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #eaf1fb;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(90deg, #0d47a1, #1976d2);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Container */
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Top bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.top-bar input {
+    width: 280px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.top-bar input:focus {
+    border-color: #1976d2;
+    outline: none;
+}
+
+.add-btn {
+    background: #1976d2;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add-btn:hover {
+    background: #0d47a1;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+th {
+    background: #1976d2;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+    background: #e3f2fd;
+}
+
+/* Badge */
+.badge {
+    background: #42a5f5;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+/* Action buttons */
+.action-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    margin-right: 5px;
+}
+
+.edit {
+    background: #1565c0;
+    color: white;
+}
+
+.delete {
+    background: #e53935;
+    color: white;
+}
+
+.action-btn:hover {
+    opacity: 0.85;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Officers Management</h1>
+    <p>View, add, and manage department officers</p>
+</div>
+
+<div class="container">
+
+    <div class="top-bar">
+        <input type="text" placeholder="Search officer by name or email...">
+        <button class="add-btn">+ Add Officer</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Officer Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Officer A</td>
+                <td>offA@example.com</td>
+                <td><span class="badge">Active</span></td>
+                <td>
+                    <button class="action-btn edit">Edit</button>
+                    <button class="action-btn delete">Remove</button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>2</td>
+                <td>Officer B</td>
+                <td>offB@example.com</td>
+                <td><span class="badge">Active</span></td>
+                <td>
+                    <button class="action-btn edit">Edit</button>
+                    <button class="action-btn delete">Remove</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assign Officer</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(120deg, #0d47a1, #42a5f5);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Glass Card */
+.form-card {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 30px 35px;
+    width: 420px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.form-card h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.form-card p {
+    text-align: center;
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 25px;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+/* Inputs */
+select, input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    margin-bottom: 18px;
+    font-size: 14px;
+    background: rgba(255,255,255,0.85);
+}
+
+/* SLA hint */
+.sla-info {
+    font-size: 12px;
+    margin-top: -12px;
+    margin-bottom: 15px;
+    color: #e3f2fd;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    font-size: 15px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #1565c0, #1e88e5);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #0d47a1, #1976d2);
+    transform: scale(1.03);
+}
+
+/* Footer */
+.footer-text {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 15px;
+    opacity: 0.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="form-card">
+    <h1>Assign Officer</h1>
+    <p>Complaint #201</p>
+
+    <form method="POST">
+        <label>Select Officer</label>
+        <select>
+            <option>Officer A</option>
+            <option>Officer B</option>
+            <option>Officer C</option>
+        </select>
+
+        <label>SLA (Days)</label>
+        <input type="number" value="3" min="1" max="30">
+        <div class="sla-info">Resolution must be completed within given days</div>
+
+        <button type="submit">Assign Officer</button>
+    </form>
+
+    <div class="footer-text">
+        Department Monitoring System
+    </div>
+</div>
+
+</body>
+</html>

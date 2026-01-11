@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officer Notifications</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #eef2f7;
+}
+
+.header {
+    background: #004080;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 10px;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.filter {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.mark-btn {
+    background: #004080;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.mark-btn:hover {
+    background: #002c5f;
+}
+
+.notification {
+    background: white;
+    border-left: 6px solid #004080;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification.unread {
+    background: #e8f1ff;
+}
+
+.left {
+    max-width: 75%;
+}
+
+.title {
+    font-weight: bold;
+    color: #004080;
+}
+
+.message {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #333;
+}
+
+.time {
+    font-size: 12px;
+    color: gray;
+}
+
+.action-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    background: #1f8a38;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Officer Notifications</h1>
+    <p>Stay updated with your assigned complaints</p>
+</div>
+
+<div class="container">
+
+    <div class="top-bar">
+        <select class="filter">
+            <option>All</option>
+            <option>Unread</option>
+            <option>Assignments</option>
+            <option>Overdue</option>
+            <option>Resolved</option>
+        </select>
+
+        <button class="mark-btn">Mark all as read</button>
+    </div>
+
+    <div class="notification unread">
+        <div class="left">
+            <div class="title">New Complaint Assigned</div>
+            <div class="message">Complaint #101 (Road Damage) has been assigned to you.</div>
+            <div class="time">5 minutes ago</div>
+        </div>
+        <a href="/officer/complaint-work/101">
+            <button class="action-btn">View</button>
+        </a>
+    </div>
+
+    <div class="notification">
+        <div class="left">
+            <div class="title">Overdue Alert</div>
+            <div class="message">Complaint #99 has crossed SLA. Immediate action required.</div>
+            <div class="time">2 hours ago</div>
+        </div>
+        <a href="/officer/complaint-work/99">
+            <button class="action-btn">Fix Now</button>
+        </a>
+    </div>
+
+    <div class="notification">
+        <div class="left">
+            <div class="title">Complaint Resolved</div>
+            <div class="message">Complaint #95 has been successfully closed.</div>
+            <div class="time">Yesterday</div>
+        </div>
+        <button class="action-btn" style="background:#6c757d;">Viewed</button>
+    </div>
+
+</div>
+
+</body>
+</html>
+
+
+

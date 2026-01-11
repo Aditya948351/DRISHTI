@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Officer Dashboard</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f0f2f7;
+    }
+
+    /* Header */
+    header {
+        background: linear-gradient(90deg, #004080, #1a75ff);
+        color: white;
+        padding: 25px 20px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+    header h1 {
+        margin: 0;
+        font-size: 2em;
+        letter-spacing: 1px;
+    }
+
+    /* Cards Grid */
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 25px;
+        padding: 30px 20px;
+    }
+
+    /* Card Styles */
+    .card {
+        background: linear-gradient(145deg, #ffffff, #e6f0ff);
+        padding: 25px 20px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+    }
+
+    .card h2 {
+        margin: 15px 0 10px;
+        color: #004080;
+        font-size: 1.3em;
+    }
+
+    .card p {
+        font-size: 2em;
+        font-weight: bold;
+        color: #1a75ff;
+        margin: 5px 0;
+    }
+
+    /* Icons */
+    .card i {
+        font-size: 2.5em;
+        margin-bottom: 12px;
+        color: #004080;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+        background: #d0d7e6;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 15px;
+        height: 15px;
+    }
+    .progress-bar {
+        height: 15px;
+        width: 0%;
+        background: #1a75ff;
+        text-align: center;
+        line-height: 15px;
+        color: white;
+        font-size: 12px;
+        border-radius: 10px;
+        transition: width 1s ease-in-out;
+    }
+
+    /* Badge */
+    .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 12px;
+        color: white;
+        font-size: 0.8em;
+        margin-top: 10px;
+    }
+    .high { background: #dc3545; }    /* Red for High Priority */
+    .medium { background: #ffc107; }  /* Yellow for Medium Priority */
+    .low { background: #28a745; }     /* Green for Low Priority */
+
+    @media (max-width: 500px) {
+        .cards { grid-template-columns: 1fr; }
+    }
+</style>
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<header>
+    <h1>Officer Dashboard</h1>
+</header>
+
+<div class="cards">
+    <!-- Assigned Complaints -->
+    <div class="card">
+        <i class="fas fa-tasks"></i>
+        <h2>Assigned Complaints</h2>
+        <p>10</p>
+        <div class="badge high">High Priority</div>
+    </div>
+
+    <!-- Pending Complaints -->
+    <div class="card">
+        <i class="fas fa-hourglass-half"></i>
+        <h2>Pending Complaints</h2>
+        <p>5</p>
+        <div class="progress-container">
+            <div class="progress-bar" style="width: 60%;">60%</div>
+        </div>
+        <div class="badge medium">Medium Priority</div>
+    </div>
+
+    <!-- Resolved Today -->
+    <div class="card">
+        <i class="fas fa-check-circle"></i>
+        <h2>Resolved Today</h2>
+        <p>3</p>
+        <div class="badge low">Low Priority</div>
+    </div>
+
+    <!-- Overdue Complaints -->
+    <div class="card">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>Overdue Complaints</h2>
+        <p>2</p>
+        <div class="badge high">High Priority</div>
+    </div>
+</div>
+
+<script>
+    // Animate progress bars on load
+    window.addEventListener('load', () => {
+        const bars = document.querySelectorAll('.progress-bar');
+        bars.forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.width = width;
+            }, 200);
+        });
+    });
+</script>
+
+</body>
+</html>

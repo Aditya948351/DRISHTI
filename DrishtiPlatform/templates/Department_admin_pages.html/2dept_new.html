@@ -1,0 +1,145 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Complaints</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #eaf1fb;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(90deg, #0d47a1, #1976d2);
+    color: white;
+    padding: 18px;
+    text-align: center;
+}
+
+/* Container */
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* Search Box */
+.search-box {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-box input {
+    width: 300px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: #1976d2;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+th {
+    background: #1976d2;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+    background: #e3f2fd;
+}
+
+/* Buttons */
+.btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 13px;
+    background: #0d47a1;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #1565c0;
+}
+
+/* Status Badge */
+.badge {
+    background: #42a5f5;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>New Complaints</h1>
+    <p>View and assign newly registered citizen complaints</p>
+</div>
+
+<div class="container">
+
+    <div class="search-box">
+        <input type="text" placeholder="Search by citizen or category...">
+        <span class="badge">Total: 1</span>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Category</th>
+                <th>Citizen</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>201</td>
+                <td>Water</td>
+                <td>Jane Doe</td>
+                <td>2026-01-11</td>
+                <td>
+                    <a class="btn" href="/dept/assign-officer/201">Assign</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

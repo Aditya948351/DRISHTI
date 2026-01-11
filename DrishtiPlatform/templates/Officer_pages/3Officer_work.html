@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complaint Work</title>
+
+<style>
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    background: #eef2f7;
+}
+
+.header {
+    background: #004080;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #004080;
+}
+
+.detail-row {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.detail-row span {
+    font-weight: bold;
+    color: #333;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: orange;
+    color: white;
+    font-size: 14px;
+}
+
+/* Form Styling */
+label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+textarea {
+    resize: none;
+}
+
+button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    background: #004080;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #002b5c;
+}
+
+.progress {
+    background: #ddd;
+    height: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-bar {
+    width: 60%;
+    height: 100%;
+    background: #28a745;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Complaint Work Panel</h1>
+    <p>Complaint ID: #101</p>
+</div>
+
+<div class="container">
+
+    <!-- Complaint Details -->
+    <div class="card">
+        <h2>Complaint Details</h2>
+
+        <div class="detail-row"><span>Category:</span> Road Damage</div>
+        <div class="detail-row"><span>Location:</span> Pune Highway</div>
+        <div class="detail-row"><span>Citizen:</span> Rahul Patil</div>
+        <div class="detail-row"><span>Date:</span> 10 Jan 2026</div>
+        <div class="detail-row"><span>Status:</span> <span class="status">Pending</span></div>
+
+        <h3 style="margin-top:20px;">Progress</h3>
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+        <small>60% completed</small>
+    </div>
+
+    <!-- Work Form -->
+    <div class="card">
+        <h2>Update Work</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Action Taken</label>
+            <textarea name="action" rows="4" placeholder="Describe the work done..." required></textarea>
+
+            <label>Update Status</label>
+            <select name="status">
+                <option>In Progress</option>
+                <option>Resolved</option>
+                <option>Need More Time</option>
+            </select>
+
+            <label>Priority</label>
+            <select name="priority">
+                <option>Low</option>
+                <option selected>Medium</option>
+                <option>High</option>
+            </select>
+
+            <label>Upload Proof (Image / PDF)</label>
+            <input type="file" name="proof" required>
+
+            <button type="submit">Submit Update</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

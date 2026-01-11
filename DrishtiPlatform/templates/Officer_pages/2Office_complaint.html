@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assigned Complaints</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 20px;
+        background: #f0f2f7;
+        color: #333;
+    }
+
+    h1 {
+        color: #004080;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* Search box */
+    .search-box {
+        margin-bottom: 20px;
+        text-align: right;
+    }
+
+    .search-box input {
+        padding: 8px 12px;
+        width: 250px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    /* Table */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+    }
+
+    th {
+        background: #004080;
+        color: white;
+        position: relative;
+        cursor: pointer;
+    }
+
+    th::after {
+        content: ' \25B2'; /* Up arrow */
+        font-size: 0.7em;
+        margin-left: 5px;
+        opacity: 0.5;
+    }
+
+    tr:nth-child(even) {
+        background: #f8f9fa;
+    }
+
+    tr:hover {
+        background: #e0e7ff;
+        transform: scale(1.01);
+        transition: 0.2s;
+    }
+
+    /* Status badges */
+    .status {
+        padding: 5px 10px;
+        border-radius: 12px;
+        color: white;
+        font-weight: bold;
+        font-size: 0.9em;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .pending { background: #ffc107; }
+    .completed { background: #28a745; }
+    .overdue { background: #dc3545; }
+
+    /* Action buttons */
+    .btn {
+        padding: 6px 12px;
+        border-radius: 5px;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: 0.3s;
+    }
+
+    .btn-work { background: #1a75ff; }
+    .btn-work:hover { background: #004080; }
+
+    /* Responsive Table */
+    @media(max-width: 768px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+        th {
+            position: relative;
+        }
+        tr {
+            margin-bottom: 15px;
+        }
+        td {
+            padding-left: 50%;
+            position: relative;
+            text-align: left;
+        }
+        td::before {
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            width: 45%;
+            white-space: nowrap;
+            font-weight: bold;
+        }
+        td:nth-of-type(1)::before { content: "ID"; }
+        td:nth-of-type(2)::before { content: "Category"; }
+        td:nth-of-type(3)::before { content: "Status"; }
+        td:nth-of-type(4)::before { content: "Assigned Date"; }
+        td:nth-of-type(5)::before { content: "Action"; }
+    }
+</style>
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<h1>Assigned Complaints</h1>
+
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search complaints..." onkeyup="searchTable()">
+</div>
+
+<table id="complaintTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Assigned Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>101</td>
+            <td>Road</td>
+            <td><span class="status pending">Pending</span></td>
+            <td>2026-01-10</td>
+            <td><a class="btn btn-work" href="/officer/complaint-work/101"><i class="fas fa-tools"></i> Work</a></td>
+        </tr>
+        <tr>
+            <td>102</td>
+            <td>Water</td>
+            <td><span class="status completed">Completed</span></td>
+            <td>2026-01-09</td>
+            <td><a class="btn btn-work" href="/officer/complaint-work/102"><i class="fas fa-tools"></i> Work</a></td>
+        </tr>
+        <tr>
+            <td>103</td>
+            <td>Electricity</td>
+            <td><span class="status overdue">Overdue</span></td>
+            <td>2026-01-08</td>
+            <td><a class="btn btn-work" href="/officer/complaint-work/103"><i class="fas fa-tools"></i> Work</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    // Simple search filter
+    function searchTable() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let table = document.getElementById("complaintTable");
+        let trs = table.tBodies[0].getElementsByTagName("tr");
+        for (let i = 0; i < trs.length; i++) {
+            let rowText = trs[i].innerText.toLowerCase();
+            trs[i].style.display = rowText.includes(input) ? "" : "none";
+        }
+    }
+</script>
+
+</body>
+</html>
