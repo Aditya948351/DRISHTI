@@ -3,46 +3,61 @@
 {% block title %}Track Complaint - Drishti Platform{% endblock %}
 
 {% block content %}
-<section class="text-center mb-4">
-    <h1 class="hero-title" style="font-size: 2.5rem;">Track Complaint</h1>
+<section class="hero-section" style="padding-bottom: 2rem;">
+    <h1 class="hero-title">Track Complaint</h1>
     <p class="hero-subtitle">Enter your Complaint ID to check the current status.</p>
 </section>
 
-<div class="glass-card" style="max-width: 600px; margin: 0 auto 2rem;">
-    <form class="mb-3">
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Enter Complaint ID (e.g., CMPL2026001234)"
-                style="font-size: 1.2rem; padding: 1rem;">
-        </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Track Status</button>
-    </form>
-    <p class="text-center text-muted">Don't have a Complaint ID? <a href="{% url 'register' %}"
-            style="color: var(--secondary);">Register and file a complaint</a></p>
-</div>
-
-<!-- Example Result (Hidden by default in real app, shown here for UI demo) -->
-<div class="glass-card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-        <div>
-            <h3>Complaint #CMPL2026001234</h3>
-            <p class="text-muted">Category: Sanitation | Filed: Jan 10, 2026</p>
-        </div>
-        <span class="badge badge-pending">In Progress</span>
+<div class="container" style="max-width: 800px;">
+    <div class="glass-card mb-5">
+        <form class="mb-4">
+            <div class="form-group mb-3">
+                <input type="text" class="form-control form-control-lg"
+                    placeholder="Enter Complaint ID (e.g., CMPL2026001234)" style="padding: 1rem; font-size: 1.1rem;">
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold">Track Status</button>
+        </form>
+        <p class="text-center text-muted mb-0">Don't have a Complaint ID? <a href="{% url 'register' %}"
+                class="text-primary text-decoration-none">Register and file a complaint</a></p>
     </div>
 
-    <div class="timeline">
-        <div class="timeline-item">
-            <h5>Complaint Submitted</h5>
-            <p class="text-muted" style="font-size: 0.85rem;">Jan 10, 2026 - 10:30 AM</p>
+    <!-- Example Result (Mockup) -->
+    <div class="glass-card">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <h3 class="text-white mb-1">Complaint #CMPL2026001234</h3>
+                <p class="text-muted mb-0">Category: <span class="text-white">Sanitation</span> | Filed: <span
+                        class="text-white">Jan 10, 2026</span></p>
+            </div>
+            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">In Progress</span>
         </div>
-        <div class="timeline-item">
-            <h5>Assigned to Officer</h5>
-            <p class="text-muted" style="font-size: 0.85rem;">Jan 10, 2026 - 02:15 PM</p>
-            <p style="font-size: 0.9rem;">Officer: Rajesh Kumar (Municipal Corp)</p>
-        </div>
-        <div class="timeline-item">
-            <h5 style="color: var(--text-muted);">Resolution in Progress</h5>
-            <p class="text-muted" style="font-size: 0.85rem;">Estimated Completion: Jan 12, 2026</p>
+
+        <div class="timeline position-relative">
+            <div class="border-start border-2 border-secondary position-absolute h-100" style="left: 1rem; top: 0;">
+            </div>
+
+            <div class="mb-4 position-relative ps-5">
+                <div class="position-absolute bg-success rounded-circle"
+                    style="width: 12px; height: 12px; left: 0.65rem; top: 0.4rem;"></div>
+                <h5 class="text-white mb-1">Complaint Submitted</h5>
+                <p class="text-muted small mb-0">Jan 10, 2026 - 10:30 AM</p>
+            </div>
+
+            <div class="mb-4 position-relative ps-5">
+                <div class="position-absolute bg-success rounded-circle"
+                    style="width: 12px; height: 12px; left: 0.65rem; top: 0.4rem;"></div>
+                <h5 class="text-white mb-1">Assigned to Officer</h5>
+                <p class="text-muted small mb-1">Jan 10, 2026 - 02:15 PM</p>
+                <p class="text-white small mb-0 bg-white bg-opacity-10 d-inline-block px-2 py-1 rounded">Officer: Rajesh
+                    Kumar (Municipal Corp)</p>
+            </div>
+
+            <div class="mb-0 position-relative ps-5">
+                <div class="position-absolute bg-warning rounded-circle"
+                    style="width: 12px; height: 12px; left: 0.65rem; top: 0.4rem;"></div>
+                <h5 class="text-white mb-1">Resolution in Progress</h5>
+                <p class="text-muted small mb-0">Estimated Completion: Jan 12, 2026</p>
+            </div>
         </div>
     </div>
 </div>

@@ -9,7 +9,9 @@ class CustomLoginView(LoginView):
     
     def get_success_url(self):
         user = self.request.user
+        print(f"DEBUG: Login successful for user: {user.username}, Role: {user.role}")
         if user.role == 'citizen':
+            print("DEBUG: Redirecting to citizen_dashboard")
             return reverse_lazy('citizen_dashboard')
         elif user.role == 'officer':
             return reverse_lazy('officer_dashboard')
@@ -19,6 +21,7 @@ class CustomLoginView(LoginView):
             return reverse_lazy('state_dashboard')
         elif user.role == 'super_admin':
             return reverse_lazy('national_dashboard')
+        print("DEBUG: Redirecting to home (default)")
         return reverse_lazy('home')
 
 def register(request):

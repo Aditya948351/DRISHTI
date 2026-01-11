@@ -21,6 +21,8 @@ from django.contrib.auth import views as auth_views
 from accounts import views as accounts_views
 
 urlpatterns = [
+    # Override Admin Logout to redirect to home
+    path('admin/logout/', auth_views.LogoutView.as_view(), name='admin_logout'),
     path('admin/', admin.site.urls),
 
     # 1. Public Pages

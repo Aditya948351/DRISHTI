@@ -12,25 +12,22 @@
 
         <form method="post">
             {% csrf_token %}
-            <div class="form-group">
-                <label>Select Role</label>
-                <select class="form-control">
-                    <option>Citizen</option>
-                    <option>Officer</option>
-                    <option>Department Admin</option>
-                    <option>State Admin</option>
-                    <option>National Admin</option>
-                </select>
+
+            {% if form.errors %}
+            <div class="alert alert-danger" style="color: red; margin-bottom: 1rem; text-align: center;">
+                <strong>Error:</strong> Please enter a correct username and password. Note that both fields may be
+                case-sensitive.
             </div>
+            {% endif %}
 
             <div class="form-group">
-                <label>Email or Phone</label>
-                <input type="text" name="username" class="form-control" placeholder="Enter your email or phone">
+                <label>Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
             </div>
 
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Enter your password">
+                <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">

@@ -1,300 +1,173 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'dashboard_base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>State Admin Dashboard | DRISHTI</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI';
-            background: #f1f6fc;
-            overflow-x: hidden;
-        }
+{% block title %}State Dashboard | Drishti{% endblock %}
 
-        /* Sidebar */
-        .sidebar {
-            width: 240px;
-            position: fixed;
-            left: -240px;
-            top: 0;
-            height: 100%;
-            background: #0b2e59;
-            color: white;
-            padding: 15px;
-            z-index: 999;
-            transition: left 0.3s ease;
-        }
-
-        .sidebar.show {
-            left: 0;
-        }
-
-        .sidebar .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .sidebar .brand button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .sidebar a {
-            display: block;
-            color: white;
-            padding: 14px;
-            border-radius: 6px;
-            text-decoration: none;
-        }
-
-        .sidebar a:hover {
-            background: #ff9933;
-            color: black;
-        }
-
-        /* Main content */
-        .main {
-            margin-left: 20px;
-            transition: margin-left 0.3s ease, padding-left 0.3s ease;
-            padding-left: 20px;
-        }
-
-        .main.shift {
-            margin-left: 260px;
-        }
-
-        /* Header */
-        .header {
-            background: white;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, .08);
-        }
-
-        .toggle-main {
-            background: #0b2e59;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .toggle-main.hide {
-            display: none;
-        }
-
-        /* Cards */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 14px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, .1);
-            text-align: center;
-        }
-
-        .card i {
-            font-size: 28px;
-            color: #ff9933;
-        }
-
-        /* Charts */
-        .chart-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .chart-box {
-            background: white;
-            padding: 20px;
-            border-radius: 14px;
-        }
-
-        /* Mobile */
-        @media (max-width: 900px) {
-            .cards {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .chart-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .main.shift {
-                margin-left: 0;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-        <div class="brand">
-            <button id="sidebarBtn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button> DRISHTI
+{% block content %}
+<div class="container-fluid px-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h2 class="h3 fw-bold text-primary mb-1">State Administration Console</h2>
+            <p class="text-muted mb-0">Overview of grievance redressal across the state.</p>
         </div>
-        <a href="{% url 'state_dashboard' %}"><i class="fa fa-home"></i> Dashboard</a>
-        <a href="{% url 'state_escalated' %}"><i class="fa fa-triangle-exclamation"></i> Escalated</a>
-        <a href="{% url 'state_analytics' %}"><i class="fa fa-chart-line"></i> Analytics</a>
-        <a href="{% url 'state_districts' %}"><i class="fa fa-building"></i> District Admins</a>
-        <a href="{% url 'logout' %}"><i class="fa fa-right-from-bracket"></i> Logout</a>
+        <div class="d-flex gap-2">
+            <select class="form-select rounded-pill shadow-sm">
+                <option>All Districts</option>
+                <option>North Zone</option>
+                <option>South Zone</option>
+            </select>
+            <button class="btn btn-primary rounded-pill shadow-sm">
+                <i data-lucide="download" class="w-4 h-4 me-2"></i>Export Data
+            </button>
+        </div>
     </div>
 
-    <!-- Main -->
-    <div id="main" class="main">
-        <div class="header">
-            <button id="headerBtn" class="toggle-main" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
-            <h2>State Admin Dashboard</h2>
-            <p style="margin-left:auto;">Welcome, State Officer</p>
-        </div>
-
-        <!-- Cards -->
-        <div class="cards">
-            <div class="card"><i class="fa fa-file"></i>
-                <h3>12,350</h3>Total
-            </div>
-            <div class="card"><i class="fa fa-check-circle"></i>
-                <h3>9,800</h3>Resolved
-            </div>
-            <div class="card"><i class="fa fa-clock"></i>
-                <h3>1,240</h3>Pending
-            </div>
-            <div class="card"><i class="fa fa-triangle-exclamation"></i>
-                <h3>560</h3>Escalated
+    <!-- Stats Overview -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-primary text-white h-100">
+                <div class="card-body p-4">
+                    <h2 class="display-5 fw-bold mb-1">15,420</h2>
+                    <p class="opacity-75 mb-0">Total Grievances (YTD)</p>
+                </div>
             </div>
         </div>
-
-        <!-- Charts -->
-        <div class="chart-grid">
-            <div class="chart-box">
-                <h3>Monthly Complaints</h3>
-                <canvas id="lineChart"></canvas>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white h-100 border-start border-4 border-success">
+                <div class="card-body p-4">
+                    <h2 class="display-5 fw-bold text-dark mb-1">88%</h2>
+                    <p class="text-muted mb-0">Resolution Rate</p>
+                </div>
             </div>
-            <div class="chart-box">
-                <h3>Department Share</h3>
-                <canvas id="pieChart"></canvas>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white h-100 border-start border-4 border-warning">
+                <div class="card-body p-4">
+                    <h2 class="display-5 fw-bold text-dark mb-1">4.2</h2>
+                    <p class="text-muted mb-0">Avg. Days to Resolve</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white h-100 border-start border-4 border-danger">
+                <div class="card-body p-4">
+                    <h2 class="display-5 fw-bold text-dark mb-1">12</h2>
+                    <p class="text-muted mb-0">Critical Hotspots</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Inject months and totals safely -->
-    <script id="chart-data" type="application/json">
-        {
-            "months": {{ months|json_script:"months-data" }},
-            "totals": {{ totals|json_script:"totals-data" }}
-        }
-    </script>
+    <!-- NLP Feature Showcase: State-wide AI Monitor -->
+    <div class="card border-0 shadow-sm mb-5 overflow-hidden">
+        <div class="card-header bg-dark text-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0">
+                <i data-lucide="radar" class="w-5 h-5 me-2 text-warning"></i>State-wide AI Monitor
+            </h5>
+            <span class="badge bg-warning text-dark">Predictive Analytics Active</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="row g-0">
+                <!-- Heatmap Visual Mockup -->
+                <div class="col-lg-8 border-end">
+                    <div class="p-4">
+                        <h6 class="fw-bold mb-3 text-muted text-uppercase small">Real-time Grievance Heatmap</h6>
+                        <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                            style="height: 300px; position: relative;">
+                            <span class="text-muted opacity-50">Interactive Map Visualization</span>
+                            <!-- Mock Hotspots -->
+                            <div class="position-absolute bg-danger rounded-circle opacity-50"
+                                style="width: 60px; height: 60px; top: 30%; left: 40%; filter: blur(10px);"></div>
+                            <div class="position-absolute bg-warning rounded-circle opacity-50"
+                                style="width: 40px; height: 40px; top: 60%; left: 70%; filter: blur(8px);"></div>
+                            <div class="position-absolute bg-danger rounded-circle opacity-50"
+                                style="width: 80px; height: 80px; top: 20%; left: 20%; filter: blur(12px);"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const sidebar = document.getElementById('sidebar');
-        const main = document.getElementById('main');
-        const headerBtn = document.getElementById('headerBtn');
+                            <div class="position-absolute top-0 end-0 m-3 bg-white p-2 rounded shadow-sm small">
+                                <div class="d-flex align-items-center mb-1"><span
+                                        class="badge bg-danger p-1 me-2 rounded-circle"></span> High Density</div>
+                                <div class="d-flex align-items-center"><span
+                                        class="badge bg-warning p-1 me-2 rounded-circle"></span> Medium Density</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Predictive Insights -->
+                <div class="col-lg-4 bg-light">
+                    <div class="p-4">
+                        <h6 class="fw-bold mb-4 text-muted text-uppercase small">AI Predictive Insights</h6>
 
-        // Sidebar toggle
-        function toggleSidebar() {
-            sidebar.classList.toggle('show');
-            main.classList.toggle('shift');
-            if (sidebar.classList.contains('show')) {
-                headerBtn.classList.add('hide');
-            } else {
-                headerBtn.classList.remove('hide');
-            }
-        }
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <i data-lucide="alert-triangle" class="w-4 h-4 text-danger me-2"></i>
+                                <span class="fw-bold text-dark">Potential Unrest Detected</span>
+                            </div>
+                            <p class="small text-muted mb-0">
+                                NLP analysis of social media and grievance text indicates rising dissatisfaction in
+                                <strong>District A</strong> regarding <strong>Power Outages</strong>.
+                            </p>
+                        </div>
 
-        // Dynamic Line Chart for Monthly Complaints
-        const ctx = document.getElementById('lineChart').getContext('2d');
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <i data-lucide="trending-up" class="w-4 h-4 text-primary me-2"></i>
+                                <span class="fw-bold text-dark">Resource Allocation</span>
+                            </div>
+                            <p class="small text-muted mb-0">
+                                AI recommends deploying <strong>2 additional maintenance teams</strong> to <strong>Zone
+                                    B</strong> based on predicted rainfall and drainage complaints.
+                            </p>
+                        </div>
 
-const lineChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: months,
-        datasets: [{
-            label: 'Monthly Complaints',
-            data: totals,
-            borderColor: '#ff9933',
-            backgroundColor: 'rgba(255,153,51,0.2)',
-            fill: true,
-            tension: 0.4
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { display: true, position: 'top' },
-            title: { display: true, text: 'Monthly Complaints Trend' }
-        },
-        scales: {
-            y: { beginAtZero: true }
-        }
-    }
-});
+                        <button class="btn btn-outline-dark w-100 rounded-pill btn-sm">View Full AI Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-        // Pie Chart (Department Share)
-        new Chart(document.getElementById('pieChart'), {
-            type: 'pie',
-            data: {
-                labels: ['Road', 'Water', 'Electricity', 'Health', 'Education'],
-                datasets: [{
-                    data: [35, 25, 20, 10, 10],
-                    backgroundColor: ['#ff9933', '#2196f3', '#4caf50', '#9c27b0', '#f44336']
-                }]
-            }
-        });
-
-        // Mobile swipe support
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
-        document.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            if (touchEndX - touchStartX > 50) {
-                sidebar.classList.add('show');
-                main.classList.add('shift');
-                headerBtn.classList.add('hide');
-            }
-            if (touchStartX - touchEndX > 50) {
-                sidebar.classList.remove('show');
-                main.classList.remove('shift');
-                headerBtn.classList.remove('hide');
-            }
-        });
-
-        // Active menu highlight
-        const active = "{{ request.resolver_match.url_name }}";
-        document.querySelectorAll(".sidebar a").forEach(link => {
-            if (link.getAttribute("href").includes(active)) {
-                link.style.background = "#ff9933";
-                link.style.color = "black";
-            }
-        });
-    </script>
-</body>
-
-</html>
+    <!-- District Performance Table -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">District Performance</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-uppercase small fw-bold text-muted">
+                    <tr>
+                        <th class="px-4 py-3">District</th>
+                        <th class="px-4 py-3">Total Cases</th>
+                        <th class="px-4 py-3">Resolved</th>
+                        <th class="px-4 py-3">Pending</th>
+                        <th class="px-4 py-3">AI Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="px-4 fw-bold">Central District</td>
+                        <td class="px-4">4,500</td>
+                        <td class="px-4 text-success">4,200</td>
+                        <td class="px-4 text-warning">300</td>
+                        <td class="px-4"><span class="badge bg-success">9.2/10</span></td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 fw-bold">North District</td>
+                        <td class="px-4">3,200</td>
+                        <td class="px-4 text-success">2,800</td>
+                        <td class="px-4 text-warning">400</td>
+                        <td class="px-4"><span class="badge bg-warning text-dark">7.5/10</span></td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 fw-bold">East District</td>
+                        <td class="px-4">2,100</td>
+                        <td class="px-4 text-success">1,500</td>
+                        <td class="px-4 text-danger">600</td>
+                        <td class="px-4"><span class="badge bg-danger">5.8/10</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,31 +1,117 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>My Complaints</title>
-<style>
-body{font-family:Poppins;background:#f8fafc}
-table{
-width:85%;margin:40px auto;background:white;
-border-radius:14px;overflow:hidden;
-box-shadow:0 15px 30px rgba(0,0,0,.1)
-}
-th,td{padding:14px;text-align:center}
-th{background:#1f3c88;color:white}
-.status{padding:6px 14px;border-radius:20px}
-.open{background:#fde68a}
-.done{background:#bbf7d0}
-.pagination{text-align:center;margin:20px}
-</style>
-</head>
-<body>
+{% extends 'dashboard_base.html' %}
 
-<table>
-<tr><th>ID</th><th>Category</th><th>Status</th></tr>
-<tr><td>101</td><td>Water</td><td><span class="status open">Pending</span></td></tr>
-<tr><td>102</td><td>Road</td><td><span class="status done">Resolved</span></td></tr>
-</table>
+{% block title %}My Grievances | Drishti{% endblock %}
 
-<div class="pagination">◀ 1 2 3 ▶</div>
+{% block content %}
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="h3 fw-bold text-primary mb-1">Grievance History & Archive</h2>
+            <p class="text-muted small mb-0">Track and manage your submitted complaints.</p>
+        </div>
+        <a href="{% url 'citizen_submit_complaint' %}" class="btn btn-primary rounded-pill px-4">
+            <i data-lucide="plus-circle" class="w-4 h-4 me-2"></i>New Grievance
+        </a>
+    </div>
 
-</body>
-</html>
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i data-lucide="search" class="w-4 h-4 text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control bg-light border-start-0"
+                            placeholder="Search by ID or Title...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select bg-light">
+                        <option>All Categories</option>
+                        <option>Public Works</option>
+                        <option>Health</option>
+                        <option>Education</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select bg-light">
+                        <option>Sort: Newest First</option>
+                        <option>Sort: Oldest First</option>
+                        <option>Sort: Status</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-uppercase small fw-bold text-muted">
+                    <tr>
+                        <th class="px-4 py-3">Complaint ID</th>
+                        <th class="px-4 py-3">Title & Subject</th>
+                        <th class="px-4 py-3">Department</th>
+                        <th class="px-4 py-3">Status</th>
+                        <th class="px-4 py-3 text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in complaints %}
+                    <tr>
+                        <td class="px-4 fw-bold text-primary">#{{ complaint.id }}</td>
+                        <td class="px-4">
+                            <div class="fw-bold text-dark">{{ complaint.title }}</div>
+                            <div class="small text-muted">Filed: {{ complaint.created_at|date:"d M Y" }}</div>
+                        </td>
+                        <td class="px-4">
+                            <span class="badge bg-light text-dark border">{{ complaint.department.name }}</span>
+                        </td>
+                        <td class="px-4">
+                            {% if complaint.status == 'resolved' %}
+                            <span
+                                class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">Resolved</span>
+                            {% elif complaint.status == 'pending' %}
+                            <span
+                                class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill">Pending</span>
+                            {% else %}
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill">{{
+                                complaint.status|title }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-4 text-end">
+                            <a href="{% url 'citizen_complaint_details' complaint.id %}"
+                                class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            <div class="mb-3">
+                                <i data-lucide="inbox" class="w-12 h-12 opacity-25"></i>
+                            </div>
+                            <p class="mb-0">No complaints found.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer bg-white py-3">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}

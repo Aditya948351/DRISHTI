@@ -1,0 +1,47 @@
+{% extends 'dashboard_base.html' %}
+
+{% block title %}Start Discussion | Drishti{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="mb-4">
+            <a href="{% url 'thread_list' %}"
+                class="text-decoration-none text-muted small d-flex align-items-center gap-1">
+                <i data-lucide="arrow-left" class="w-3 h-3"></i> Cancel
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 d-inline-block mb-3">
+                        <i data-lucide="message-square-plus" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="fw-bold">Start a Discussion</h3>
+                    <p class="text-muted">Share an idea, ask a question, or raise an issue.</p>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-uppercase">Title</label>
+                        <input type="text" name="title" class="form-control form-control-lg"
+                            placeholder="What's on your mind?" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase">Description</label>
+                        <textarea name="content" class="form-control" rows="6" placeholder="Provide more details..."
+                            required></textarea>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill">Create Discussion</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

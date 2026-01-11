@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Public+Sans:wght@400;600;700;800&display=swap');
-        
+
         :root {
             --gov-blue: #0b4a8f;
             --gov-dark: #072a53;
@@ -28,13 +29,13 @@
         .gov-card {
             background: white;
             border-radius: 1rem;
-            box-shadow: 0 4px 20px -2px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .gov-card:hover {
-            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
         }
 
         .gradient-header {
@@ -53,12 +54,12 @@
         }
 
         .sidebar-item:hover {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             color: white;
         }
 
         .sidebar-item.active {
-            background: rgba(255,255,255,0.12);
+            background: rgba(255, 255, 255, 0.12);
             color: white;
             border-left-color: var(--gov-saffron);
             font-weight: 700;
@@ -90,226 +91,253 @@
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
         }
+
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 10px;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .animate-view { animation: fadeIn 0.4s ease-out forwards; }
+
+        .animate-view {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
     </style>
 </head>
+
 <body class="antialiased overflow-hidden flex flex-col">
 
-<div id="app" class="flex-1 flex flex-col overflow-hidden">
-    <!-- Platform Simulator Top Bar -->
-    <div class="bg-slate-950 text-white text-[10px] py-2 px-6 flex justify-between items-center z-[100] border-b border-white/5">
-        <div class="flex items-center gap-3">
-            <span class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
-                LIVE CORE
-            </span>
-            <span class="opacity-40">|</span>
-            <span>Uptime: 99.99%</span>
-            <span class="opacity-40">|</span>
-            <span>Active Instance: <span id="roleDisplay" class="text-saffron-400 font-black">CITIZEN</span></span>
-        </div>
-        <div class="flex gap-6 font-bold uppercase tracking-tighter">
-            <button onclick="switchRole('citizen')" class="hover:text-saffron-400 transition cursor-pointer">Citizen</button>
-            <button onclick="switchRole('officer')" class="hover:text-saffron-400 transition cursor-pointer">State Officer</button>
-            <button onclick="switchRole('admin')" class="hover:text-saffron-400 transition cursor-pointer">National Admin</button>
-        </div>
-    </div>
-
-    <!-- Official Branding Header -->
-    <header class="gradient-header text-white flex-shrink-0 shadow-xl relative z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-6 cursor-pointer group" onclick="navigate('dash')">
-                <div class="bg-white p-2 rounded-xl transition-transform group-hover:scale-105 shadow-inner">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Emblem" class="h-12">
-                </div>
-                <div>
-                    <h1 class="text-2xl font-extrabold tracking-tighter leading-none">DRISHTI 2.0</h1>
-                    <p class="text-[10px] font-bold opacity-70 uppercase mt-1 tracking-[0.2em]">National AI Grievance Ecosystem</p>
-                </div>
+    <div id="app" class="flex-1 flex flex-col overflow-hidden">
+        <!-- Platform Simulator Top Bar -->
+        <div
+            class="bg-slate-950 text-white text-[10px] py-2 px-6 flex justify-between items-center z-[100] border-b border-white/5">
+            <div class="flex items-center gap-3">
+                <span class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
+                    LIVE CORE
+                </span>
+                <span class="opacity-40">|</span>
+                <span>Uptime: 99.99%</span>
+                <span class="opacity-40">|</span>
+                <span>Active Instance: <span id="roleDisplay" class="text-saffron-400 font-black">CITIZEN</span></span>
             </div>
-            
-            <div class="flex items-center gap-10">
-                <div class="hidden xl:flex flex-col items-end">
-                    <span id="liveClock" class="text-xs font-mono opacity-80">--:--:--</span>
-                    <span class="text-[10px] font-black opacity-60 uppercase tracking-widest" id="liveDate">Loading...</span>
-                </div>
-                <div class="flex items-center gap-4 pl-8 border-l border-white/10">
-                    <div class="text-right hidden sm:block">
-                        <p class="text-sm font-black" id="userName">Rahul Sharma</p>
-                        <p class="text-[10px] opacity-60 font-bold" id="userTitle">Aadhar Verified Citizen</p>
+            <div class="flex gap-6 font-bold uppercase tracking-tighter">
+                <button onclick="switchRole('citizen')"
+                    class="hover:text-saffron-400 transition cursor-pointer">Citizen</button>
+                <button onclick="switchRole('officer')" class="hover:text-saffron-400 transition cursor-pointer">State
+                    Officer</button>
+                <button onclick="switchRole('admin')" class="hover:text-saffron-400 transition cursor-pointer">National
+                    Admin</button>
+            </div>
+        </div>
+
+        <!-- Official Branding Header -->
+        <header class="gradient-header text-white flex-shrink-0 shadow-xl relative z-50">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-6 cursor-pointer group" onclick="navigate('dash')">
+                    <div class="bg-white p-2 rounded-xl transition-transform group-hover:scale-105 shadow-inner">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Emblem"
+                            class="h-12">
                     </div>
-                    <div id="userAvatar" class="h-11 w-11 bg-orange-500 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg border-2 border-white/20">RS</div>
+                    <div>
+                        <h1 class="text-2xl font-extrabold tracking-tighter leading-none">DRISHTI 2.0</h1>
+                        <p class="text-[10px] font-bold opacity-70 uppercase mt-1 tracking-[0.2em]">National AI
+                            Grievance Ecosystem</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-10">
+                    <div class="hidden xl:flex flex-col items-end">
+                        <span id="liveClock" class="text-xs font-mono opacity-80">--:--:--</span>
+                        <span class="text-[10px] font-black opacity-60 uppercase tracking-widest"
+                            id="liveDate">Loading...</span>
+                    </div>
+                    <div class="flex items-center gap-4 pl-8 border-l border-white/10">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-sm font-black" id="userName">Rahul Sharma</p>
+                            <p class="text-[10px] opacity-60 font-bold" id="userTitle">Aadhar Verified Citizen</p>
+                        </div>
+                        <div id="userAvatar"
+                            class="h-11 w-11 bg-orange-500 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg border-2 border-white/20">
+                            RS</div>
+                    </div>
                 </div>
             </div>
+        </header>
+
+        <div class="flex flex-1 overflow-hidden">
+            <!-- Sidebar Navigation -->
+            <nav
+                class="w-72 bg-slate-900 text-white flex-shrink-0 flex flex-col border-r border-white/5 shadow-2xl z-40">
+                <div class="p-6">
+                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-6">Navigation Control
+                    </p>
+                    <div id="sidebarMenu" class="space-y-1">
+                        <!-- Dynamic Items -->
+                    </div>
+                </div>
+
+                <div class="mt-auto p-6 space-y-4">
+                    <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                        <p class="text-[10px] font-bold text-slate-400 mb-2 uppercase">Helpline 24/7</p>
+                        <p class="text-lg font-black text-saffron-400">1800-11-2345</p>
+                    </div>
+                    <button
+                        class="flex items-center gap-3 text-sm font-bold text-slate-500 hover:text-white transition w-full p-2">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                        Secure Logout
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Main Display Content -->
+            <main class="flex-1 overflow-y-auto bg-slate-50 custom-scrollbar" id="mainDisplay">
+                <!-- Dynamic Content Injected Here -->
+            </main>
         </div>
-    </header>
-
-    <div class="flex flex-1 overflow-hidden">
-        <!-- Sidebar Navigation -->
-        <nav class="w-72 bg-slate-900 text-white flex-shrink-0 flex flex-col border-r border-white/5 shadow-2xl z-40">
-            <div class="p-6">
-                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-6">Navigation Control</p>
-                <div id="sidebarMenu" class="space-y-1">
-                    <!-- Dynamic Items -->
-                </div>
-            </div>
-            
-            <div class="mt-auto p-6 space-y-4">
-                <div class="p-4 bg-white/5 rounded-xl border border-white/10">
-                    <p class="text-[10px] font-bold text-slate-400 mb-2 uppercase">Helpline 24/7</p>
-                    <p class="text-lg font-black text-saffron-400">1800-11-2345</p>
-                </div>
-                <button class="flex items-center gap-3 text-sm font-bold text-slate-500 hover:text-white transition w-full p-2">
-                    <i data-lucide="log-out" class="w-5 h-5"></i>
-                    Secure Logout
-                </button>
-            </div>
-        </nav>
-
-        <!-- Main Display Content -->
-        <main class="flex-1 overflow-y-auto bg-slate-50 custom-scrollbar" id="mainDisplay">
-            <!-- Dynamic Content Injected Here -->
-        </main>
     </div>
-</div>
 
-<!-- Modal Engine Overlay -->
-<div id="modalOverlay" class="fixed inset-0 bg-slate-900/80 hidden z-[200] flex items-center justify-center p-6 backdrop-blur-md">
-    <div id="modalFrame" class="bg-white rounded-[2rem] shadow-2xl max-w-5xl w-full max-h-[85vh] overflow-y-auto relative animate-view">
-        <button onclick="closeModal()" class="sticky top-6 left-[95%] text-slate-300 hover:text-slate-900 z-[210] transition-colors">
-            <i data-lucide="x-circle" class="w-10 h-10"></i>
-        </button>
-        <div id="modalContent" class="p-10 pt-0"></div>
+    <!-- Modal Engine Overlay -->
+    <div id="modalOverlay"
+        class="fixed inset-0 bg-slate-900/80 hidden z-[200] flex items-center justify-center p-6 backdrop-blur-md">
+        <div id="modalFrame"
+            class="bg-white rounded-[2rem] shadow-2xl max-w-5xl w-full max-h-[85vh] overflow-y-auto relative animate-view">
+            <button onclick="closeModal()"
+                class="sticky top-6 left-[95%] text-slate-300 hover:text-slate-900 z-[210] transition-colors">
+                <i data-lucide="x-circle" class="w-10 h-10"></i>
+            </button>
+            <div id="modalContent" class="p-10 pt-0"></div>
+        </div>
     </div>
-</div>
 
-<script>
-    // --- SQL-LIKE SESSION DATABASE ---
-    const DB = {
-        users: {
-            citizen: { name: 'Rahul Sharma', id: 'CIT-8821', state: 'Delhi', district: 'South Delhi', avatar: 'RS', role: 'citizen' },
-            officer: { name: 'Dr. Vikram Seth', id: 'OFF-4001', state: 'Delhi', dept: 'Electricity', avatar: 'VS', role: 'officer' },
-            admin: { name: 'Smt. Kavita Rao', id: 'ADM-0001', state: 'National', dept: 'Central Systems', avatar: 'KR', role: 'admin' }
-        },
-        complaints: [
-            { id: 'GRV-2026-001', userId: 'CIT-8821', title: 'Invalid Electricity Meter Reading', dept: 'Electricity', status: 'In Progress', priority: 'High', date: '2026-01-02', deadline: '2026-01-10', desc: 'My bill for Dec is 5x higher than normal.', state: 'Delhi' },
-            { id: 'GRV-2026-002', userId: 'CIT-8821', title: 'Water Pipe Leakage Main Road', dept: 'Water Supply', status: 'Pending', priority: 'Critical', date: '2026-01-05', deadline: '2026-01-08', desc: 'Massive leak causing road damage near Ward 4.', state: 'Delhi' },
-            { id: 'GRV-2026-003', userId: 'CIT-9900', title: 'Pothole Repair Request', dept: 'Roads', status: 'Resolved', priority: 'Medium', date: '2025-12-20', deadline: '2025-12-30', desc: 'Repair required near Metro Pillar 114.', state: 'Delhi' }
-        ],
-        threads: [
-            { id: 'T1', title: 'Street lighting in Saket Sector 4', author: 'Suresh Raina', votes: 42, comments: 8, cat: 'Infrastructure' },
-            { id: 'T2', title: 'New Garbage Collection Routes', author: 'Megha J.', votes: 15, comments: 22, cat: 'Sanitation' }
-        ],
-        aiMetrics: { accuracy: 94.8, overrides: 12, totalProcessed: 14500 },
-        slaConfig: {
-            'Electricity': 48, // hours
-            'Water Supply': 24,
-            'Roads': 120,
-            'Sanitation': 12
-        }
-    };
-
-    let currentRole = 'citizen';
-    let currentUser = DB.users.citizen;
-    let activeTab = 'dash';
-
-    // --- ENGINE CORE ---
-
-    function switchRole(role) {
-        currentRole = role;
-        currentUser = DB.users[role];
-        activeTab = role === 'citizen' ? 'dash' : (role === 'officer' ? 'worklist' : 'national');
-        
-        document.getElementById('roleDisplay').innerText = role.toUpperCase();
-        document.getElementById('userName').innerText = currentUser.name;
-        document.getElementById('userAvatar').innerText = currentUser.avatar;
-        document.getElementById('userTitle').innerText = role === 'admin' ? 'National System Administrator' : (role === 'officer' ? `State Dept Officer (${currentUser.state})` : 'Aadhar Verified Citizen');
-        
-        renderSidebar();
-        navigate(activeTab);
-    }
-
-    function renderSidebar() {
-        const menu = document.getElementById('sidebarMenu');
-        const items = {
-            citizen: [
-                { id: 'dash', label: 'My Dashboard', icon: 'layout-dashboard' },
-                { id: 'lodge', label: 'Lodge Grievance', icon: 'plus-square', special: true },
-                { id: 'history', label: 'History & Archive', icon: 'archive' },
-                { id: 'community', label: 'Community Hub', icon: 'users-2' },
-                { id: 'guidelines', label: 'Govt Guidelines', icon: 'book-open' }
+    <script>
+        // --- SQL-LIKE SESSION DATABASE ---
+        const DB = {
+            users: {
+                citizen: { name: 'Rahul Sharma', id: 'CIT-8821', state: 'Delhi', district: 'South Delhi', avatar: 'RS', role: 'citizen' },
+                officer: { name: 'Dr. Vikram Seth', id: 'OFF-4001', state: 'Delhi', dept: 'Electricity', avatar: 'VS', role: 'officer' },
+                admin: { name: 'Smt. Kavita Rao', id: 'ADM-0001', state: 'National', dept: 'Central Systems', avatar: 'KR', role: 'admin' }
+            },
+            complaints: [
+                { id: 'GRV-2026-001', userId: 'CIT-8821', title: 'Invalid Electricity Meter Reading', dept: 'Electricity', status: 'In Progress', priority: 'High', date: '2026-01-02', deadline: '2026-01-10', desc: 'My bill for Dec is 5x higher than normal.', state: 'Delhi' },
+                { id: 'GRV-2026-002', userId: 'CIT-8821', title: 'Water Pipe Leakage Main Road', dept: 'Water Supply', status: 'Pending', priority: 'Critical', date: '2026-01-05', deadline: '2026-01-08', desc: 'Massive leak causing road damage near Ward 4.', state: 'Delhi' },
+                { id: 'GRV-2026-003', userId: 'CIT-9900', title: 'Pothole Repair Request', dept: 'Roads', status: 'Resolved', priority: 'Medium', date: '2025-12-20', deadline: '2025-12-30', desc: 'Repair required near Metro Pillar 114.', state: 'Delhi' }
             ],
-            officer: [
-                { id: 'worklist', label: 'Active Worklist', icon: 'list-checks' },
-                { id: 'sla_monitor', label: 'SLA Tracking', icon: 'clock' },
-                { id: 'field_maps', label: 'Field Assignments', icon: 'map' },
-                { id: 'state_stats', label: 'Analytics Dashboard', icon: 'bar-chart-3' }
+            threads: [
+                { id: 'T1', title: 'Street lighting in Saket Sector 4', author: 'Suresh Raina', votes: 42, comments: 8, cat: 'Infrastructure' },
+                { id: 'T2', title: 'New Garbage Collection Routes', author: 'Megha J.', votes: 15, comments: 22, cat: 'Sanitation' }
             ],
-            admin: [
-                { id: 'national', label: 'National Dashboard', icon: 'globe' },
-                { id: 'dept_audit', label: 'Department Audit', icon: 'shield-check' },
-                { id: 'ai_center', label: 'AI Control Center', icon: 'cpu' },
-                { id: 'sys_config', label: 'System Config', icon: 'settings-2' }
-            ]
+            aiMetrics: { accuracy: 94.8, overrides: 12, totalProcessed: 14500 },
+            slaConfig: {
+                'Electricity': 48, // hours
+                'Water Supply': 24,
+                'Roads': 120,
+                'Sanitation': 12
+            }
         };
 
-        menu.innerHTML = items[currentRole].map(item => `
+        let currentRole = 'citizen';
+        let currentUser = DB.users.citizen;
+        let activeTab = 'dash';
+
+        // --- ENGINE CORE ---
+
+        function switchRole(role) {
+            currentRole = role;
+            currentUser = DB.users[role];
+            activeTab = role === 'citizen' ? 'dash' : (role === 'officer' ? 'worklist' : 'national');
+
+            document.getElementById('roleDisplay').innerText = role.toUpperCase();
+            document.getElementById('userName').innerText = currentUser.name;
+            document.getElementById('userAvatar').innerText = currentUser.avatar;
+            document.getElementById('userTitle').innerText = role === 'admin' ? 'National System Administrator' : (role === 'officer' ? `State Dept Officer (${currentUser.state})` : 'Aadhar Verified Citizen');
+
+            renderSidebar();
+            navigate(activeTab);
+        }
+
+        function renderSidebar() {
+            const menu = document.getElementById('sidebarMenu');
+            const items = {
+                citizen: [
+                    { id: 'dash', label: 'My Dashboard', icon: 'layout-dashboard' },
+                    { id: 'lodge', label: 'Lodge Grievance', icon: 'plus-square', special: true },
+                    { id: 'history', label: 'History & Archive', icon: 'archive' },
+                    { id: 'community', label: 'Community Hub', icon: 'users-2' },
+                    { id: 'guidelines', label: 'Govt Guidelines', icon: 'book-open' }
+                ],
+                officer: [
+                    { id: 'worklist', label: 'Active Worklist', icon: 'list-checks' },
+                    { id: 'sla_monitor', label: 'SLA Tracking', icon: 'clock' },
+                    { id: 'field_maps', label: 'Field Assignments', icon: 'map' },
+                    { id: 'state_stats', label: 'Analytics Dashboard', icon: 'bar-chart-3' }
+                ],
+                admin: [
+                    { id: 'national', label: 'National Dashboard', icon: 'globe' },
+                    { id: 'dept_audit', label: 'Department Audit', icon: 'shield-check' },
+                    { id: 'ai_center', label: 'AI Control Center', icon: 'cpu' },
+                    { id: 'sys_config', label: 'System Config', icon: 'settings-2' }
+                ]
+            };
+
+            menu.innerHTML = items[currentRole].map(item => `
             <div onclick="navigate('${item.id}')" class="sidebar-item ${activeTab === item.id ? 'active' : ''} ${item.special ? 'text-saffron-400 font-black' : ''}">
                 <i data-lucide="${item.icon}" class="w-5 h-5"></i>
                 <span class="text-sm font-medium tracking-tight">${item.label}</span>
             </div>
         `).join('');
-        
-        lucide.createIcons();
-    }
 
-    function navigate(id) {
-        activeTab = id;
-        renderSidebar();
-        const display = document.getElementById('mainDisplay');
-        display.innerHTML = '<div class="p-20 flex justify-center"><div class="animate-spin h-10 w-10 border-4 border-gov-blue border-t-transparent rounded-full"></div></div>';
-        
-        setTimeout(() => {
-            switch(id) {
-                // Citizen Routes
-                case 'dash': renderCitizenDashboard(display); break;
-                case 'lodge': showLodgeGrievance(); break;
-                case 'history': renderHistoryView(display); break;
-                case 'community': renderCommunityView(display); break;
-                case 'guidelines': renderGuidelinesView(display); break;
-                
-                // Officer Routes
-                case 'worklist': renderOfficerWorklist(display); break;
-                case 'sla_monitor': renderSLAMonitor(display); break;
-                case 'field_maps': renderFieldMaps(display); break;
-                case 'state_stats': renderStateStats(display); break;
-                
-                // Admin Routes
-                case 'national': renderNationalDashboard(display); break;
-                case 'dept_audit': renderDeptAudit(display); break;
-                case 'ai_center': renderAICenter(display); break;
-                case 'sys_config': renderSystemConfig(display); break;
-            }
             lucide.createIcons();
-        }, 300);
-    }
+        }
 
-    // --- CITIZEN PAGES ---
+        function navigate(id) {
+            activeTab = id;
+            renderSidebar();
+            const display = document.getElementById('mainDisplay');
+            display.innerHTML = '<div class="p-20 flex justify-center"><div class="animate-spin h-10 w-10 border-4 border-gov-blue border-t-transparent rounded-full"></div></div>';
 
-    function renderCitizenDashboard(container) {
-        const userComplaints = DB.complaints.filter(c => c.userId === currentUser.id);
-        const resolved = userComplaints.filter(c => c.status === 'Resolved').length;
-        
-        container.innerHTML = `
+            setTimeout(() => {
+                switch (id) {
+                    // Citizen Routes
+                    case 'dash': renderCitizenDashboard(display); break;
+                    case 'lodge': showLodgeGrievance(); break;
+                    case 'history': renderHistoryView(display); break;
+                    case 'community': renderCommunityView(display); break;
+                    case 'guidelines': renderGuidelinesView(display); break;
+
+                    // Officer Routes
+                    case 'worklist': renderOfficerWorklist(display); break;
+                    case 'sla_monitor': renderSLAMonitor(display); break;
+                    case 'field_maps': renderFieldMaps(display); break;
+                    case 'state_stats': renderStateStats(display); break;
+
+                    // Admin Routes
+                    case 'national': renderNationalDashboard(display); break;
+                    case 'dept_audit': renderDeptAudit(display); break;
+                    case 'ai_center': renderAICenter(display); break;
+                    case 'sys_config': renderSystemConfig(display); break;
+                }
+                lucide.createIcons();
+            }, 300);
+        }
+
+        // --- CITIZEN PAGES ---
+
+        function renderCitizenDashboard(container) {
+            const userComplaints = DB.complaints.filter(c => c.userId === currentUser.id);
+            const resolved = userComplaints.filter(c => c.status === 'Resolved').length;
+
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <div class="mb-10 flex justify-between items-end">
                     <div>
@@ -361,10 +389,10 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    function renderHistoryView(container) {
-        container.innerHTML = `
+        function renderHistoryView(container) {
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <h2 class="text-3xl font-black text-slate-800 mb-8 tracking-tight">Grievance History & Archive</h2>
                 <div class="gov-card overflow-hidden">
@@ -407,10 +435,10 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    function renderCommunityView(container) {
-        container.innerHTML = `
+        function renderCommunityView(container) {
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <div class="flex justify-between items-center mb-10">
                     <h2 class="text-3xl font-black text-slate-800 tracking-tight">Community Forum</h2>
@@ -434,10 +462,10 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    function renderGuidelinesView(container) {
-        container.innerHTML = `
+        function renderGuidelinesView(container) {
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">Official Citizen Guidelines</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -452,12 +480,12 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    // --- OFFICER PAGES ---
+        // --- OFFICER PAGES ---
 
-    function renderOfficerWorklist(container) {
-        container.innerHTML = `
+        function renderOfficerWorklist(container) {
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <div class="mb-10 flex justify-between items-end">
                     <div>
@@ -506,10 +534,10 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    function renderSLAMonitor(container) {
-        container.innerHTML = `
+        function renderSLAMonitor(container) {
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">SLA Performance Tracker</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -535,10 +563,10 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    function renderFieldMaps(container) {
-        container.innerHTML = `
+        function renderFieldMaps(container) {
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">Geographic Field Mapping</h2>
                 <div class="gov-card h-[600px] flex flex-col items-center justify-center bg-slate-100 border-2 border-dashed border-slate-300">
@@ -548,10 +576,10 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    function renderStateStats(container) {
-        container.innerHTML = `
+        function renderStateStats(container) {
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">State Efficiency Analytics</h2>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -566,26 +594,26 @@
                 </div>
             </div>
         `;
-        setTimeout(() => {
-            const ctx1 = document.getElementById('stateTrends').getContext('2d');
-            new Chart(ctx1, {
-                type: 'line',
-                data: { labels: ['M','T','W','T','F','S','S'], datasets: [{ label:'Resolved', data:[12,19,15,22,30,10,5], borderColor:'#0b4a8f', tension:0.4 }] },
-                options: { maintainAspectRatio: false }
-            });
-            const ctx2 = document.getElementById('stateAging').getContext('2d');
-            new Chart(ctx2, {
-                type: 'bar',
-                data: { labels: ['Water','Elec','Road','Sanit'], datasets: [{ label:'Avg Days', data:[1.2, 0.8, 4.5, 0.5], backgroundColor:'#f39200' }] },
-                options: { maintainAspectRatio: false }
-            });
-        }, 100);
-    }
+            setTimeout(() => {
+                const ctx1 = document.getElementById('stateTrends').getContext('2d');
+                new Chart(ctx1, {
+                    type: 'line',
+                    data: { labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], datasets: [{ label: 'Resolved', data: [12, 19, 15, 22, 30, 10, 5], borderColor: '#0b4a8f', tension: 0.4 }] },
+                    options: { maintainAspectRatio: false }
+                });
+                const ctx2 = document.getElementById('stateAging').getContext('2d');
+                new Chart(ctx2, {
+                    type: 'bar',
+                    data: { labels: ['Water', 'Elec', 'Road', 'Sanit'], datasets: [{ label: 'Avg Days', data: [1.2, 0.8, 4.5, 0.5], backgroundColor: '#f39200' }] },
+                    options: { maintainAspectRatio: false }
+                });
+            }, 100);
+        }
 
-    // --- ADMIN PAGES ---
+        // --- ADMIN PAGES ---
 
-    function renderNationalDashboard(container) {
-        container.innerHTML = `
+        function renderNationalDashboard(container) {
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <h2 class="text-4xl font-black text-slate-800 mb-10 tracking-tighter uppercase">National Oversight Dashboard</h2>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
@@ -610,18 +638,18 @@
                 </div>
             </div>
         `;
-        setTimeout(() => {
-            const ctx = document.getElementById('nationalMap').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: { labels: ['Delhi','MH','UP','KA','TN','BR'], datasets: [{ label:'Volume', data:[120,450,980,310,220,540], backgroundColor:'#0b4a8f' }] },
-                options: { maintainAspectRatio: false }
-            });
-        }, 100);
-    }
+            setTimeout(() => {
+                const ctx = document.getElementById('nationalMap').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels: ['Delhi', 'MH', 'UP', 'KA', 'TN', 'BR'], datasets: [{ label: 'Volume', data: [120, 450, 980, 310, 220, 540], backgroundColor: '#0b4a8f' }] },
+                    options: { maintainAspectRatio: false }
+                });
+            }, 100);
+        }
 
-    function renderDeptAudit(container) {
-        container.innerHTML = `
+        function renderDeptAudit(container) {
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">Departmental Audit Engine</h2>
                 <div class="gov-card p-10">
@@ -635,7 +663,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y">
-                            ${['Water','Electricity','Telecom','Roads'].map(d => `
+                            ${['Water', 'Electricity', 'Telecom', 'Roads'].map(d => `
                                 <tr>
                                     <td class="py-6 font-black text-slate-800">${d}</td>
                                     <td class="py-6 font-bold text-gov-green">98.2%</td>
@@ -648,10 +676,10 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    function renderAICenter(container) {
-        container.innerHTML = `
+        function renderAICenter(container) {
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">AI Control & Audit</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -673,18 +701,18 @@
                 </div>
             </div>
         `;
-        setTimeout(() => {
-            const ctx = document.getElementById('aiChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: { labels: ['Correct','Override','Low Conf'], datasets: [{ data:[94,4,2], backgroundColor:['#22c55e','#ef4444','#f39200'] }] },
-                options: { maintainAspectRatio: false }
-            });
-        }, 100);
-    }
+            setTimeout(() => {
+                const ctx = document.getElementById('aiChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: { labels: ['Correct', 'Override', 'Low Conf'], datasets: [{ data: [94, 4, 2], backgroundColor: ['#22c55e', '#ef4444', '#f39200'] }] },
+                    options: { maintainAspectRatio: false }
+                });
+            }, 100);
+        }
 
-    function renderSystemConfig(container) {
-        container.innerHTML = `
+        function renderSystemConfig(container) {
+            container.innerHTML = `
             <div class="p-10 animate-view">
                 <h2 class="text-3xl font-black text-slate-800 mb-10 tracking-tight">Global System Configuration</h2>
                 <div class="gov-card p-10">
@@ -706,20 +734,20 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    // --- SHARED UI COMPONENTS ---
+        // --- SHARED UI COMPONENTS ---
 
-    function renderStatCard(label, val, color, icon) {
-        const theme = {
-            blue: 'border-blue-500 text-blue-600 bg-blue-50/50',
-            green: 'border-green-500 text-green-600 bg-green-50/50',
-            indigo: 'border-indigo-500 text-indigo-600 bg-indigo-50/50',
-            orange: 'border-orange-500 text-orange-600 bg-orange-50/50',
-            red: 'border-red-500 text-red-600 bg-red-50/50'
-        }[color];
-        
-        return `
+        function renderStatCard(label, val, color, icon) {
+            const theme = {
+                blue: 'border-blue-500 text-blue-600 bg-blue-50/50',
+                green: 'border-green-500 text-green-600 bg-green-50/50',
+                indigo: 'border-indigo-500 text-indigo-600 bg-indigo-50/50',
+                orange: 'border-orange-500 text-orange-600 bg-orange-50/50',
+                red: 'border-red-500 text-red-600 bg-red-50/50'
+            }[color];
+
+            return `
             <div class="gov-card p-6 border-l-[6px] ${theme}">
                 <div class="flex justify-between items-start">
                     <div>
@@ -730,10 +758,10 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    function renderComplaintRow(c) {
-        return `
+        function renderComplaintRow(c) {
+            return `
             <div class="p-6 border rounded-2xl hover:bg-slate-50 transition-all cursor-pointer group" onclick="viewCaseDetail('${c.id}')">
                 <div class="flex justify-between items-start mb-4">
                     <div class="flex items-center gap-3">
@@ -756,11 +784,11 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    function showLodgeGrievance() {
-        const modal = document.getElementById('modalContent');
-        modal.innerHTML = `
+        function showLodgeGrievance() {
+            const modal = document.getElementById('modalContent');
+            modal.innerHTML = `
             <div class="pt-10 mb-12 text-center">
                 <div class="h-20 w-20 bg-blue-100 text-gov-blue rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner">
                     <i data-lucide="plus" class="w-10 h-10"></i>
@@ -811,47 +839,47 @@
                 </div>
             </div>
         `;
-        document.getElementById('modalOverlay').classList.remove('hidden');
-        lucide.createIcons();
-    }
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            lucide.createIcons();
+        }
 
-    function simulateAITriage() {
-        const desc = document.getElementById('lod_desc').value;
-        if (desc.length < 20) return;
-        
-        const panel = document.getElementById('aiTriagePanel');
-        panel.classList.remove('hidden');
-        
-        setTimeout(() => {
-            document.getElementById('aiTriageMsg').innerHTML = `Detected: <span class="text-white font-black">Infrastructure / Utility Leakage</span>. Suggested Urgency: <span class="text-white font-black">HIGH</span>. Routing to <span class="text-saffron-400 font-black">Water Supply Dept</span>.`;
-            document.getElementById('lod_dept').value = "Water Supply";
-        }, 1500);
-    }
+        function simulateAITriage() {
+            const desc = document.getElementById('lod_desc').value;
+            if (desc.length < 20) return;
 
-    function submitGrievance() {
-        const title = document.getElementById('lod_title').value || "New Grievance";
-        const id = 'GRV-2026-00' + (DB.complaints.length + 1);
-        DB.complaints.unshift({
-            id: id,
-            userId: currentUser.id,
-            title: title,
-            dept: document.getElementById('lod_dept').value,
-            status: 'Pending',
-            priority: 'Medium',
-            date: '2026-01-08',
-            deadline: '2026-01-12',
-            desc: document.getElementById('lod_desc').value,
-            state: currentUser.state
-        });
-        closeModal();
-        navigate('dash');
-        showNotify('SUCCESS: Grievance ' + id + ' initialized and routed.');
-    }
+            const panel = document.getElementById('aiTriagePanel');
+            panel.classList.remove('hidden');
 
-    function viewCaseDetail(id) {
-        const c = DB.complaints.find(comp => comp.id === id);
-        const modal = document.getElementById('modalContent');
-        modal.innerHTML = `
+            setTimeout(() => {
+                document.getElementById('aiTriageMsg').innerHTML = `Detected: <span class="text-white font-black">Infrastructure / Utility Leakage</span>. Suggested Urgency: <span class="text-white font-black">HIGH</span>. Routing to <span class="text-saffron-400 font-black">Water Supply Dept</span>.`;
+                document.getElementById('lod_dept').value = "Water Supply";
+            }, 1500);
+        }
+
+        function submitGrievance() {
+            const title = document.getElementById('lod_title').value || "New Grievance";
+            const id = 'GRV-2026-00' + (DB.complaints.length + 1);
+            DB.complaints.unshift({
+                id: id,
+                userId: currentUser.id,
+                title: title,
+                dept: document.getElementById('lod_dept').value,
+                status: 'Pending',
+                priority: 'Medium',
+                date: '2026-01-08',
+                deadline: '2026-01-12',
+                desc: document.getElementById('lod_desc').value,
+                state: currentUser.state
+            });
+            closeModal();
+            navigate('dash');
+            showNotify('SUCCESS: Grievance ' + id + ' initialized and routed.');
+        }
+
+        function viewCaseDetail(id) {
+            const c = DB.complaints.find(comp => comp.id === id);
+            const modal = document.getElementById('modalContent');
+            modal.innerHTML = `
             <div class="pt-10">
                 <div class="flex flex-col md:flex-row justify-between items-start gap-10 mb-12">
                     <div>
@@ -906,12 +934,12 @@
                 </div>
             </div>
         `;
-        document.getElementById('modalOverlay').classList.remove('hidden');
-        lucide.createIcons();
-    }
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            lucide.createIcons();
+        }
 
-    function renderTimelineItem(title, date, msg, done) {
-        return `
+        function renderTimelineItem(title, date, msg, done) {
+            return `
             <div class="relative pl-12 pb-4">
                 <div class="absolute left-0 top-0 h-6 w-6 rounded-full ${done ? 'bg-gov-green text-white shadow-[0_0_10px_#22c55e]' : 'bg-slate-200 text-slate-400'} flex items-center justify-center z-10">
                     <i data-lucide="${done ? 'check' : 'circle'}" class="w-3 h-3"></i>
@@ -926,39 +954,40 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    function closeModal() {
-        document.getElementById('modalOverlay').classList.add('hidden');
-    }
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.add('hidden');
+        }
 
-    function showNotify(msg) {
-        const note = document.createElement('div');
-        note.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-950 text-white px-10 py-5 rounded-[2rem] shadow-2xl z-[300] font-black text-xs tracking-widest uppercase animate-view flex items-center gap-4';
-        note.innerHTML = `<i data-lucide="shield-check" class="text-green-500"></i> ${msg}`;
-        document.body.appendChild(note);
-        lucide.createIcons();
-        setTimeout(() => note.remove(), 4000);
-    }
+        function showNotify(msg) {
+            const note = document.createElement('div');
+            note.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-950 text-white px-10 py-5 rounded-[2rem] shadow-2xl z-[300] font-black text-xs tracking-widest uppercase animate-view flex items-center gap-4';
+            note.innerHTML = `<i data-lucide="shield-check" class="text-green-500"></i> ${msg}`;
+            document.body.appendChild(note);
+            lucide.createIcons();
+            setTimeout(() => note.remove(), 4000);
+        }
 
-    function toggleAIChat() {
-        const chat = document.getElementById('chatWindow');
-        chat.classList.toggle('hidden');
-    }
+        function toggleAIChat() {
+            const chat = document.getElementById('chatWindow');
+            chat.classList.toggle('hidden');
+        }
 
-    // --- SYSTEM INIT ---
+        // --- SYSTEM INIT ---
 
-    window.onload = () => {
-        switchRole('citizen');
-        
-        // Live Date/Time
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('liveClock').innerText = now.toLocaleTimeString();
-            document.getElementById('liveDate').innerText = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-        }, 1000);
-    };
-</script>
+        window.onload = () => {
+            switchRole('citizen');
+
+            // Live Date/Time
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('liveClock').innerText = now.toLocaleTimeString();
+                document.getElementById('liveDate').innerText = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            }, 1000);
+        };
+    </script>
 
 </body>
+
 </html>

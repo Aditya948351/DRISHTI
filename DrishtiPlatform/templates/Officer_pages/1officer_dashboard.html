@@ -1,171 +1,229 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Officer Dashboard</title>
-<style>
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 0;
-        background: #f0f2f7;
-    }
+{% extends 'dashboard_base.html' %}
+{% load static %}
 
-    /* Header */
-    header {
-        background: linear-gradient(90deg, #004080, #1a75ff);
-        color: white;
-        padding: 25px 20px;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-    }
-    header h1 {
-        margin: 0;
-        font-size: 2em;
-        letter-spacing: 1px;
-    }
+{% block title %}Officer Dashboard | Drishti{% endblock %}
 
-    /* Cards Grid */
-    .cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 25px;
-        padding: 30px 20px;
-    }
-
-    /* Card Styles */
-    .card {
-        background: linear-gradient(145deg, #ffffff, #e6f0ff);
-        padding: 25px 20px;
-        border-radius: 12px;
-        text-align: center;
-        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 25px rgba(0,0,0,0.2);
-    }
-
-    .card h2 {
-        margin: 15px 0 10px;
-        color: #004080;
-        font-size: 1.3em;
-    }
-
-    .card p {
-        font-size: 2em;
-        font-weight: bold;
-        color: #1a75ff;
-        margin: 5px 0;
-    }
-
-    /* Icons */
-    .card i {
-        font-size: 2.5em;
-        margin-bottom: 12px;
-        color: #004080;
-    }
-
-    /* Progress Bar */
-    .progress-container {
-        background: #d0d7e6;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-top: 15px;
-        height: 15px;
-    }
-    .progress-bar {
-        height: 15px;
-        width: 0%;
-        background: #1a75ff;
-        text-align: center;
-        line-height: 15px;
-        color: white;
-        font-size: 12px;
-        border-radius: 10px;
-        transition: width 1s ease-in-out;
-    }
-
-    /* Badge */
-    .badge {
-        display: inline-block;
-        padding: 5px 10px;
-        border-radius: 12px;
-        color: white;
-        font-size: 0.8em;
-        margin-top: 10px;
-    }
-    .high { background: #dc3545; }    /* Red for High Priority */
-    .medium { background: #ffc107; }  /* Yellow for Medium Priority */
-    .low { background: #28a745; }     /* Green for Low Priority */
-
-    @media (max-width: 500px) {
-        .cards { grid-template-columns: 1fr; }
-    }
-</style>
-<!-- Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-
-<header>
-    <h1>Officer Dashboard</h1>
-</header>
-
-<div class="cards">
-    <!-- Assigned Complaints -->
-    <div class="card">
-        <i class="fas fa-tasks"></i>
-        <h2>Assigned Complaints</h2>
-        <p>10</p>
-        <div class="badge high">High Priority</div>
-    </div>
-
-    <!-- Pending Complaints -->
-    <div class="card">
-        <i class="fas fa-hourglass-half"></i>
-        <h2>Pending Complaints</h2>
-        <p>5</p>
-        <div class="progress-container">
-            <div class="progress-bar" style="width: 60%;">60%</div>
+{% block content %}
+<div class="row g-4">
+    <!-- Left Sidebar: Profile & Quick Stats -->
+    <div class="col-lg-3">
+        <!-- Profile Card -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body text-center p-4">
+                <div class="mb-3 position-relative d-inline-block">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold fs-2 shadow-sm"
+                        style="width: 80px; height: 80px;">
+                        {{ user.username|slice:":1"|upper }}
+                    </div>
+                    <span
+                        class="position-absolute bottom-0 end-0 p-2 bg-success border border-white rounded-circle"></span>
+                </div>
+                <h5 class="fw-bold mb-1">{{ user.get_full_name|default:user.username }}</h5>
+                <p class="text-muted small mb-3">Field Officer (Grade A)</p>
+                <div class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-3">
+                    <i data-lucide="shield" class="w-3 h-3 me-1"></i> Verified Officer
+                </div>
+                <hr class="my-3 opacity-10">
+                <div class="text-start small">
+                    <div class="mb-2"><span class="text-muted">Department:</span> <span class="fw-bold float-end">Public
+                            Works</span></div>
+                    <div class="mb-2"><span class="text-muted">Zone:</span> <span class="fw-bold float-end">North
+                            Delhi</span></div>
+                    <div><span class="text-muted">Employee ID:</span> <span
+                            class="fw-bold float-end">EMP-2026-X89</span></div>
+                </div>
+            </div>
         </div>
-        <div class="badge medium">Medium Priority</div>
+
+        <!-- AI Assistant Mini-Card -->
+        <div class="card border-0 shadow-sm bg-gradient-dark text-white overflow-hidden position-relative">
+            <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                <i data-lucide="bot" class="w-16 h-16"></i>
+            </div>
+            <div class="card-body position-relative z-1">
+                <h6 class="fw-bold mb-2"><i data-lucide="sparkles" class="w-4 h-4 me-1 text-warning"></i> AI Assistant
+                </h6>
+                <p class="small opacity-75 mb-3">You have 3 high-priority cases predicted by AI today.</p>
+                <button class="btn btn-sm btn-light text-primary fw-bold w-100 shadow-sm">View Insights</button>
+            </div>
+        </div>
     </div>
 
-    <!-- Resolved Today -->
-    <div class="card">
-        <i class="fas fa-check-circle"></i>
-        <h2>Resolved Today</h2>
-        <p>3</p>
-        <div class="badge low">Low Priority</div>
-    </div>
+    <!-- Right Content: Stats & Active Work -->
+    <div class="col-lg-9">
+        <!-- Welcome Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="h3 fw-bold text-primary mb-1">Officer Command Center</h2>
+                <p class="text-muted mb-0">Here's your daily briefing and case load.</p>
+            </div>
+            <div class="text-end">
+                <p class="small text-muted mb-0">Last Sync: <span class="fw-bold text-dark">Just Now</span></p>
+            </div>
+        </div>
 
-    <!-- Overdue Complaints -->
-    <div class="card">
-        <i class="fas fa-exclamation-triangle"></i>
-        <h2>Overdue Complaints</h2>
-        <p>2</p>
-        <div class="badge high">High Priority</div>
+        <!-- Stats Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm text-white h-100"
+                    style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <p class="mb-0 opacity-75 small text-uppercase fw-bold">Assigned Cases</p>
+                                <h2 class="display-6 fw-bold mb-0">12</h2>
+                            </div>
+                            <div class="bg-white bg-opacity-25 p-2 rounded-circle">
+                                <i data-lucide="briefcase" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+                        <div class="small opacity-75">
+                            <i data-lucide="trending-up" class="w-3 h-3 me-1"></i> +2 new today
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm text-white h-100"
+                    style="background: linear-gradient(135deg, #fd7e14 0%, #d65b00 100%);">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <p class="mb-0 opacity-75 small text-uppercase fw-bold">Pending Action</p>
+                                <h2 class="display-6 fw-bold mb-0">5</h2>
+                            </div>
+                            <div class="bg-white bg-opacity-25 p-2 rounded-circle">
+                                <i data-lucide="clock" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+                        <div class="small opacity-75">
+                            <i data-lucide="alert-circle" class="w-3 h-3 me-1"></i> 3 high priority
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm text-white h-100"
+                    style="background: linear-gradient(135deg, #198754 0%, #146c43 100%);">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <p class="mb-0 opacity-75 small text-uppercase fw-bold">Resolved (Month)</p>
+                                <h2 class="display-6 fw-bold mb-0">28</h2>
+                            </div>
+                            <div class="bg-white bg-opacity-25 p-2 rounded-circle">
+                                <i data-lucide="check-circle" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+                        <div class="small opacity-75">
+                            <i data-lucide="award" class="w-3 h-3 me-1"></i> Top 5% performance
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NLP Feature Showcase: Smart Case Assistant -->
+        <div class="card border-0 shadow-sm mb-4 overflow-hidden">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0 text-primary">
+                    <i data-lucide="sparkles" class="w-5 h-5 me-2 text-warning"></i>Smart Case Assistant
+                </h5>
+                <span class="badge bg-primary bg-opacity-10 text-primary">AI Powered</span>
+            </div>
+            <div class="card-body bg-light">
+                <div class="row g-3">
+                    <!-- Sentiment Analysis -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="fw-bold small text-uppercase text-muted mb-3">Sentiment Analysis</h6>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-grow-1">
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="ms-3 badge bg-danger bg-opacity-10 text-danger">High Urgency</span>
+                                </div>
+                                <p class="small text-muted mb-0">
+                                    AI detected <strong>frustration</strong> and <strong>urgency</strong> in Case #402
+                                    (Water Leakage). Recommended immediate follow-up.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Priority Prediction -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="fw-bold small text-uppercase text-muted mb-3">Priority Prediction</h6>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-warning bg-opacity-10 text-warning p-2 rounded">
+                                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">Predicted: Critical</div>
+                                        <div class="small text-muted">Confidence: 92%</div>
+                                    </div>
+                                </div>
+                                <p class="small text-muted mt-3 mb-0">
+                                    Based on keywords "safety hazard" and "school zone", AI has flagged Case #389 as
+                                    <strong>Critical Priority</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Assignments Table -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h5 class="fw-bold mb-0">Recent Assignments</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-uppercase small fw-bold text-muted">
+                        <tr>
+                            <th class="px-4 py-3">Case ID</th>
+                            <th class="px-4 py-3">Subject</th>
+                            <th class="px-4 py-3">AI Priority</th>
+                            <th class="px-4 py-3">Status</th>
+                            <th class="px-4 py-3 text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="px-4 fw-bold text-primary">#402</td>
+                            <td class="px-4">Major Water Leakage in Sector 4</td>
+                            <td class="px-4"><span class="badge bg-danger">High</span></td>
+                            <td class="px-4"><span class="badge bg-warning text-dark">Pending</span></td>
+                            <td class="px-4 text-end"><button
+                                    class="btn btn-sm btn-outline-primary rounded-pill">Inspect</button></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 fw-bold text-primary">#389</td>
+                            <td class="px-4">Pothole near Primary School</td>
+                            <td class="px-4"><span class="badge bg-danger">Critical</span></td>
+                            <td class="px-4"><span class="badge bg-info text-dark">In Progress</span></td>
+                            <td class="px-4 text-end"><button
+                                    class="btn btn-sm btn-outline-primary rounded-pill">Update</button></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 fw-bold text-primary">#356</td>
+                            <td class="px-4">Street Light Malfunction</td>
+                            <td class="px-4"><span class="badge bg-success">Low</span></td>
+                            <td class="px-4"><span class="badge bg-success">Resolved</span></td>
+                            <td class="px-4 text-end"><button
+                                    class="btn btn-sm btn-outline-secondary rounded-pill">View</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-
-<script>
-    // Animate progress bars on load
-    window.addEventListener('load', () => {
-        const bars = document.querySelectorAll('.progress-bar');
-        bars.forEach(bar => {
-            const width = bar.style.width;
-            bar.style.width = '0%';
-            setTimeout(() => {
-                bar.style.width = width;
-            }, 200);
-        });
-    });
-</script>
-
-</body>
-</html>
+{% endblock %}

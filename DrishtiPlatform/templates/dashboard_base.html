@@ -1,0 +1,235 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DRISHTI | Government of India{% endblock %}</title>
+
+    <!-- Bootstrap CSS (Offline) -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Top Accessibility Bar -->
+    <div class="top-bar bg-dark text-white py-1 small">
+        <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
+            <div class="d-flex gap-3">
+                <a href="#" class="text-white text-decoration-none">Government of India</a>
+                <a href="#" class="text-white text-decoration-none">Ministry of Electronics & IT</a>
+            </div>
+            <div class="d-flex gap-3 align-items-center">
+                <a href="#main-content" class="text-white text-decoration-none">Skip to Main Content</a>
+                <span class="opacity-50">|</span>
+                <button class="btn btn-sm btn-link text-white p-0 text-decoration-none" id="themeToggle">
+                    <i data-lucide="moon" class="w-4 h-4"></i>
+                </button>
+                <span class="opacity-50">|</span>
+                <a href="#" class="text-white text-decoration-none fw-bold">English</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header (Logos) -->
+    <header class="bg-white py-3 border-bottom">
+        <div class="container-fluid px-4 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <!-- Emblem Placeholder -->
+                <div class="emblem text-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Emblem"
+                        height="60">
+                </div>
+                <div class="border-start ps-3 border-2 d-flex align-items-center gap-3">
+                    <img src="https://github.com/Aditya948351/DRISHTI/blob/main/Drishti-logo.png?raw=true"
+                        alt="Drishti Logo" style="height: 50px;">
+                    <div>
+                        <h1 class="h5 mb-0 fw-bold text-uppercase text-primary">Drishti Platform</h1>
+                        <p class="mb-0 small text-muted fw-bold">Digital Redressal Intelligent System with Human-in-loop
+                            Tracking Interface</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-none d-md-block">
+                <img src="https://upload.wikimedia.org/wikipedia/en/9/95/Digital_India_logo.svg" alt="Digital India"
+                    height="45">
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-premium sticky-top">
+        <div class="container-fluid px-4">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-medium">
+                    {% if not user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+                            href="{% url 'home' %}">Home</a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    {% if user.role == 'citizen' %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'citizen_dashboard' %}active{% endif %}"
+                            href="{% url 'citizen_dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'citizen_submit_complaint' %}active{% endif %}"
+                            href="{% url 'citizen_submit_complaint' %}">Lodge Grievance</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'citizen_my_complaints' %}active{% endif %}"
+                            href="{% url 'citizen_my_complaints' %}">Track Status</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'thread_list' %}active{% endif %}"
+                            href="{% url 'thread_list' %}">Community Hub</a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact Us</a>
+                    </li>
+                </ul>
+
+                {% if user.is_authenticated %}
+                <div class="d-flex align-items-center gap-3 text-white">
+                    <div class="text-end lh-1 d-none d-sm-block">
+                        <div class="fw-bold small">{{ user.get_full_name|default:user.username }}</div>
+                        <div class="small opacity-75" style="font-size: 0.75rem;">{{ user.get_role_display }}</div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown">
+                            <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center fw-bold"
+                                style="width: 32px; height: 32px;">
+                                {{ user.username|slice:":1"|upper }}
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item text-danger">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% else %}
+                <div class="d-flex gap-2">
+                    <a href="{% url 'login' %}" class="btn btn-light btn-sm fw-bold text-primary">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-light btn-sm">Register</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow-1 py-4" id="main-content">
+        <div class="container-fluid px-4">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}success{% endif %} alert-dismissible fade show shadow-sm"
+                role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5 mt-auto border-top border-secondary">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5 class="text-uppercase fw-bold mb-3 text-warning">Drishti Platform</h5>
+                    <p class="small text-white-50">
+                        An initiative to empower citizens with a transparent, efficient, and AI-driven grievance
+                        redressal system.
+                    </p>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#" class="text-white-50 text-decoration-none">Home</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">About Us</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">FAQ</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-uppercase fw-bold mb-3">Policies</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#" class="text-white-50 text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Terms of Service</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Copyright Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-uppercase fw-bold mb-3">Contact</h6>
+                    <p class="small text-white-50 mb-1">Helpline: 1800-11-2345</p>
+                    <p class="small text-white-50">Email: helpdesk@drishti.gov.in</p>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="text-center small text-white-50">
+                &copy; 2026 Drishti Platform. Designed & Developed by NIC.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS (Offline) -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    <script>
+        lucide.createIcons();
+
+        // Simple Theme Toggle
+        const toggleBtn = document.getElementById('themeToggle');
+        const icon = toggleBtn.querySelector('i');
+
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.setAttribute('data-bs-theme', 'dark');
+            icon.setAttribute('data-lucide', 'sun');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            if (document.body.getAttribute('data-bs-theme') === 'dark') {
+                document.body.setAttribute('data-bs-theme', 'light');
+                icon.setAttribute('data-lucide', 'moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-bs-theme', 'dark');
+                icon.setAttribute('data-lucide', 'sun');
+                localStorage.setItem('theme', 'dark');
+            }
+            lucide.createIcons();
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

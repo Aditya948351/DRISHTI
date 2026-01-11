@@ -1,191 +1,176 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Department Dashboard</title>
+{% extends 'dashboard_base.html' %}
+{% load static %}
 
-<style>
-body {
-    margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: #eef2f7;
-}
+{% block title %}Department Dashboard | Drishti{% endblock %}
 
-/* ===== BLUE THEME ===== */
-.header {
-    background: #0d47a1;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-
-.nav {
-    background: #08306b;
-    padding: 10px;
-    text-align: center;
-}
-
-.nav a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.nav a:hover {
-    text-decoration: underline;
-}
-
-.container {
-    max-width: 1100px;
-    margin: 25px auto;
-    padding: 10px;
-}
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-}
-
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-    text-align: center;
-}
-
-.card h2 {
-    margin-bottom: 10px;
-    font-size: 18px;
-    color: #0d47a1;
-}
-
-.count {
-    font-size: 32px;
-    font-weight: bold;
-    color: #333;
-}
-
-.badge {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    color: white;
-}
-
-.new { background: #2196f3; }
-.assigned { background: #1976d2; }
-.overdue { background: #e53935; }
-.resolved { background: #5e35b1; }
-
-/* Extra Sections */
-.section {
-    margin-top: 30px;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-}
-
-.section h3 {
-    margin-bottom: 15px;
-    color: #0d47a1;
-}
-
-.list-item {
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
-    font-size: 14px;
-}
-
-.list-item:last-child {
-    border-bottom: none;
-}
-
-.progress {
-    background: #ddd;
-    height: 10px;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 8px;
-}
-
-.progress-bar {
-    width: 70%;
-    height: 100%;
-    background: #1976d2;
-}
-</style>
-</head>
-
-<body>
-
-<div class="header">
-    <h1>Department Admin Dashboard</h1>
-    <p>Complaint Monitoring & Officer Management</p>
-</div>
-
-<div class="nav">
-    <a href="/dept/dashboard">Dashboard</a>
-    <a href="/dept/new-complaints">New Complaints</a>
-    <a href="/dept/officer-list">Officers</a>
-    <a href="/dept/reports">Reports</a>
-    <a href="/logout">Logout</a>
-</div>
-
-<div class="container">
-
-    <!-- Stats Cards -->
-    <div class="cards">
-        <div class="card">
-            <h2>New Complaints</h2>
-            <div class="count">20</div>
-            <span class="badge new">Today</span>
-        </div>
-
-        <div class="card">
-            <h2>Assigned Complaints</h2>
-            <div class="count">15</div>
-            <span class="badge assigned">In Progress</span>
-        </div>
-
-        <div class="card">
-            <h2>Overdue Complaints</h2>
-            <div class="count">5</div>
-            <span class="badge overdue">Urgent</span>
-        </div>
-
-        <div class="card">
-            <h2>Resolved Complaints</h2>
-            <div class="count">42</div>
-            <span class="badge resolved">Completed</span>
+{% block content %}
+<div class="row g-4">
+    <!-- Left Sidebar: Dept Info -->
+    <div class="col-lg-3">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body text-center p-4">
+                <div class="mb-3">
+                    <div class="rounded-circle bg-warning text-dark d-flex align-items-center justify-content-center fw-bold fs-2 shadow-sm mx-auto"
+                        style="width: 80px; height: 80px;">
+                        PW
+                    </div>
+                </div>
+                <h5 class="fw-bold mb-1">Public Works Dept</h5>
+                <p class="text-muted small mb-3">Admin Console</p>
+                <div class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill mb-3">
+                    <i data-lucide="check-circle" class="w-3 h-3 me-1"></i> Active
+                </div>
+                <hr class="my-3 opacity-10">
+                <div class="text-start small">
+                    <div class="mb-2"><span class="text-muted">Total Officers:</span> <span
+                            class="fw-bold float-end">45</span></div>
+                    <div class="mb-2"><span class="text-muted">Active Cases:</span> <span
+                            class="fw-bold float-end">128</span></div>
+                    <div><span class="text-muted">Avg Resolution:</span> <span class="fw-bold float-end">3.2 Days</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Recent Activity -->
-    <div class="section">
-        <h3>Recent Activity</h3>
-        <div class="list-item">Complaint #201 assigned to Officer A</div>
-        <div class="list-item">Complaint #198 marked overdue</div>
-        <div class="list-item">Complaint #190 resolved successfully</div>
-    </div>
-
-    <!-- Performance Section -->
-    <div class="section">
-        <h3>Department Performance (SLA)</h3>
-        <p>Complaints resolved within SLA</p>
-        <div class="progress">
-            <div class="progress-bar"></div>
+    <!-- Right Content: Analytics & AI -->
+    <div class="col-lg-9">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="h3 fw-bold text-primary mb-1">Department Overview</h2>
+                <p class="text-muted mb-0">Real-time insights and resource management.</p>
+            </div>
+            <button class="btn btn-primary rounded-pill shadow-sm">
+                <i data-lucide="file-plus" class="w-4 h-4 me-2"></i>Generate Report
+            </button>
         </div>
-        <small>70% SLA compliance</small>
+
+        <!-- Stats Row -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100 border-start border-4 border-primary">
+                    <div class="card-body">
+                        <p class="text-muted small text-uppercase fw-bold mb-1">Total Grievances</p>
+                        <h3 class="fw-bold mb-0">1,245</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100 border-start border-4 border-warning">
+                    <div class="card-body">
+                        <p class="text-muted small text-uppercase fw-bold mb-1">Pending Review</p>
+                        <h3 class="fw-bold mb-0">42</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100 border-start border-4 border-success">
+                    <div class="card-body">
+                        <p class="text-muted small text-uppercase fw-bold mb-1">Resolved Today</p>
+                        <h3 class="fw-bold mb-0">18</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100 border-start border-4 border-info">
+                    <div class="card-body">
+                        <p class="text-muted small text-uppercase fw-bold mb-1">Escalated</p>
+                        <h3 class="fw-bold mb-0">5</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NLP Feature Showcase: Departmental AI Insights -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0 text-primary">
+                    <i data-lucide="cpu" class="w-5 h-5 me-2 text-info"></i>Departmental AI Insights
+                </h5>
+                <span class="badge bg-info bg-opacity-10 text-info">Live Analysis</span>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <!-- Trend Analysis -->
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="bg-primary bg-opacity-10 p-3 rounded">
+                                <i data-lucide="trending-up" class="w-6 h-6 text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold">Emerging Trend Detected</h6>
+                                <p class="small text-muted mb-2">
+                                    AI has detected a <strong>40% spike</strong> in "Water Logging" complaints in
+                                    <strong>Zone 4</strong> over the last 24 hours.
+                                </p>
+                                <button class="btn btn-sm btn-outline-primary rounded-pill">View Affected Area</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Automated Routing -->
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="bg-success bg-opacity-10 p-3 rounded">
+                                <i data-lucide="git-merge" class="w-6 h-6 text-success"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold">Smart Routing Efficiency</h6>
+                                <p class="small text-muted mb-2">
+                                    <strong>98%</strong> of incoming complaints were automatically routed to the correct
+                                    field officers by the AI engine today.
+                                </p>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 98%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h5 class="fw-bold mb-0">Recent Department Activity</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-uppercase small fw-bold text-muted">
+                        <tr>
+                            <th class="px-4 py-3">Officer</th>
+                            <th class="px-4 py-3">Action</th>
+                            <th class="px-4 py-3">Time</th>
+                            <th class="px-4 py-3 text-end">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="px-4 fw-bold">Ramesh Gupta</td>
+                            <td class="px-4">Resolved Case #356</td>
+                            <td class="px-4 text-muted small">10 mins ago</td>
+                            <td class="px-4 text-end"><a href="#"
+                                    class="text-primary text-decoration-none small fw-bold">View</a></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 fw-bold">System AI</td>
+                            <td class="px-4">Auto-assigned Case #405 to Suresh Kumar</td>
+                            <td class="px-4 text-muted small">25 mins ago</td>
+                            <td class="px-4 text-end"><a href="#"
+                                    class="text-primary text-decoration-none small fw-bold">View</a></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 fw-bold">Anita Desai</td>
+                            <td class="px-4">Flagged Case #389 as Critical</td>
+                            <td class="px-4 text-muted small">1 hour ago</td>
+                            <td class="px-4 text-end"><a href="#"
+                                    class="text-primary text-decoration-none small fw-bold">View</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
 </div>
-
-</body>
-</html>
+{% endblock %}
