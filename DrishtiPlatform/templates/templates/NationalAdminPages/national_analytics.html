@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>National Analytics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+/* SAME BASE STYLE */
+body{margin:0;font-family:'Segoe UI';background:#f1f6fc}
+.sidebar{width:240px;position:fixed;left:-240px;top:0;height:100%;background:#0b2e59;color:white;padding:15px;transition:.3s}
+.sidebar.show{left:0}
+.sidebar a{display:block;color:white;padding:14px;border-radius:6px;text-decoration:none}
+.sidebar a:hover{background:#ff9933;color:black}
+.main{margin-left:20px;padding-left:20px;transition:.3s}
+.main.shift{margin-left:260px}
+.header{background:#fff;padding:15px;display:flex;gap:15px;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.toggle-main{background:#0b2e59;color:white;border:none;padding:8px 14px;border-radius:6px}
+.toggle-main.hide{display:none}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:20px}
+.box{background:white;padding:20px;border-radius:14px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="sidebar" class="sidebar">
+<a href="{% url 'national_dashboard' %}">Dashboard</a>
+<a href="{% url 'national_analytics' %}">Analytics</a>
+<a href="{% url 'manage_departments' %}">Departments</a>
+<a href="{% url 'manage_admins' %}">Admins</a>
+</div>
+
+<div id="main" class="main">
+<div class="header">
+<button id="headerBtn" class="toggle-main" onclick="toggleSidebar()">☰</button>
+<h2>National Analytics</h2>
+</div>
+
+<div class="grid">
+<div class="box"><canvas id="chart1"></canvas></div>
+<div class="box"><canvas id="chart2"></canvas></div>
+<div class="box"><canvas id="chart3"></canvas></div>
+</div>
+</div>
+
+<script>
+function toggleSidebar(){sidebar.classList.toggle("show");main.classList.toggle("shift");headerBtn.classList.toggle("hide");}
+
+new Chart(chart1,{type:'line',data:{labels:['Jan','Feb','Mar'],datasets:[{data:[120,190,300],borderColor:'#ff9933'}]}});
+new Chart(chart2,{type:'bar',data:{labels:['Road','Water','Health'],datasets:[{data:[500,400,300],backgroundColor:'#0b2e59'}]}});
+new Chart(chart3,{type:'pie',data:{labels:['Resolved','Pending'],datasets:[{data:[80,20],backgroundColor:['#4caf50','#f44336']}]}});
+</script>
+</body>
+</html>

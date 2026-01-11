@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Admin Dashboard | DRISHTI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI';
+            background: #f1f6fc;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            position: fixed;
+            left: -240px;
+            top: 0;
+            height: 100%;
+            background: #0b2e59;
+            color: white;
+            padding: 15px;
+            z-index: 999;
+            transition: left 0.3s ease;
+        }
+
+        .sidebar.show {
+            left: 0;
+        }
+
+        .sidebar .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .brand button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 14px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background: #ff9933;
+            color: black;
+        }
+
+        /* Main content */
+        .main {
+            margin-left: 20px;
+            transition: margin-left 0.3s ease, padding-left 0.3s ease;
+            padding-left: 20px;
+        }
+
+        .main.shift {
+            margin-left: 260px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .08);
+        }
+
+        .toggle-main {
+            background: #0b2e59;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .toggle-main.hide {
+            display: none;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .1);
+            text-align: center;
+        }
+
+        .card i {
+            font-size: 28px;
+            color: #ff9933;
+        }
+
+        /* Charts */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .chart-box {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+        }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main.shift {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="brand">
+            <button id="sidebarBtn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button> DRISHTI
+        </div>
+        <a href="{% url 'state_dashboard' %}"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="{% url 'state_escalated' %}"><i class="fa fa-triangle-exclamation"></i> Escalated</a>
+        <a href="{% url 'state_analytics' %}"><i class="fa fa-chart-line"></i> Analytics</a>
+        <a href="{% url 'state_districts' %}"><i class="fa fa-building"></i> District Admins</a>
+        <a href="{% url 'logout' %}"><i class="fa fa-right-from-bracket"></i> Logout</a>
+    </div>
+
+    <!-- Main -->
+    <div id="main" class="main">
+        <div class="header">
+            <button id="headerBtn" class="toggle-main" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+            <h2>State Admin Dashboard</h2>
+            <p style="margin-left:auto;">Welcome, State Officer</p>
+        </div>
+
+        <!-- Cards -->
+        <div class="cards">
+            <div class="card"><i class="fa fa-file"></i>
+                <h3>12,350</h3>Total
+            </div>
+            <div class="card"><i class="fa fa-check-circle"></i>
+                <h3>9,800</h3>Resolved
+            </div>
+            <div class="card"><i class="fa fa-clock"></i>
+                <h3>1,240</h3>Pending
+            </div>
+            <div class="card"><i class="fa fa-triangle-exclamation"></i>
+                <h3>560</h3>Escalated
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-grid">
+            <div class="chart-box">
+                <h3>Monthly Complaints</h3>
+                <canvas id="lineChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Department Share</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inject months and totals safely -->
+    <script id="chart-data" type="application/json">
+        {
+            "months": {{ months|json_script:"months-data" }},
+            "totals": {{ totals|json_script:"totals-data" }}
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const main = document.getElementById('main');
+        const headerBtn = document.getElementById('headerBtn');
+
+        // Sidebar toggle
+        function toggleSidebar() {
+            sidebar.classList.toggle('show');
+            main.classList.toggle('shift');
+            if (sidebar.classList.contains('show')) {
+                headerBtn.classList.add('hide');
+            } else {
+                headerBtn.classList.remove('hide');
+            }
+        }
+
+        // Dynamic Line Chart for Monthly Complaints
+        const ctx = document.getElementById('lineChart').getContext('2d');
+
+const lineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: months,
+        datasets: [{
+            label: 'Monthly Complaints',
+            data: totals,
+            borderColor: '#ff9933',
+            backgroundColor: 'rgba(255,153,51,0.2)',
+            fill: true,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true, position: 'top' },
+            title: { display: true, text: 'Monthly Complaints Trend' }
+        },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
+
+        // Pie Chart (Department Share)
+        new Chart(document.getElementById('pieChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Road', 'Water', 'Electricity', 'Health', 'Education'],
+                datasets: [{
+                    data: [35, 25, 20, 10, 10],
+                    backgroundColor: ['#ff9933', '#2196f3', '#4caf50', '#9c27b0', '#f44336']
+                }]
+            }
+        });
+
+        // Mobile swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX - touchStartX > 50) {
+                sidebar.classList.add('show');
+                main.classList.add('shift');
+                headerBtn.classList.add('hide');
+            }
+            if (touchStartX - touchEndX > 50) {
+                sidebar.classList.remove('show');
+                main.classList.remove('shift');
+                headerBtn.classList.remove('hide');
+            }
+        });
+
+        // Active menu highlight
+        const active = "{{ request.resolver_match.url_name }}";
+        document.querySelectorAll(".sidebar a").forEach(link => {
+            if (link.getAttribute("href").includes(active)) {
+                link.style.background = "#ff9933";
+                link.style.color = "black";
+            }
+        });
+    </script>
+</body>
+
+</html>

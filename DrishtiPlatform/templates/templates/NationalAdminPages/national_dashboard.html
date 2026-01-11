@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>National Dashboard | DRISHTI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI';
+            background: #f1f6fc
+        }
+
+        .sidebar {
+            width: 240px;
+            position: fixed;
+            left: -240px;
+            top: 0;
+            height: 100%;
+            background: #0b2e59;
+            color: #fff;
+            padding: 15px;
+            transition: .3s
+        }
+
+        .sidebar.show {
+            left: 0
+        }
+
+        .sidebar a {
+            display: block;
+            color: #fff;
+            padding: 14px;
+            border-radius: 6px;
+            text-decoration: none
+        }
+
+        .sidebar a:hover {
+            background: #ff9933;
+            color: #000
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px
+        }
+
+        .brand button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px
+        }
+
+        .main {
+            margin-left: 20px;
+            padding-left: 20px;
+            transition: .3s
+        }
+
+        .main.shift {
+            margin-left: 260px
+        }
+
+        .header {
+            background: #fff;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .08)
+        }
+
+        .toggle-main {
+            background: #0b2e59;
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px
+        }
+
+        .toggle-main.hide {
+            display: none
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px
+        }
+
+        .card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .1)
+        }
+
+        .card i {
+            font-size: 28px;
+            color: #ff9933
+        }
+
+        @media(max-width:900px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:600px) {
+            .cards {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="sidebar" class="sidebar">
+        <div class="brand">
+            <button onclick="toggleSidebar()"><i class="fa fa-bars"></i></button> DRISHTI
+        </div>
+        <a href="{% url 'national_dashboard' %}">Dashboard</a>
+        <a href="{% url 'national_analytics' %}">Analytics</a>
+        <a href="{% url 'manage_departments' %}">Departments</a>
+        <a href="{% url 'manage_admins' %}">Admins</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+
+    <div id="main" class="main">
+        <div class="header">
+            <button id="headerBtn" class="toggle-main" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+            <h2>National Admin Dashboard</h2>
+        </div>
+
+        <div class="cards">
+            <div class="card"><i class="fa fa-file"></i>
+                <h3>3.2M</h3>Total Complaints
+            </div>
+            <div class="card"><i class="fa fa-check-circle"></i>
+                <h3>2.6M</h3>Resolved
+            </div>
+            <div class="card"><i class="fa fa-clock"></i>
+                <h3>420K</h3>Pending
+            </div>
+            <div class="card"><i class="fa fa-triangle-exclamation"></i>
+                <h3>90K</h3>Escalated
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            sidebar.classList.toggle("show");
+            main.classList.toggle("shift");
+            headerBtn.classList.toggle("hide");
+        }
+    </script>
+</body>
+
+</html>
