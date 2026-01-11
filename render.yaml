@@ -2,6 +2,7 @@ services:
   - type: web
     name: drishti-platform
     env: python
+    rootDirectory: DrishtiPlatform
     buildCommand: "./build.sh"
     startCommand: "gunicorn DrishtiPlatform.wsgi:application"
     envVars:
