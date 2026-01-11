@@ -1,1 +1,10 @@
--r DrishtiPlatform/requirements.txt
+Django>=5.0.0
+gunicorn
+whitenoise
+dj-database-url
+psycopg2-binary
+Pillow
+numpy
+pandas
+scikit-learn
+requests
