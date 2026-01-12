@@ -70,40 +70,54 @@ def update_status(request, pk):
         return redirect('home')
     
     if request.method == 'POST':
-        action = request.POST.get('action') # verify, escalate, resolve, reject
+        action = request.POST.get('action') # verify, approve_forward, resolve, reject
         
         if action == 'verify' and user.role == 'officer':
             complaint.is_verified = True
-            complaint.workflow_state = 'local_verified'
+            complaint.workflow_state = 'verified_by_officer'
+            complaint.status = 'in_progress'
             # Gamification: Points for verification
             user.points += 5
             user.save()
             
-        elif action == 'escalate':
-            if user.role == 'officer':
-                complaint.workflow_state = 'dept_pending'
-            elif user.role == 'dept_admin':
-                complaint.workflow_state = 'city_pending'
-            elif user.role == 'city_admin':
-                # Check address/jurisdiction to decide if it goes to State or stays City
-                # For now, simple linear escalation
-                if 'Maharashtra' in str(user.address) or 'Gujarat' in str(user.address):
-                     complaint.workflow_state = 'national_pending' # Skip state for now or assume city_admin is state
-                else:
-                    complaint.workflow_state = 'state_pending'
-            elif user.role == 'super_admin':
-                complaint.status = 'resolved'
-                
+        elif action == 'approve_forward':
+            if user.role == 'dept_admin':
+                complaint.workflow_state = 'forwarded_to_redressal'
+                # Could also assign to specific city/state officer here if logic existed
+            
         elif action == 'resolve':
-            complaint.status = 'resolved'
-            from django.utils import timezone
-            complaint.resolved_at = timezone.now()
-            # Gamification: Points for resolving
-            user.points += 20
-            user.save()
+            if user.role in ['city_admin', 'state_admin', 'super_admin']: # Assuming city/state handle redressal
+                complaint.status = 'resolved'
+                complaint.workflow_state = 'resolved'
+                from django.utils import timezone
+                complaint.resolved_at = timezone.now()
+                # Gamification: Points for resolving
+                user.points += 20
+                user.save()
+            
+        elif action == 'resolve_with_proof':
+            if 'resolution_photo' in request.FILES:
+                complaint.resolution_photo = request.FILES['resolution_photo']
+                complaint.status = 'resolved'
+                complaint.workflow_state = 'resolved'
+                complaint.resolved_at = timezone.now()
+                # Award points to citizen
+                complaint.citizen.points += 50
+                complaint.citizen.save()
+            else:
+                # Handle error if no photo (for now just pass or add message)
+                pass
+
+        elif action == 'final_verify':
+            complaint.is_final_verified = True
+            # Maybe extra points or status update?
             
         elif action == 'reject':
+            reason = request.POST.get('rejection_reason')
             complaint.status = 'rejected'
+            complaint.workflow_state = 'rejected'
+            if reason:
+                complaint.rejection_reason = reason
             
         complaint.save()
         return redirect('complaint_detail', pk=pk)

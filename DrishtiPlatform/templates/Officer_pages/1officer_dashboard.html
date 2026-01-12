@@ -156,6 +156,7 @@
                         <tr>
                             <th class="px-4 py-3">Case ID</th>
                             <th class="px-4 py-3">Subject</th>
+                            <th class="px-4 py-3">Category</th>
                             <th class="px-4 py-3">AI Priority</th>
                             <th class="px-4 py-3">Status</th>
                             <th class="px-4 py-3 text-end">Action</th>
@@ -166,6 +167,11 @@
                         <tr>
                             <td class="px-4 fw-bold text-primary">#{{ complaint.id }}</td>
                             <td>{{ complaint.title }}</td>
+                            <td class="px-4">
+                                <span class="badge bg-secondary bg-opacity-10 text-dark border">
+                                    {{ complaint.ai_predicted_category|default:"General" }}
+                                </span>
+                            </td>
                             <td class="px-4">
                                 <span
                                     class="badge bg-{% if complaint.ai_predicted_priority == 'critical' %}danger{% elif complaint.ai_predicted_priority == 'high' %}warning{% else %}success{% endif %}">
@@ -189,7 +195,7 @@
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">No assignments found.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">No assignments found.</td>
                         </tr>
                         {% endfor %}
                     </tbody>

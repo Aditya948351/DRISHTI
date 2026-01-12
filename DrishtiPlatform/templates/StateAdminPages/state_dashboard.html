@@ -13,7 +13,7 @@
         </div>
         <div class="d-flex gap-2">
             <select class="form-select rounded-pill shadow-sm">
-                <option>All Districts</option>
+                <option>All Departments</option>
                 <option>North Zone</option>
                 <option>South Zone</option>
             </select>
@@ -28,7 +28,7 @@
         <div class="col-md-3">
             <div class="card border-0 shadow-sm bg-primary text-white h-100">
                 <div class="card-body p-4">
-                    <h2 class="display-5 fw-bold mb-1">15,420</h2>
+                    <h2 class="display-5 fw-bold mb-1">{{ total_grievances }}</h2>
                     <p class="opacity-75 mb-0">Total Grievances (YTD)</p>
                 </div>
             </div>
@@ -36,7 +36,7 @@
         <div class="col-md-3">
             <div class="card border-0 shadow-sm bg-white h-100 border-start border-4 border-success">
                 <div class="card-body p-4">
-                    <h2 class="display-5 fw-bold text-dark mb-1">88%</h2>
+                    <h2 class="display-5 fw-bold text-dark mb-1">{{ resolution_rate }}%</h2>
                     <p class="text-muted mb-0">Resolution Rate</p>
                 </div>
             </div>
@@ -44,7 +44,7 @@
         <div class="col-md-3">
             <div class="card border-0 shadow-sm bg-white h-100 border-start border-4 border-warning">
                 <div class="card-body p-4">
-                    <h2 class="display-5 fw-bold text-dark mb-1">4.2</h2>
+                    <h2 class="display-5 fw-bold text-dark mb-1">{{ avg_days_resolve }}</h2>
                     <p class="text-muted mb-0">Avg. Days to Resolve</p>
                 </div>
             </div>
@@ -52,7 +52,7 @@
         <div class="col-md-3">
             <div class="card border-0 shadow-sm bg-white h-100 border-start border-4 border-danger">
                 <div class="card-body p-4">
-                    <h2 class="display-5 fw-bold text-dark mb-1">12</h2>
+                    <h2 class="display-5 fw-bold text-dark mb-1">{{ critical_hotspots }}</h2>
                     <p class="text-muted mb-0">Critical Hotspots</p>
                 </div>
             </div>
@@ -127,16 +127,16 @@
         </div>
     </div>
 
-    <!-- District Performance Table -->
+    <!-- Department Performance Table -->
     <div class="card border-0 shadow-sm">
         <div class="card-header bg-white py-3">
-            <h5 class="fw-bold mb-0">District Performance</h5>
+            <h5 class="fw-bold mb-0">Department Performance</h5>
         </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="bg-light text-uppercase small fw-bold text-muted">
                     <tr>
-                        <th class="px-4 py-3">District</th>
+                        <th class="px-4 py-3">Department</th>
                         <th class="px-4 py-3">Total Cases</th>
                         <th class="px-4 py-3">Resolved</th>
                         <th class="px-4 py-3">Pending</th>
@@ -144,27 +144,24 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for dept in dept_performance %}
                     <tr>
-                        <td class="px-4 fw-bold">Central District</td>
-                        <td class="px-4">4,500</td>
-                        <td class="px-4 text-success">4,200</td>
-                        <td class="px-4 text-warning">300</td>
-                        <td class="px-4"><span class="badge bg-success">9.2/10</span></td>
+                        <td class="px-4 fw-bold">{{ dept.name }}</td>
+                        <td class="px-4">{{ dept.total }}</td>
+                        <td class="px-4 text-success">{{ dept.resolved }}</td>
+                        <td class="px-4 text-warning">{{ dept.pending }}</td>
+                        <td class="px-4">
+                            <span
+                                class="badge bg-{% if dept.ai_score >= 8 %}success{% elif dept.ai_score >= 5 %}warning{% else %}danger{% endif %}">
+                                {{ dept.ai_score }}/10
+                            </span>
+                        </td>
                     </tr>
+                    {% empty %}
                     <tr>
-                        <td class="px-4 fw-bold">North District</td>
-                        <td class="px-4">3,200</td>
-                        <td class="px-4 text-success">2,800</td>
-                        <td class="px-4 text-warning">400</td>
-                        <td class="px-4"><span class="badge bg-warning text-dark">7.5/10</span></td>
+                        <td colspan="5" class="text-center py-4 text-muted">No data available.</td>
                     </tr>
-                    <tr>
-                        <td class="px-4 fw-bold">East District</td>
-                        <td class="px-4">2,100</td>
-                        <td class="px-4 text-success">1,500</td>
-                        <td class="px-4 text-danger">600</td>
-                        <td class="px-4"><span class="badge bg-danger">5.8/10</span></td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

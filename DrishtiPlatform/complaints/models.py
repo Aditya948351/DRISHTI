@@ -42,8 +42,15 @@ class Complaint(models.Model):
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
     assigned_officer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_complaints')
     
+    WORKFLOW_CHOICES = (
+        ('pending_verification', 'Pending Verification'),
+        ('verified_by_officer', 'Verified by Officer'),
+        ('forwarded_to_redressal', 'Forwarded to Redressal'),
+        ('resolved', 'Resolved'),
+    )
+
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new')
-    workflow_state = models.CharField(max_length=50, default='pending_verification', help_text="Current stage in approval workflow")
+    workflow_state = models.CharField(max_length=50, choices=WORKFLOW_CHOICES, default='pending_verification', help_text="Current stage in approval workflow")
     is_verified = models.BooleanField(default=False, help_text="True if verified as a genuine issue")
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='medium')
     
@@ -52,6 +59,10 @@ class Complaint(models.Model):
     longitude = models.FloatField(null=True, blank=True)
     
     attachment = models.FileField(upload_to='complaints/', null=True, blank=True)
+    
+    # Resolution Proof
+    resolution_photo = models.ImageField(upload_to='resolutions/', null=True, blank=True)
+    is_final_verified = models.BooleanField(default=False, help_text="True if local officer verifies the resolution")
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -64,6 +75,9 @@ class Complaint(models.Model):
     
     # SLA
     sla_deadline = models.DateTimeField(null=True, blank=True)
+    
+    # Rejection
+    rejection_reason = models.TextField(blank=True, null=True, help_text="Reason for rejection by officer")
 
     def __str__(self):
         return f"{self.title} ({self.status})"

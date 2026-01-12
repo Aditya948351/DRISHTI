@@ -38,12 +38,33 @@
                     </div>
 
                     {% if complaint.attachment %}
-                    <div class="border-top pt-3">
+                    <div class="border-top pt-3 mb-3">
                         <small class="text-uppercase text-muted fw-bold d-block mb-2">Attachment</small>
                         <a href="{{ complaint.attachment.url }}" target="_blank"
                             class="btn btn-sm btn-outline-secondary">
                             <i data-lucide="paperclip" class="w-4 h-4 me-1"></i> View Attachment
                         </a>
+                    </div>
+                    {% endif %}
+
+                    {% if complaint.resolution_photo %}
+                    <div class="border-top pt-3 mb-3">
+                        <small class="text-uppercase text-success fw-bold d-block mb-2">Resolution Proof</small>
+                        <img src="{{ complaint.resolution_photo.url }}" class="img-fluid rounded shadow-sm border"
+                            alt="Resolution Proof" style="max-height: 300px;">
+                        {% if complaint.is_final_verified %}
+                        <div class="mt-2 text-success fw-bold small">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 me-1"></i> Verified by Local Officer
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    {% if complaint.status == 'rejected' and complaint.rejection_reason %}
+                    <div class="alert alert-danger mt-4 border-0 shadow-sm">
+                        <h6 class="fw-bold alert-heading"><i data-lucide="alert-circle"
+                                class="w-4 h-4 me-2"></i>Rejection Reason</h6>
+                        <p class="mb-0 small">{{ complaint.rejection_reason }}</p>
                     </div>
                     {% endif %}
                 </div>
@@ -63,6 +84,12 @@
                     <div class="timeline-item ps-3 border-start border-success">
                         <div class="fw-bold text-success">Resolved</div>
                         <div class="small text-muted">{{ complaint.resolved_at|date:"M d, Y H:i" }}</div>
+                    </div>
+                    {% endif %}
+                    {% if complaint.status == 'rejected' %}
+                    <div class="timeline-item ps-3 border-start border-danger">
+                        <div class="fw-bold text-danger">Rejected</div>
+                        <div class="small text-muted">{{ complaint.updated_at|date:"M d, Y H:i" }}</div>
                     </div>
                     {% endif %}
                 </div>
@@ -86,39 +113,60 @@
             </div>
 
             <!-- Officer Actions (Workflow) -->
-            {% if user.role == 'officer' or user.role == 'dept_admin' or user.role == 'city_admin' or user.role ==
-            'super_admin' %}
+            {% if user.role != 'citizen' %}
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-white py-3">
                     <h6 class="fw-bold mb-0">Official Actions</h6>
                 </div>
                 <div class="card-body p-4">
-                    <form action="{% url 'officer_work_complaint' complaint.id %}" method="POST">
+                    <form action="{% url 'officer_work_complaint' complaint.id %}" method="POST" id="actionForm"
+                        enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="d-grid gap-2">
-                            {% if user.role == 'officer' and not complaint.is_verified %}
+                            {% if user.role == 'officer' %}
+                            {% if complaint.workflow_state == 'pending_verification' %}
                             <button type="submit" name="action" value="verify" class="btn btn-success fw-bold">
                                 <i data-lucide="check-circle" class="w-4 h-4 me-2"></i>Verify Issue
                             </button>
                             {% endif %}
 
-                            {% if user.role == 'officer' and complaint.is_verified and complaint.workflow_state ==
-                            'local_verified' %}
-                            <button type="submit" name="action" value="escalate" class="btn btn-primary fw-bold">
-                                <i data-lucide="arrow-up-circle" class="w-4 h-4 me-2"></i>Escalate to Dept
+                            {% if complaint.status == 'resolved' and not complaint.is_final_verified %}
+                            <button type="submit" name="action" value="final_verify" class="btn btn-primary fw-bold">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 me-2"></i>Final Verify Resolution
                             </button>
                             {% endif %}
-
-                            {% if user.role == 'dept_admin' and complaint.workflow_state == 'dept_pending' %}
-                            <button type="submit" name="action" value="escalate" class="btn btn-primary fw-bold">
-                                <i data-lucide="arrow-up-circle" class="w-4 h-4 me-2"></i>Escalate to City
-                            </button>
                             {% endif %}
 
-                            {% if user.role == 'city_admin' and complaint.workflow_state == 'city_pending' %}
-                            <button type="submit" name="action" value="escalate" class="btn btn-primary fw-bold">
-                                <i data-lucide="arrow-up-circle" class="w-4 h-4 me-2"></i>Escalate to State
+                            {% if user.role == 'dept_admin' %}
+                            {% if complaint.workflow_state == 'verified_by_officer' %}
+                            <button type="submit" name="action" value="approve_forward"
+                                class="btn btn-primary fw-bold mb-2 w-100">
+                                <i data-lucide="arrow-up-circle" class="w-4 h-4 me-2"></i>Approve & Forward (To State)
                             </button>
+
+                            <div class="border-top pt-3 mt-2">
+                                <label class="form-label small fw-bold text-muted">Or Resolve Directly (Upload
+                                    Proof)</label>
+                                <input type="file" name="resolution_photo" class="form-control mb-2">
+                                <button type="submit" name="action" value="resolve_with_proof"
+                                    class="btn btn-success fw-bold w-100">
+                                    <i data-lucide="check-square" class="w-4 h-4 me-2"></i>Resolve with Proof
+                                </button>
+                            </div>
+                            {% endif %}
+                            {% endif %}
+
+                            {% if user.role == 'city_admin' or user.role == 'state_admin' %}
+                            {% if complaint.workflow_state == 'forwarded_to_redressal' %}
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-muted">Upload Resolution Proof</label>
+                                <input type="file" name="resolution_photo" class="form-control" required>
+                            </div>
+                            <button type="submit" name="action" value="resolve_with_proof"
+                                class="btn btn-success fw-bold">
+                                <i data-lucide="check-square" class="w-4 h-4 me-2"></i>Resolve with Proof
+                            </button>
+                            {% endif %}
                             {% endif %}
 
                             {% if user.role == 'super_admin' %}
@@ -127,9 +175,18 @@
                             </button>
                             {% endif %}
 
-                            <button type="submit" name="action" value="reject" class="btn btn-outline-danger fw-bold">
+                            {% if complaint.status != 'resolved' and complaint.status != 'rejected' %}
+                            <button type="button" class="btn btn-outline-danger fw-bold" onclick="toggleReject()">
                                 <i data-lucide="x-circle" class="w-4 h-4 me-2"></i>Reject
                             </button>
+
+                            <div id="rejectReasonDiv" class="d-none mt-2">
+                                <textarea name="rejection_reason" class="form-control mb-2"
+                                    placeholder="Reason for rejection..." rows="2"></textarea>
+                                <button type="submit" name="action" value="reject" class="btn btn-danger w-100">Confirm
+                                    Rejection</button>
+                            </div>
+                            {% endif %}
                         </div>
                     </form>
                 </div>
@@ -138,4 +195,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    function toggleReject() {
+        const div = document.getElementById('rejectReasonDiv');
+        div.classList.toggle('d-none');
+    }
+</script>
 {% endblock %}

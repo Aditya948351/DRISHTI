@@ -113,12 +113,24 @@ def officer_dashboard(request):
         return redirect('dashboard')
     
     # Fetch complaints assigned to this officer (or their department for now if direct assignment isn't used)
-    # Assuming officers see all complaints in their department for this MVP, or specifically assigned ones.
-    # Let's go with Department based for broader visibility as per "Command Center" feel.
-    if request.user.department:
+    # Allow General Administration (Diksha) to see ALL complaints for triage
+    if request.user.department and request.user.department.name != 'General Administration':
         complaints = Complaint.objects.filter(department=request.user.department)
     else:
-        complaints = Complaint.objects.none()
+        complaints = Complaint.objects.all()
+
+    # Sort by Priority (Critical > High > Medium > Low)
+    from django.db.models import Case, When, Value, IntegerField
+    complaints = complaints.annotate(
+        priority_val=Case(
+            When(priority='critical', then=Value(1)),
+            When(priority='high', then=Value(2)),
+            When(priority='medium', then=Value(3)),
+            When(priority='low', then=Value(4)),
+            default=Value(5),
+            output_field=IntegerField(),
+        )
+    ).order_by('priority_val', '-created_at')
 
     # Stats
     assigned_cases = complaints.count()
@@ -128,8 +140,8 @@ def officer_dashboard(request):
     current_month = timezone.now().month
     resolved_month = complaints.filter(status='resolved', resolved_at__month=current_month).count()
     
-    # Recent Assignments
-    recent_assignments = complaints.order_by('-created_at')[:5]
+    # Recent Assignments (Now sorted by priority)
+    recent_assignments = complaints[:10]
     
     # AI Insights (Get the most recent high priority case)
     critical_case = complaints.filter(ai_predicted_priority='critical').exclude(status='resolved').first()
@@ -152,14 +164,18 @@ def dept_dashboard(request):
         return redirect('dashboard')
     
     # Fetch complaints for this department
+    # Fetch complaints for this department
     if request.user.department:
-        complaints = Complaint.objects.filter(department=request.user.department)
+        if request.user.department.name == 'General Administration':
+            complaints = Complaint.objects.all()
+        else:
+            complaints = Complaint.objects.filter(department=request.user.department)
     else:
         complaints = Complaint.objects.none()
         
     # Stats
     total_grievances = complaints.count()
-    pending_review = complaints.filter(workflow_state='local_verified').count() # Verified by officer, pending dept review
+    pending_review = complaints.filter(workflow_state='verified_by_officer').count() # Verified by officer, pending dept review
     
     from django.utils import timezone
     current_day = timezone.now().day
@@ -167,7 +183,8 @@ def dept_dashboard(request):
     escalated = complaints.filter(workflow_state__in=['city_pending', 'state_pending', 'national_pending']).count()
     
     # Monitoring Lists
-    verified_complaints = complaints.filter(workflow_state='local_verified').order_by('-updated_at')[:5]
+    # Verified by officer means it's ready for Dept Admin review
+    verified_complaints = complaints.filter(workflow_state='verified_by_officer').order_by('-updated_at')[:5]
     rejected_complaints = complaints.filter(status='rejected').order_by('-updated_at')[:5]
     
     # --- Dynamic AI Insights ---
@@ -225,10 +242,64 @@ def dept_dashboard(request):
 
 # State Admin Views
 @login_required
+@login_required
 def state_dashboard(request):
-    if request.user.role != 'city_admin':
-        return redirect('dashboard')
-    return render(request, 'StateAdminPages/state_dashboard.html')
+    if request.user.role != 'city_admin' and request.user.role != 'state_admin': # Allow state_admin role if distinct
+        # Fallback for now as we used 'city_admin' for state in some places, but created 'state_admin' users
+        if request.user.role != 'state_admin' and request.user.role != 'city_admin':
+             return redirect('dashboard')
+    
+    # Filter complaints (For now, all complaints as it's a state view)
+    # In a real app, filter by State if address field was structured
+    complaints = Complaint.objects.all()
+    
+    # 1. Key Stats
+    total_grievances = complaints.count()
+    resolved_count = complaints.filter(status='resolved').count()
+    resolution_rate = int((resolved_count / total_grievances * 100)) if total_grievances > 0 else 0
+    
+    # Avg Days to Resolve
+    from django.db.models import Avg, F, ExpressionWrapper, fields
+    import datetime
+    
+    # Calculate duration for resolved complaints
+    # SQLite might not support simple date diffs easily in Django ORM without specific functions
+    # We will do a simple python calc for MVP if dataset is small, or use a simplified approach
+    resolved_complaints = complaints.filter(status='resolved', resolved_at__isnull=False)
+    total_days = 0
+    count = 0
+    for c in resolved_complaints:
+        diff = c.resolved_at - c.created_at
+        total_days += diff.days
+        count += 1
+    avg_days_resolve = round(total_days / count, 1) if count > 0 else 0
+    
+    critical_hotspots = complaints.filter(ai_predicted_priority='critical').count()
+    
+    # 2. Department Performance (Mapping to "Districts" table in template)
+    from django.db.models import Count, Q
+    dept_performance = Department.objects.annotate(
+        total=Count('complaint'),
+        resolved=Count('complaint', filter=Q(complaint__status='resolved')),
+        pending=Count('complaint', filter=~Q(complaint__status='resolved'))
+    )
+    
+    # Calculate a mock "AI Score" based on resolution rate
+    for dept in dept_performance:
+        if dept.total > 0:
+            rate = (dept.resolved / dept.total) * 10
+            dept.ai_score = round(rate, 1)
+        else:
+            dept.ai_score = 0
+
+    context = {
+        'total_grievances': total_grievances,
+        'resolution_rate': resolution_rate,
+        'avg_days_resolve': avg_days_resolve,
+        'critical_hotspots': critical_hotspots,
+        'dept_performance': dept_performance,
+    }
+    return render(request, 'StateAdminPages/state_dashboard.html', context)
 
 # National Admin Views
 @login_required

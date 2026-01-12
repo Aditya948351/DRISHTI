@@ -181,13 +181,18 @@
                                             {% if complaint.status == 'resolved' %}
                                             <span
                                                 class="badge bg-success bg-opacity-10 text-success rounded-pill">Resolved</span>
-                                            {% elif complaint.status == 'pending' %}
+                                            {% elif complaint.status == 'rejected' %}
                                             <span
-                                                class="badge bg-warning bg-opacity-10 text-warning rounded-pill">Pending</span>
+                                                class="badge bg-danger bg-opacity-10 text-danger rounded-pill">Rejected</span>
+                                            {% elif complaint.workflow_state == 'verified_by_officer' %}
+                                            <span
+                                                class="badge bg-info bg-opacity-10 text-info rounded-pill">Verified</span>
+                                            {% elif complaint.workflow_state == 'forwarded_to_redressal' %}
+                                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">In
+                                                Progress</span>
                                             {% else %}
                                             <span
-                                                class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill">{{
-                                                complaint.get_status_display }}</span>
+                                                class="badge bg-warning bg-opacity-10 text-warning rounded-pill">Pending</span>
                                             {% endif %}
                                         </td>
                                         <td class="text-end pe-4">
