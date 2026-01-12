@@ -127,6 +127,56 @@
         </div>
     </div>
 
+    <!-- Pending Approvals Section -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold text-primary mb-0">Pending Approvals (Escalated)</h5>
+            <span class="badge bg-danger bg-opacity-10 text-danger">{{ forwarded_complaints.count }} Pending</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light small text-muted text-uppercase">
+                        <tr>
+                            <th class="ps-4 py-3">ID</th>
+                            <th class="py-3">Subject</th>
+                            <th class="py-3">Department</th>
+                            <th class="py-3">Date</th>
+                            <th class="py-3 text-end pe-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for complaint in forwarded_complaints %}
+                        <tr>
+                            <td class="ps-4 fw-bold">#{{ complaint.id|stringformat:"04d" }}</td>
+                            <td>
+                                <div class="fw-bold text-dark">{{ complaint.title }}</div>
+                                <div class="small text-muted">{{ complaint.location|default:"--" }}</div>
+                            </td>
+                            <td><span class="badge bg-light text-dark border">{{ complaint.department.name }}</span>
+                            </td>
+                            <td class="small text-muted">{{ complaint.updated_at|date:"M d, Y" }}</td>
+                            <td class="text-end pe-4">
+                                <a href="{% url 'citizen_complaint_details' complaint.id %}"
+                                    class="btn btn-sm btn-primary fw-bold">
+                                    Review & Resolve
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted small">
+                                <i data-lucide="check-circle" class="w-8 h-8 mb-2 d-block mx-auto opacity-50"></i>
+                                No pending approvals at this time.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <!-- Department Performance Table -->
     <div class="card border-0 shadow-sm">
         <div class="card-header bg-white py-3">

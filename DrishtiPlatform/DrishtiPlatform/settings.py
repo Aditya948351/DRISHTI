@@ -81,12 +81,23 @@ WSGI_APPLICATION = 'DrishtiPlatform.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+# Database
+# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'drishti_db',
+        'USER': 'root',
+        'PASSWORD': 'Aditya@123',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
 }
+
+# Production Database (Railway)
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation

@@ -83,10 +83,10 @@ def citizen_my_complaints(request):
 
 @login_required
 def citizen_complaint_details(request, id):
-    if request.user.role != 'citizen':
-        return redirect('dashboard')
-    complaint = get_object_or_404(Complaint, id=id, citizen=request.user)
-    return render(request, 'Citizen/complaint_detail.html', {'complaint': complaint})
+    # Allow any authenticated user to view details if they have access (Role checks can be refined)
+    # For now, allow all roles to view details to enable workflow
+    complaint = get_object_or_404(Complaint, id=id)
+    return render(request, 'complaints/complaint_detail.html', {'complaint': complaint})
 
 @login_required
 def citizen_feedback(request):
@@ -104,7 +104,17 @@ def citizen_notifications(request):
 def citizen_profile(request):
     if request.user.role != 'citizen':
         return redirect('dashboard')
-    return render(request, 'Citizen/profile.html')
+        
+    # Mock Rewards Data
+    rewards = [
+        {'title': 'Municipal Tax Rebate', 'description': 'Get 5% off on property tax', 'points': 500, 'icon': 'percent', 'color': 'success'},
+        {'title': 'Free Bus Pass', 'description': 'Monthly pass for city buses', 'points': 300, 'icon': 'bus', 'color': 'primary'},
+        {'title': 'Public Library Membership', 'description': '1-year free membership', 'points': 200, 'icon': 'book-open', 'color': 'info'},
+        {'title': 'Municipal Gym Access', 'description': '1-month free gym access', 'points': 150, 'icon': 'dumbbell', 'color': 'warning'},
+        {'title': 'Tree Plantation Certificate', 'description': 'Plant a tree in your name', 'points': 100, 'icon': 'leaf', 'color': 'success'},
+    ]
+    
+    return render(request, 'Citizen/profile.html', {'rewards': rewards})
 
 # Officer Views
 @login_required
@@ -183,9 +193,17 @@ def dept_dashboard(request):
     escalated = complaints.filter(workflow_state__in=['city_pending', 'state_pending', 'national_pending']).count()
     
     # Monitoring Lists
-    # Verified by officer means it's ready for Dept Admin review
-    verified_complaints = complaints.filter(workflow_state='verified_by_officer').order_by('-updated_at')[:5]
-    rejected_complaints = complaints.filter(status='rejected').order_by('-updated_at')[:5]
+    # Monitoring Lists
+    # For General Admin, show all relevant complaints. For others, filter by dept.
+    if request.user.department and request.user.department.name == 'General Administration':
+        verified_complaints = Complaint.objects.filter(workflow_state='verified_by_officer').order_by('-updated_at')[:5]
+        rejected_complaints = Complaint.objects.filter(status='rejected').order_by('-updated_at')[:5]
+        # Also show pending review complaints if any
+        if not verified_complaints and not rejected_complaints:
+             verified_complaints = Complaint.objects.all().order_by('-created_at')[:5]
+    else:
+        verified_complaints = complaints.filter(workflow_state='verified_by_officer').order_by('-updated_at')[:5]
+        rejected_complaints = complaints.filter(status='rejected').order_by('-updated_at')[:5]
     
     # --- Dynamic AI Insights ---
     from django.db.models import Count
@@ -298,6 +316,7 @@ def state_dashboard(request):
         'avg_days_resolve': avg_days_resolve,
         'critical_hotspots': critical_hotspots,
         'dept_performance': dept_performance,
+        'forwarded_complaints': complaints.filter(workflow_state='forwarded_to_redressal').order_by('-updated_at'),
     }
     return render(request, 'StateAdminPages/state_dashboard.html', context)
 

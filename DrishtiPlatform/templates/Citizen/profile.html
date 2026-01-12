@@ -1,34 +1,145 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Profile</title>
-<style>
-body{font-family:Poppins;background:#f1f5f9}
-.profile{
-width:450px;margin:40px auto;background:white;
-padding:30px;border-radius:18px;
-box-shadow:0 15px 30px rgba(0,0,0,.12)
-}
-input{
-width:100%;padding:12px;margin-top:10px;
-border-radius:10px;border:1px solid #cbd5e1
-}
-button{
-margin-top:20px;width:100%;
-background:#1f3c88;color:white;
-padding:12px;border:none;border-radius:12px
-}
-</style>
-</head>
-<body>
+{% extends 'dashboard_base.html' %}
+{% load static %}
 
-<div class="profile">
-<h2>My Profile</h2>
-<input placeholder="Full Name">
-<input placeholder="Email">
-<input placeholder="Phone">
-<button>Update Profile</button>
+{% block title %}My Profile | Drishti{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Profile Header -->
+    <div class="card border-0 shadow-sm mb-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="bg-primary p-4 text-white text-center"
+                style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
+                <div class="mb-3 position-relative d-inline-block">
+                    <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center mx-auto fs-1 fw-bold shadow-lg border border-4 border-white"
+                        style="width: 120px; height: 120px;">
+                        {{ user.username|slice:":1"|upper }}
+                    </div>
+                    <span
+                        class="position-absolute bottom-0 end-0 p-2 bg-success border border-4 border-white rounded-circle"
+                        title="Verified Citizen">
+                        <span class="visually-hidden">Verified</span>
+                    </span>
+                </div>
+                <h3 class="fw-bold mb-1">{{ user.get_full_name|default:user.username }}</h3>
+                <p class="opacity-75 mb-3">Citizen ID: #{{ user.id|stringformat:"06d" }}</p>
+
+                <div class="d-flex justify-content-center gap-3">
+                    <span class="badge bg-white bg-opacity-25 rounded-pill px-3 py-2">
+                        <i data-lucide="map-pin" class="w-4 h-4 me-1"></i> {{ user.address|default:"Location Not Set" }}
+                    </span>
+                    <span class="badge bg-white bg-opacity-25 rounded-pill px-3 py-2">
+                        <i data-lucide="shield" class="w-4 h-4 me-1"></i> Civic Guardian (Level 1)
+                    </span>
+                </div>
+            </div>
+
+            <div class="row g-0 text-center py-3 bg-light border-top">
+                <div class="col-4 border-end">
+                    <h5 class="fw-bold mb-0 text-primary">{{ user.points|default:"0" }}</h5>
+                    <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Karma Points</small>
+                </div>
+                <div class="col-4 border-end">
+                    <h5 class="fw-bold mb-0 text-success">{{ user.complaint_set.count }}</h5>
+                    <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Grievances Filed</small>
+                </div>
+                <div class="col-4">
+                    <h5 class="fw-bold mb-0 text-warning">0</h5>
+                    <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Rewards Claimed</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Personal Details -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h6 class="fw-bold mb-0">Personal Information</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">Full Name</label>
+                        <div class="fw-medium">{{ user.get_full_name|default:"--" }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">Email Address</label>
+                        <div class="fw-medium">{{ user.email }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">Phone Number</label>
+                        <div class="fw-medium">{{ user.phone_number|default:"--" }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">Residential Address</label>
+                        <div class="fw-medium">{{ user.address|default:"--" }}</div>
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button class="btn btn-outline-primary rounded-pill">Edit Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rewards Section -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold mb-0 text-primary">
+                        <i data-lucide="gift" class="w-5 h-5 me-2"></i>Rewards & Benefits
+                    </h6>
+                    <span class="badge bg-primary bg-opacity-10 text-primary">Available Points: {{
+                        user.points|default:"0" }}</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light small text-muted text-uppercase">
+                                <tr>
+                                    <th class="ps-4 py-3">Reward</th>
+                                    <th class="py-3">Cost</th>
+                                    <th class="py-3 text-end pe-4">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reward in rewards %}
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="bg-{{ reward.color }} bg-opacity-10 p-2 rounded me-3 text-{{ reward.color }}">
+                                                <i data-lucide="{{ reward.icon }}" class="w-5 h-5"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold text-dark">{{ reward.title }}</div>
+                                                <div class="small text-muted">{{ reward.description }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border">{{ reward.points }} pts</span>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        {% if user.points >= reward.points %}
+                                        <button class="btn btn-sm btn-primary rounded-pill px-3">Claim</button>
+                                        {% else %}
+                                        <button class="btn btn-sm btn-light text-muted rounded-pill px-3"
+                                            disabled>Locked</button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-light text-center py-3">
+                    <small class="text-muted">Earn more points by reporting valid grievances and participating in
+                        community discussions.</small>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-</body>
-</html>
+{% endblock %}
