@@ -5,6 +5,7 @@ from .forms import ComplaintForm
 
 from ai_engine.utils import predict_category, predict_priority, suggest_department
 from .models import Category, Department
+from django.utils import timezone
 
 @login_required
 def file_complaint(request):
