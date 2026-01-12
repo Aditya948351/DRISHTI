@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: DrishtiPlatform
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn DrishtiPlatform.wsgi:application"
