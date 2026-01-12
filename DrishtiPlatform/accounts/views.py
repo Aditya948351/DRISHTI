@@ -26,6 +26,7 @@ class CustomLoginView(LoginView):
 
 def register(request):
     if request.method == 'POST':
+        print("DEBUG: POST Data Keys:", list(request.POST.keys()))
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
@@ -39,9 +40,10 @@ def register(request):
                 return redirect('dept_dashboard')
             elif user.role == 'city_admin':
                 return redirect('state_dashboard')
-            elif user.role == 'super_admin':
-                return redirect('national_dashboard')
             return redirect('home')
+        else:
+            print("DEBUG: Registration Form Errors:", form.errors.as_json())
+            print("DEBUG: POST Data:", {k: v for k, v in request.POST.items() if 'password' not in k})
     else:
         form = UserRegistrationForm()
     return render(request, 'PublicPages/register.html', {'form': form})

@@ -1,0 +1,51 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}My Complaints | Drishti{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">My Complaints</h2>
+        <a href="{% url 'file_complaint' %}" class="btn btn-primary">
+            <i data-lucide="plus-circle" class="w-4 h-4 me-2"></i>New Complaint
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="px-4 py-3">ID</th>
+                        <th class="px-4 py-3">Title</th>
+                        <th class="px-4 py-3">Status</th>
+                        <th class="px-4 py-3">Date</th>
+                        <th class="px-4 py-3 text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in complaints %}
+                    <tr>
+                        <td class="px-4 fw-bold">#{{ complaint.id }}</td>
+                        <td class="px-4">{{ complaint.title }}</td>
+                        <td class="px-4">
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill">
+                                {{ complaint.get_status_display }}
+                            </span>
+                        </td>
+                        <td class="px-4 text-muted small">{{ complaint.created_at|date:"M d, Y" }}</td>
+                        <td class="px-4 text-end">
+                            <a href="{% url 'complaint_detail' complaint.id %}"
+                                class="btn btn-sm btn-outline-primary">View</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">No complaints found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

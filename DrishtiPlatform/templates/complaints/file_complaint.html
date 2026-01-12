@@ -1,0 +1,51 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Lodge Grievance | Drishti{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h4 class="fw-bold text-primary mb-0">Lodge a New Grievance</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Subject / Title</label>
+                            <input type="text" name="title" class="form-control" required
+                                placeholder="e.g., Pothole on Main Street">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Detailed Description</label>
+                            <textarea name="description" class="form-control" rows="5" required
+                                placeholder="Describe the issue in detail..."></textarea>
+                            <div class="form-text">Our AI will analyze this to categorize your complaint automatically.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Location</label>
+                            <input type="text" name="location" class="form-control"
+                                placeholder="Area, Landmark, or Address">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Attachment (Optional)</label>
+                            <input type="file" name="attachment" class="form-control">
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Submit Grievance</button>
+                            <a href="{% url 'citizen_dashboard' %}" class="btn btn-light">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -120,7 +120,7 @@
         <h5 class="fw-bold text-dark mb-3">Quick Actions</h5>
         <div class="row g-3 mb-4">
             <div class="col-md-4">
-                <a href="{% url 'citizen_submit_complaint' %}" class="action-card p-4 text-center">
+                <a href="{% url 'file_complaint' %}" class="action-card p-4 text-center">
                     <div class="action-icon bg-primary bg-opacity-10 text-primary mx-auto">
                         <i data-lucide="plus-circle"></i>
                     </div>
@@ -129,7 +129,7 @@
                 </a>
             </div>
             <div class="col-md-4">
-                <a href="{% url 'citizen_my_complaints' %}" class="action-card p-4 text-center">
+                <a href="{% url 'citizen_complaints' %}" class="action-card p-4 text-center">
                     <div class="action-icon bg-info bg-opacity-10 text-info mx-auto">
                         <i data-lucide="search"></i>
                     </div>
@@ -155,8 +155,8 @@
                     <div
                         class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
                         <h6 class="fw-bold mb-0 text-primary">Recent Grievances</h6>
-                        <a href="{% url 'citizen_my_complaints' %}"
-                            class="btn btn-sm btn-light text-primary fw-bold">View All</a>
+                        <a href="{% url 'citizen_complaints' %}" class="btn btn-sm btn-light text-primary fw-bold">View
+                            All</a>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -191,7 +191,7 @@
                                             {% endif %}
                                         </td>
                                         <td class="text-end pe-4">
-                                            <a href="{% url 'citizen_complaint_details' complaint.id %}"
+                                            <a href="{% url 'complaint_detail' complaint.id %}"
                                                 class="btn btn-sm btn-light text-primary">
                                                 <i data-lucide="chevron-right" class="w-4 h-4"></i>
                                             </a>
@@ -201,7 +201,7 @@
                                     <tr>
                                         <td colspan="4" class="text-center py-5">
                                             <div class="text-muted mb-2">No grievances found</div>
-                                            <a href="{% url 'citizen_submit_complaint' %}"
+                                            <a href="{% url 'file_complaint' %}"
                                                 class="btn btn-sm btn-primary rounded-pill">Lodge First Grievance</a>
                                         </td>
                                     </tr>

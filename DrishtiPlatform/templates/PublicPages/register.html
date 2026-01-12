@@ -3,65 +3,136 @@
 {% block title %}Register - Drishti Platform{% endblock %}
 
 {% block content %}
-<div style="max-width: 600px; margin: 2rem auto;">
-    <div class="glass-card">
-        <div class="text-center mb-4">
-            <h2 style="margin-bottom: 0.5rem;">Citizen Registration</h2>
-            <p class="text-muted">Join Drishti to build a better community</p>
-        </div>
-
-        <!-- Progress Indicator -->
-        <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative;">
-            <div style="text-align: center; flex: 1;">
-                <div
-                    style="width: 30px; height: 30px; background: var(--primary); border-radius: 50%; margin: 0 auto 0.5rem; line-height: 30px; font-weight: bold;">
-                    1</div>
-                <span style="font-size: 0.8rem;">Personal</span>
-            </div>
-            <div style="text-align: center; flex: 1;">
-                <div
-                    style="width: 30px; height: 30px; background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 auto 0.5rem; line-height: 30px; font-weight: bold;">
-                    2</div>
-                <span style="font-size: 0.8rem;">Contact</span>
-            </div>
-            <div style="text-align: center; flex: 1;">
-                <div
-                    style="width: 30px; height: 30px; background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 auto 0.5rem; line-height: 30px; font-weight: bold;">
-                    3</div>
-                <span style="font-size: 0.8rem;">Account</span>
-            </div>
-        </div>
-
-        <form>
-            <!-- Step 1: Personal Info -->
-            <div id="step1">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" class="form-control" placeholder="Enter your full name">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="glass-card p-5">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold text-dark">Create Account</h2>
+                    <p class="text-muted">Join Drishti to build a better community</p>
                 </div>
-                <div class="grid-2">
-                    <div class="form-group">
-                        <label>Date of Birth</label>
-                        <input type="date" class="form-control">
+
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Error Display Section -->
+                    {% if form.errors %}
+                    <div class="alert alert-danger mb-4">
+                        <h6 class="fw-bold"><i data-lucide="alert-circle" class="w-4 h-4 me-2"></i>Please correct the
+                            following errors:</h6>
+                        <ul class="mb-0 ps-3 mt-2">
+                            {% for field in form %}
+                            {% for error in field.errors %}
+                            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                            {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                            <li><strong>General:</strong> {{ error }}</li>
+                            {% endfor %}
+                        </ul>
                     </div>
-                    <div class="form-group">
-                        <label>Gender</label>
-                        <select class="form-control">
-                            <option>Male</option>
-                            <option>Female</option>
-                            <option>Other</option>
-                        </select>
+                    {% endif %}
+
+                    <!-- Hidden Role Field -->
+                    <input type="hidden" name="role" value="citizen">
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-uppercase text-muted">First Name</label>
+                                <input type="text" name="first_name" class="form-control bg-light"
+                                    value="{{ form.first_name.value|default:'' }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-uppercase text-muted">Last Name</label>
+                                <input type="text" name="last_name" class="form-control bg-light"
+                                    value="{{ form.last_name.value|default:'' }}" required>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <button type="button" class="btn btn-primary" style="width: 100%;">Next Step</button>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-uppercase text-muted">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i data-lucide="user"
+                                    class="w-4 h-4 text-muted"></i></span>
+                            <input type="text" name="username" class="form-control bg-light border-start-0"
+                                value="{{ form.username.value|default:'' }}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-uppercase text-muted">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i data-lucide="mail"
+                                    class="w-4 h-4 text-muted"></i></span>
+                            <input type="email" name="email" class="form-control bg-light border-start-0"
+                                value="{{ form.email.value|default:'' }}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-uppercase text-muted">Phone Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i data-lucide="phone"
+                                    class="w-4 h-4 text-muted"></i></span>
+                            <input type="tel" name="phone_number" class="form-control bg-light border-start-0"
+                                value="{{ form.phone_number.value|default:'' }}" placeholder="Optional">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-uppercase text-muted">Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i data-lucide="map-pin"
+                                    class="w-4 h-4 text-muted"></i></span>
+                            <textarea name="address" class="form-control bg-light border-start-0" rows="2"
+                                placeholder="Optional">{{ form.address.value|default:'' }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-uppercase text-muted">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i data-lucide="lock"
+                                        class="w-4 h-4 text-muted"></i></span>
+                                {{ form.password1 }}
+                            </div>
+                            {% if form.password1.errors %}
+                            <div class="text-danger small">{{ form.password1.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-uppercase text-muted">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i data-lucide="check-circle"
+                                        class="w-4 h-4 text-muted"></i></span>
+                                {{ form.password2 }}
+                            </div>
+                            {% if form.password2.errors %}
+                            <div class="text-danger small">{{ form.password2.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12 form-text small mt-1">Must be at least 8 characters long.</div>
+                    </div>
+
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold shadow-sm">
+                            Create Account <i data-lucide="arrow-right" class="w-4 h-4 ms-2"></i>
+                        </button>
+                    </div>
+
+                    <div class="text-center border-top pt-4">
+                        <p class="text-muted mb-0">
+                            Already have an account?
+                            <a href="{% url 'login' %}" class="fw-bold text-primary text-decoration-none">Sign In</a>
+                        </p>
+                    </div>
+                </form>
             </div>
-
-            <!-- Steps 2 & 3 hidden for demo, would be toggled via JS -->
-        </form>
-
-        <div class="text-center mt-4">
-            <p class="text-muted">Already have an account? <a href="{% url 'login' %}"
-                    style="color: var(--secondary); text-decoration: none;">Login here</a></p>
         </div>
     </div>
 </div>

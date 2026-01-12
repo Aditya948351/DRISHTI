@@ -3,64 +3,93 @@
 {% block title %}Login - Drishti Platform{% endblock %}
 
 {% block content %}
-<div style="max-width: 450px; margin: 2rem auto;">
-    <div class="glass-card">
-        <div class="text-center mb-4">
-            <h2 style="margin-bottom: 0.5rem;">Welcome Back</h2>
-            <p class="text-muted">Login to access your dashboard</p>
-        </div>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="glass-card p-5">
+                <div class="text-center mb-4">
+                    <div class="mb-3">
+                        <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center"
+                            style="width: 64px; height: 64px;">
+                            <i data-lucide="lock" class="w-8 h-8 text-primary"></i>
+                        </div>
+                    </div>
+                    <h2 class="fw-bold text-dark">Welcome Back</h2>
+                    <p class="text-muted">Secure access to Drishti Platform</p>
+                </div>
 
-        <form method="post">
-            {% csrf_token %}
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
 
-            {% if form.errors %}
-            <div class="alert alert-danger" style="color: red; margin-bottom: 1rem; text-align: center;">
-                <strong>Error:</strong> Please enter a correct username and password. Note that both fields may be
-                case-sensitive.
+                    {% if form.errors %}
+                    <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+                        <i data-lucide="alert-circle" class="w-5 h-5 me-2"></i>
+                        <div>Invalid username or password</div>
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-uppercase text-muted">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i data-lucide="user" class="w-4 h-4 text-muted"></i>
+                            </span>
+                            <input type="text" name="username" class="form-control bg-light border-start-0"
+                                placeholder="Enter your username" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label class="form-label fw-bold small text-uppercase text-muted">Password</label>
+                            <a href="{% url 'reset_password' %}" class="small text-decoration-none fw-bold">Forgot
+                                Password?</a>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i data-lucide="key" class="w-4 h-4 text-muted"></i>
+                            </span>
+                            <input type="password" name="password" class="form-control bg-light border-start-0"
+                                placeholder="Enter your password" required>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold shadow-sm">
+                            Sign In <i data-lucide="arrow-right" class="w-4 h-4 ms-2"></i>
+                        </button>
+                    </div>
+
+                    <!-- Demo Login Helpers -->
+                    <div class="text-center mb-4">
+                        <p class="small text-muted mb-2 text-uppercase fw-bold">Quick Demo Login</p>
+                        <div class="d-flex gap-2 justify-content-center flex-wrap">
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill"
+                                onclick="fillLogin('citizen', '123')">Citizen</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill"
+                                onclick="fillLogin('officer', '123')">Officer</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill"
+                                onclick="fillLogin('admin', '123')">Admin</button>
+                        </div>
+                    </div>
+
+                    <div class="text-center border-top pt-4">
+                        <p class="text-muted mb-0">
+                            Don't have an account?
+                            <a href="{% url 'register' %}" class="fw-bold text-primary text-decoration-none">Register
+                                Now</a>
+                        </p>
+                    </div>
+                </form>
             </div>
-            {% endif %}
-
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
-                    <input type="checkbox"> Remember me
-                </label>
-                <a href="{% url 'reset_password' %}"
-                    style="color: var(--secondary); font-size: 0.9rem; text-decoration: none;">Forgot Password?</a>
-            </div>
-
-            <div class="mb-3" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
-                <button type="button" class="btn btn-secondary" onclick="dummyLogin('admin', '123')"
-                    style="font-size: 0.8rem; padding: 0.5rem;">Login as Admin</button>
-                <button type="button" class="btn btn-secondary" onclick="dummyLogin('citizen', '123')"
-                    style="font-size: 0.8rem; padding: 0.5rem;">Login as Citizen</button>
-                <button type="button" class="btn btn-secondary" onclick="dummyLogin('officer', '123')"
-                    style="font-size: 0.8rem; padding: 0.5rem;">Login as Officer</button>
-            </div>
-
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
-        </form>
-
-        <script>
-            function dummyLogin(username, password) {
-                document.querySelector('input[name="username"]').value = username;
-                document.querySelector('input[name="password"]').value = password;
-            }
-        </script>
-
-        <div class="text-center mt-4">
-            <p class="text-muted">Don't have an account? <a href="{% url 'register' %}"
-                    style="color: var(--secondary); text-decoration: none;">Register as Citizen</a></p>
         </div>
     </div>
 </div>
+
+<script>
+    function fillLogin(user, pass) {
+        document.querySelector('input[name="username"]').value = user;
+        document.querySelector('input[name="password"]').value = pass;
+    }
+</script>
 {% endblock %}

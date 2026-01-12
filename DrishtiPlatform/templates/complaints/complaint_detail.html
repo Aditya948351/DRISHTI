@@ -1,0 +1,90 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Complaint #{{ complaint.id }} | Drishti{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Complaint Details -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold text-primary mb-0">Complaint #{{ complaint.id }}</h5>
+                    <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3">
+                        {{ complaint.get_status_display }}
+                    </span>
+                </div>
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3">{{ complaint.title }}</h4>
+                    <p class="text-muted mb-4">{{ complaint.description }}</p>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <small class="text-uppercase text-muted fw-bold">Category (AI)</small>
+                            <div class="fw-medium">{{ complaint.ai_predicted_category|default:"Pending AI Analysis" }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-uppercase text-muted fw-bold">Priority (AI)</small>
+                            <div class="fw-medium">{{ complaint.ai_predicted_priority|default:"Pending"|title }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-uppercase text-muted fw-bold">Location</small>
+                            <div class="fw-medium">{{ complaint.location|default:"Not provided" }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-uppercase text-muted fw-bold">Filed On</small>
+                            <div class="fw-medium">{{ complaint.created_at|date:"M d, Y H:i" }}</div>
+                        </div>
+                    </div>
+
+                    {% if complaint.attachment %}
+                    <div class="border-top pt-3">
+                        <small class="text-uppercase text-muted fw-bold d-block mb-2">Attachment</small>
+                        <a href="{{ complaint.attachment.url }}" target="_blank"
+                            class="btn btn-sm btn-outline-secondary">
+                            <i data-lucide="paperclip" class="w-4 h-4 me-1"></i> View Attachment
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Timeline (Placeholder) -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h6 class="fw-bold mb-0">Activity Timeline</h6>
+                </div>
+                <div class="card-body p-4">
+                    <div class="timeline-item pb-3 border-start ps-3 border-primary">
+                        <div class="fw-bold text-primary">Complaint Registered</div>
+                        <div class="small text-muted">{{ complaint.created_at|date:"M d, Y H:i" }}</div>
+                    </div>
+                    {% if complaint.status == 'resolved' %}
+                    <div class="timeline-item ps-3 border-start border-success">
+                        <div class="fw-bold text-success">Resolved</div>
+                        <div class="small text-muted">{{ complaint.resolved_at|date:"M d, Y H:i" }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- AI Insights Card -->
+            <div class="card border-0 shadow-sm bg-gradient-primary text-white mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">AI Analysis</h5>
+                    <div class="mb-3">
+                        <small class="text-white-50 d-block">Confidence Score</small>
+                        <div class="display-6 fw-bold">{{ complaint.ai_confidence_score|default:"0"|floatformat:2 }}%
+                        </div>
+                    </div>
+                    <p class="small text-white-50 mb-0">
+                        This complaint was automatically categorized and prioritized by Drishti AI.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

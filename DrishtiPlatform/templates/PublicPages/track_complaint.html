@@ -1,64 +1,14 @@
 {% extends 'base.html' %}
-
-{% block title %}Track Complaint - Drishti Platform{% endblock %}
-
+{% block title %}Track Complaint - Drishti{% endblock %}
 {% block content %}
-<section class="hero-section" style="padding-bottom: 2rem;">
-    <h1 class="hero-title">Track Complaint</h1>
-    <p class="hero-subtitle">Enter your Complaint ID to check the current status.</p>
-</section>
-
-<div class="container" style="max-width: 800px;">
-    <div class="glass-card mb-5">
-        <form class="mb-4">
-            <div class="form-group mb-3">
-                <input type="text" class="form-control form-control-lg"
-                    placeholder="Enter Complaint ID (e.g., CMPL2026001234)" style="padding: 1rem; font-size: 1.1rem;">
-            </div>
-            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold">Track Status</button>
-        </form>
-        <p class="text-center text-muted mb-0">Don't have a Complaint ID? <a href="{% url 'register' %}"
-                class="text-primary text-decoration-none">Register and file a complaint</a></p>
-    </div>
-
-    <!-- Example Result (Mockup) -->
-    <div class="glass-card">
-        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-            <div>
-                <h3 class="text-white mb-1">Complaint #CMPL2026001234</h3>
-                <p class="text-muted mb-0">Category: <span class="text-white">Sanitation</span> | Filed: <span
-                        class="text-white">Jan 10, 2026</span></p>
-            </div>
-            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">In Progress</span>
+<div class="container py-5">
+    <h2>Track Your Complaint</h2>
+    <form>
+        <div class="mb-3">
+            <label class="form-label">Complaint ID</label>
+            <input type="text" class="form-control" placeholder="Enter Complaint ID">
         </div>
-
-        <div class="timeline position-relative">
-            <div class="border-start border-2 border-secondary position-absolute h-100" style="left: 1rem; top: 0;">
-            </div>
-
-            <div class="mb-4 position-relative ps-5">
-                <div class="position-absolute bg-success rounded-circle"
-                    style="width: 12px; height: 12px; left: 0.65rem; top: 0.4rem;"></div>
-                <h5 class="text-white mb-1">Complaint Submitted</h5>
-                <p class="text-muted small mb-0">Jan 10, 2026 - 10:30 AM</p>
-            </div>
-
-            <div class="mb-4 position-relative ps-5">
-                <div class="position-absolute bg-success rounded-circle"
-                    style="width: 12px; height: 12px; left: 0.65rem; top: 0.4rem;"></div>
-                <h5 class="text-white mb-1">Assigned to Officer</h5>
-                <p class="text-muted small mb-1">Jan 10, 2026 - 02:15 PM</p>
-                <p class="text-white small mb-0 bg-white bg-opacity-10 d-inline-block px-2 py-1 rounded">Officer: Rajesh
-                    Kumar (Municipal Corp)</p>
-            </div>
-
-            <div class="mb-0 position-relative ps-5">
-                <div class="position-absolute bg-warning rounded-circle"
-                    style="width: 12px; height: 12px; left: 0.65rem; top: 0.4rem;"></div>
-                <h5 class="text-white mb-1">Resolution in Progress</h5>
-                <p class="text-muted small mb-0">Estimated Completion: Jan 12, 2026</p>
-            </div>
-        </div>
-    </div>
+        <button type="submit" class="btn btn-primary">Track</button>
+    </form>
 </div>
 {% endblock %}

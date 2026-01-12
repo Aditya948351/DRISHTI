@@ -87,12 +87,12 @@
                             href="{% url 'citizen_dashboard' %}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'citizen_submit_complaint' %}active{% endif %}"
-                            href="{% url 'citizen_submit_complaint' %}">Lodge Grievance</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'file_complaint' %}active{% endif %}"
+                            href="{% url 'file_complaint' %}">Lodge Grievance</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'citizen_my_complaints' %}active{% endif %}"
-                            href="{% url 'citizen_my_complaints' %}">Track Status</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'citizen_complaints' %}active{% endif %}"
+                            href="{% url 'citizen_complaints' %}">Track Status</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'thread_list' %}active{% endif %}"

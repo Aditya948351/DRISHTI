@@ -1,47 +1,59 @@
 """
 URL configuration for DrishtiPlatform project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 from accounts import views as accounts_views
+from complaints import views as complaints_views
+from dashboard import views as dashboard_views
 
 urlpatterns = [
-    # Override Admin Logout to redirect to home
-    path('admin/logout/', auth_views.LogoutView.as_view(), name='admin_logout'),
-    path('admin/', admin.site.urls),
-
-    # 1. Public Pages
-    path('home/', TemplateView.as_view(template_name='PublicPages/home.html'), name='home'),
+    # --- Public Pages ---
     path('', TemplateView.as_view(template_name='PublicPages/home.html'), name='root'),
+    path('home/', TemplateView.as_view(template_name='PublicPages/home.html'), name='home'),
     path('about/', TemplateView.as_view(template_name='PublicPages/about.html'), name='about'),
     path('contact/', TemplateView.as_view(template_name='PublicPages/contact.html'), name='contact'),
-    path('track-complaint/', TemplateView.as_view(template_name='PublicPages/track_complaint.html'), name='track_complaint'),
     path('faq/', TemplateView.as_view(template_name='PublicPages/faq.html'), name='faq'),
+    path('complaint/track/', TemplateView.as_view(template_name='PublicPages/track_complaint.html'), name='track_complaint'),
 
-    # Auth
+    # --- Authentication ---
     path('login/', accounts_views.CustomLoginView.as_view(), name='login'),
     path('register/', accounts_views.register, name='register'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('reset-password/', TemplateView.as_view(template_name='PublicPages/reset_password.html'), name='reset_password'),
+    path('password/reset/', TemplateView.as_view(template_name='PublicPages/reset_password.html'), name='reset_password'),
 
-    # Existing Includes
-    path('accounts/', include('accounts.urls')),
-    path('complaints/', include('complaints.urls')),
-    path('dashboard/', include('dashboard.urls')),
-    path('community/', include('community.urls')),
+    # --- Citizen Portal ---
+    path('citizen/dashboard/', dashboard_views.citizen_dashboard, name='citizen_dashboard'),
+    path('citizen/complaints/new/', complaints_views.file_complaint, name='file_complaint'),
+    path('citizen/complaints/', complaints_views.complaint_list, name='citizen_complaints'),
+    path('citizen/complaints/<int:pk>/', complaints_views.complaint_detail, name='complaint_detail'),
+    path('citizen/complaints/<int:pk>/feedback/', dashboard_views.citizen_feedback, name='complaint_feedback'),
+    path('citizen/profile/', dashboard_views.citizen_profile, name='citizen_profile'),
+    path('citizen/notifications/', dashboard_views.citizen_notifications, name='citizen_notifications'),
+    
+    # Community & Assistant
+    path('citizen/community/', include('community.urls')),
+    path('citizen/assistant/', TemplateView.as_view(template_name='ai_engine/assistant.html'), name='ai_assistant'),
+
+    # --- Officer Portal ---
+    path('officer/dashboard/', dashboard_views.officer_dashboard, name='officer_dashboard'),
+    path('officer/complaints/assigned/', complaints_views.complaint_list, {'filter': 'assigned'}, name='officer_assigned_complaints'),
+    path('officer/complaints/<int:pk>/work/', complaints_views.update_status, name='officer_work_complaint'),
+    path('officer/ai/inbox/', TemplateView.as_view(template_name='ai_engine/inbox.html'), name='officer_ai_inbox'),
+
+    # --- Department Admin ---
+    path('dept/dashboard/', dashboard_views.dept_dashboard, name='dept_dashboard'),
+    path('dept/reports/', TemplateView.as_view(template_name='dashboard/reports.html'), name='dept_reports'),
+
+    # --- State/System Admin ---
+    path('state/dashboard/', dashboard_views.state_dashboard, name='state_dashboard'),
+    path('admin/system/dashboard/', dashboard_views.national_dashboard, name='national_dashboard'),
+    
+    # --- Django Admin ---
+    path('admin/', admin.site.urls),
+    
+    # --- Shared/Errors ---
+    path('health/', TemplateView.as_view(template_name='health.html'), name='health'),
 ]

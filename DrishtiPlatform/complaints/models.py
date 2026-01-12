@@ -59,6 +59,9 @@ class Complaint(models.Model):
     ai_predicted_category = models.CharField(max_length=100, null=True, blank=True)
     ai_predicted_priority = models.CharField(max_length=20, null=True, blank=True)
     ai_confidence_score = models.FloatField(null=True, blank=True)
+    
+    # SLA
+    sla_deadline = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.title} ({self.status})"
