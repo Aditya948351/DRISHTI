@@ -63,19 +63,49 @@ def complaint_detail(request, pk):
 @login_required
 def update_status(request, pk):
     complaint = get_object_or_404(Complaint, pk=pk)
+    user = request.user
+    
     # Check permissions (officer or admin)
-    if request.user.role not in ['officer', 'dept_admin', 'super_admin']:
-        return redirect('home') # Or 403
+    if user.role not in ['officer', 'dept_admin', 'city_admin', 'super_admin']:
+        return redirect('home')
     
     if request.method == 'POST':
-        new_status = request.POST.get('status')
-        if new_status:
-            complaint.status = new_status
-            if new_status == 'resolved':
-                from django.utils import timezone
-                complaint.resolved_at = timezone.now()
-            complaint.save()
-            # Log activity (TODO)
-            return redirect('complaint_detail', pk=pk)
+        action = request.POST.get('action') # verify, escalate, resolve, reject
+        
+        if action == 'verify' and user.role == 'officer':
+            complaint.is_verified = True
+            complaint.workflow_state = 'local_verified'
+            # Gamification: Points for verification
+            user.points += 5
+            user.save()
+            
+        elif action == 'escalate':
+            if user.role == 'officer':
+                complaint.workflow_state = 'dept_pending'
+            elif user.role == 'dept_admin':
+                complaint.workflow_state = 'city_pending'
+            elif user.role == 'city_admin':
+                # Check address/jurisdiction to decide if it goes to State or stays City
+                # For now, simple linear escalation
+                if 'Maharashtra' in str(user.address) or 'Gujarat' in str(user.address):
+                     complaint.workflow_state = 'national_pending' # Skip state for now or assume city_admin is state
+                else:
+                    complaint.workflow_state = 'state_pending'
+            elif user.role == 'super_admin':
+                complaint.status = 'resolved'
+                
+        elif action == 'resolve':
+            complaint.status = 'resolved'
+            from django.utils import timezone
+            complaint.resolved_at = timezone.now()
+            # Gamification: Points for resolving
+            user.points += 20
+            user.save()
+            
+        elif action == 'reject':
+            complaint.status = 'rejected'
+            
+        complaint.save()
+        return redirect('complaint_detail', pk=pk)
     
     return redirect('complaint_detail', pk=pk)

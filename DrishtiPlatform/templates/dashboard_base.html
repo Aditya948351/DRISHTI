@@ -67,7 +67,7 @@
     </header>
 
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-premium sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container-fluid px-4">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
                 <span class="navbar-toggler-icon"></span>
@@ -76,26 +76,26 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-medium">
                     {% if not user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active text-primary fw-bold{% endif %}"
                             href="{% url 'home' %}">Home</a>
                     </li>
                     {% endif %}
                     {% if user.is_authenticated %}
                     {% if user.role == 'citizen' %}
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'citizen_dashboard' %}active{% endif %}"
+                        <a class="nav-link {% if request.resolver_match.url_name == 'citizen_dashboard' %}active text-primary fw-bold{% endif %}"
                             href="{% url 'citizen_dashboard' %}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'file_complaint' %}active{% endif %}"
+                        <a class="nav-link {% if request.resolver_match.url_name == 'file_complaint' %}active text-primary fw-bold{% endif %}"
                             href="{% url 'file_complaint' %}">Lodge Grievance</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'citizen_complaints' %}active{% endif %}"
+                        <a class="nav-link {% if request.resolver_match.url_name == 'citizen_complaints' %}active text-primary fw-bold{% endif %}"
                             href="{% url 'citizen_complaints' %}">Track Status</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'thread_list' %}active{% endif %}"
+                        <a class="nav-link {% if request.resolver_match.url_name == 'thread_list' %}active text-primary fw-bold{% endif %}"
                             href="{% url 'thread_list' %}">Community Hub</a>
                     </li>
                     {% endif %}
@@ -106,20 +106,20 @@
                 </ul>
 
                 {% if user.is_authenticated %}
-                <div class="d-flex align-items-center gap-3 text-white">
+                <div class="d-flex align-items-center gap-3">
                     <div class="text-end lh-1 d-none d-sm-block">
-                        <div class="fw-bold small">{{ user.get_full_name|default:user.username }}</div>
-                        <div class="small opacity-75" style="font-size: 0.75rem;">{{ user.get_role_display }}</div>
+                        <div class="fw-bold small text-dark">{{ user.get_full_name|default:user.username }}</div>
+                        <div class="small text-muted" style="font-size: 0.75rem;">{{ user.get_role_display }}</div>
                     </div>
                     <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
                             data-bs-toggle="dropdown">
-                            <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center fw-bold"
-                                style="width: 32px; height: 32px;">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm"
+                                style="width: 35px; height: 35px;">
                                 {{ user.username|slice:":1"|upper }}
                             </div>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -135,8 +135,8 @@
                 </div>
                 {% else %}
                 <div class="d-flex gap-2">
-                    <a href="{% url 'login' %}" class="btn btn-light btn-sm fw-bold text-primary">Login</a>
-                    <a href="{% url 'register' %}" class="btn btn-outline-light btn-sm">Register</a>
+                    <a href="{% url 'login' %}" class="btn btn-primary btn-sm fw-bold shadow-sm">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary btn-sm">Register</a>
                 </div>
                 {% endif %}
             </div>

@@ -25,7 +25,7 @@
                 <tbody>
                     {% for complaint in complaints %}
                     <tr>
-                        <td class="px-4 fw-bold">#{{ complaint.id }}</td>
+                        <td class="px-4 fw-bold">#{{ forloop.counter }}</td>
                         <td class="px-4">{{ complaint.title }}</td>
                         <td class="px-4">
                             <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill">

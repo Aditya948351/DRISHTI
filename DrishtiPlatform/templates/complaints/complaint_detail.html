@@ -84,6 +84,57 @@
                     </p>
                 </div>
             </div>
+
+            <!-- Officer Actions (Workflow) -->
+            {% if user.role == 'officer' or user.role == 'dept_admin' or user.role == 'city_admin' or user.role ==
+            'super_admin' %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white py-3">
+                    <h6 class="fw-bold mb-0">Official Actions</h6>
+                </div>
+                <div class="card-body p-4">
+                    <form action="{% url 'officer_work_complaint' complaint.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2">
+                            {% if user.role == 'officer' and not complaint.is_verified %}
+                            <button type="submit" name="action" value="verify" class="btn btn-success fw-bold">
+                                <i data-lucide="check-circle" class="w-4 h-4 me-2"></i>Verify Issue
+                            </button>
+                            {% endif %}
+
+                            {% if user.role == 'officer' and complaint.is_verified and complaint.workflow_state ==
+                            'local_verified' %}
+                            <button type="submit" name="action" value="escalate" class="btn btn-primary fw-bold">
+                                <i data-lucide="arrow-up-circle" class="w-4 h-4 me-2"></i>Escalate to Dept
+                            </button>
+                            {% endif %}
+
+                            {% if user.role == 'dept_admin' and complaint.workflow_state == 'dept_pending' %}
+                            <button type="submit" name="action" value="escalate" class="btn btn-primary fw-bold">
+                                <i data-lucide="arrow-up-circle" class="w-4 h-4 me-2"></i>Escalate to City
+                            </button>
+                            {% endif %}
+
+                            {% if user.role == 'city_admin' and complaint.workflow_state == 'city_pending' %}
+                            <button type="submit" name="action" value="escalate" class="btn btn-primary fw-bold">
+                                <i data-lucide="arrow-up-circle" class="w-4 h-4 me-2"></i>Escalate to State
+                            </button>
+                            {% endif %}
+
+                            {% if user.role == 'super_admin' %}
+                            <button type="submit" name="action" value="resolve" class="btn btn-success fw-bold">
+                                <i data-lucide="check-square" class="w-4 h-4 me-2"></i>Mark Resolved
+                            </button>
+                            {% endif %}
+
+                            <button type="submit" name="action" value="reject" class="btn btn-outline-danger fw-bold">
+                                <i data-lucide="x-circle" class="w-4 h-4 me-2"></i>Reject
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

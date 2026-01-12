@@ -33,8 +33,44 @@
                     </div>
                     {% endif %}
 
-                    <!-- Hidden Role Field -->
-                    <input type="hidden" name="role" value="citizen">
+                    <!-- Role Selection -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-uppercase text-muted">Register As</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i data-lucide="users"
+                                    class="w-4 h-4 text-muted"></i></span>
+                            <select name="role" id="roleSelect" class="form-select bg-light border-start-0"
+                                onchange="toggleDepartment()">
+                                <option value="citizen">Citizen</option>
+                                <option value="officer">Local Officer</option>
+                                <option value="dept_admin">Department Admin</option>
+                                <option value="city_admin">City/State Authority</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Department Selection (Hidden by default) -->
+                    <div class="mb-3" id="deptField" style="display: none;">
+                        <label class="form-label fw-bold small text-uppercase text-muted">Department</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i data-lucide="building"
+                                    class="w-4 h-4 text-muted"></i></span>
+                            {{ form.department }}
+                        </div>
+                        <div class="form-text small">Required for Officers and Department Admins</div>
+                    </div>
+
+                    <script>
+                        function toggleDepartment() {
+                            const role = document.getElementById('roleSelect').value;
+                            const deptField = document.getElementById('deptField');
+                            if (role === 'officer' || role === 'dept_admin') {
+                                deptField.style.display = 'block';
+                            } else {
+                                deptField.style.display = 'none';
+                            }
+                        }
+                    </script>
 
                     <div class="row g-3">
                         <div class="col-md-6">

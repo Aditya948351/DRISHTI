@@ -37,4 +37,23 @@ def thread_detail(request, pk):
     else:
         form = CommentForm()
     
+    
     return render(request, 'community/thread_detail.html', {'thread': thread, 'comments': comments, 'form': form})
+
+@login_required
+def toggle_like(request, pk):
+    thread = get_object_or_404(DiscussionThread, pk=pk)
+    if request.user in thread.likes.all():
+        thread.likes.remove(request.user)
+        # Optional: Deduct points if unliking? For now, let's keep points permanent or maybe deduct to prevent gaming.
+        # Let's deduct to keep it fair.
+        if request.user.points >= 5:
+            request.user.points -= 5
+            request.user.save()
+    else:
+        thread.likes.add(request.user)
+        # Gamification: Award points for liking
+        request.user.points += 5
+        request.user.save()
+        
+    return redirect('thread_detail', pk=pk)

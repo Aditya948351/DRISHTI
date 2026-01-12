@@ -17,6 +17,10 @@ class User(AbstractUser):
     # Profile Fields
     profile_picture = models.ImageField(upload_to='profiles/', null=True, blank=True)
     bio = models.TextField(max_length=500, blank=True)
+    
+    # Gamification
+    points = models.IntegerField(default=0)
+    rank = models.CharField(max_length=50, default='Novice Citizen') # e.g., Novice, Active, Guardian, Hero, Legend
 
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})"

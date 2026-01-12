@@ -43,6 +43,8 @@ class Complaint(models.Model):
     assigned_officer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_complaints')
     
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new')
+    workflow_state = models.CharField(max_length=50, default='pending_verification', help_text="Current stage in approval workflow")
+    is_verified = models.BooleanField(default=False, help_text="True if verified as a genuine issue")
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='medium')
     
     location = models.CharField(max_length=255, help_text="Area/Locality")
