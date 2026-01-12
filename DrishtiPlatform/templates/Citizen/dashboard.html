@@ -20,6 +20,13 @@
                 <h4 class="fw-bold mb-1">{{ user.get_full_name|default:user.username }}</h4>
                 <p class="text-muted small mb-3">Citizen ID: {{ user.id|stringformat:"06d" }}</p>
                 <span class="badge bg-warning text-dark mb-4 px-3 py-2 rounded-pill">Verified Beneficiary</span>
+                <div class="mt-2">
+                    <span
+                        class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill border border-primary border-opacity-25">
+                        <i data-lucide="star" class="w-3 h-3 me-1 inline-block"></i> {{ user.points|default:"0" }} Karma
+                        Points
+                    </span>
+                </div>
 
                 <div class="text-start border-top pt-4">
                     <div class="mb-3">
