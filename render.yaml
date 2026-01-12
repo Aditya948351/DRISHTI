@@ -15,6 +15,7 @@ services:
         generateValue: true
       - key: WEB_CONCURRENCY
         value: 4
+    plan: free
 
 databases:
   - name: drishti-db
