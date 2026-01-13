@@ -13,11 +13,20 @@ try:
         port=os.environ.get('DB_PORT')
     )
     cursor = conn.cursor()
+    cursor.execute("SHOW TABLES LIKE 'django_session'")
+    table = cursor.fetchone()
+    if table:
+        print("Table 'django_session' FOUND.")
+    else:
+        print("Table 'django_session' NOT FOUND.")
+    
+    cursor.execute("SELECT COUNT(*) FROM complaints_department")
+    count = cursor.fetchone()[0]
+    print(f"Departments found in DB: {count}")
+
     cursor.execute("SHOW TABLES")
     tables = cursor.fetchall()
-    print("Connected! Tables found:")
-    for table in tables:
-        print(table[0])
+    print(f"Total tables: {len(tables)}")
     conn.close()
 except Exception as e:
     print(f"Connection failed: {e}")
