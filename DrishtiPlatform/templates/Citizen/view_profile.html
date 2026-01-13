@@ -1,0 +1,110 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Citizen Profile | Drishti{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold mb-0">Citizen Profile</h4>
+        <a href="javascript:history.back()" class="btn btn-outline-secondary btn-sm">
+            <i data-lucide="arrow-left" class="w-4 h-4 me-1"></i> Back
+        </a>
+    </div>
+
+    <!-- Profile Header -->
+    <div class="card border-0 shadow-sm mb-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="bg-primary p-4 text-white text-center"
+                style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
+                <div class="mb-3 position-relative d-inline-block">
+                    <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center mx-auto fs-1 fw-bold shadow-lg border border-4 border-white"
+                        style="width: 120px; height: 120px;">
+                        {% if target_user.profile_picture %}
+                        <img src="{{ target_user.profile_picture.url }}" alt="Profile"
+                            class="rounded-circle w-100 h-100 object-fit-cover">
+                        {% else %}
+                        {{ target_user.username|slice:":1"|upper }}
+                        {% endif %}
+                    </div>
+                </div>
+                <h3 class="fw-bold mb-1">{{ target_user.get_full_name|default:target_user.username }}</h3>
+                <p class="opacity-75 mb-1">Citizen ID: #{{ target_user.id|stringformat:"06d" }}</p>
+                <p class="opacity-75 mb-3 badge bg-white bg-opacity-25">{{ target_user.occupation|default:"Citizen" }}
+                </p>
+
+                <div class="d-flex justify-content-center gap-3">
+                    <span class="badge bg-white bg-opacity-25 rounded-pill px-3 py-2">
+                        <i data-lucide="map-pin" class="w-4 h-4 me-1"></i> {{
+                        target_user.state|default:target_user.address|default:"Location Not Set" }}
+                    </span>
+                    <span class="badge bg-white bg-opacity-25 rounded-pill px-3 py-2">
+                        <i data-lucide="star" class="w-4 h-4 me-1"></i> {{ target_user.points }} Points
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Personal Details -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h6 class="fw-bold mb-0">Personal Information</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">Full Name</label>
+                        <div class="fw-medium">{{ target_user.get_full_name|default:"--" }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">Email Address</label>
+                        <div class="fw-medium">{{ target_user.email }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">Phone Number</label>
+                        <div class="fw-medium">{{ target_user.phone_number|default:"--" }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">Address</label>
+                        <div class="fw-medium">{{ target_user.address|default:"--" }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">State</label>
+                        <div class="fw-medium">{{ target_user.state|default:"--" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h6 class="fw-bold mb-0">Additional Details</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">Aadhaar Number</label>
+                        <div class="fw-medium">
+                            {% if target_user.aadhaar_number %}
+                            XXXX-XXXX-{{ target_user.aadhaar_number|slice:"-4:" }}
+                            {% else %}
+                            --
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">Occupation</label>
+                        <div class="fw-medium">{{ target_user.occupation|default:"--" }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold d-block text-uppercase">Bio</label>
+                        <div class="fw-medium">{{ target_user.bio|default:"--" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

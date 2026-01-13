@@ -32,7 +32,7 @@ DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app', 'https://*.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app', 'https://*.railway.app', 'https://*.onrender.com']
 
 
 # Application definition
@@ -96,9 +96,13 @@ DATABASES = {
     }
 }
 
-# Production Database (Railway)
-# if 'DATABASE_URL' in os.environ:
-#     DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# Production Database
+import dj_database_url
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 
 
 # Password validation

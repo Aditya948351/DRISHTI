@@ -7,13 +7,71 @@
 <div class="container py-4">
     <!-- Profile Header -->
     <div class="card border-0 shadow-sm mb-4 overflow-hidden">
+        {% if not is_complete %}
+        <div class="card-body p-5 text-center">
+            <div class="mb-4">
+                <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center"
+                    style="width: 80px; height: 80px;">
+                    <i data-lucide="user-check" class="w-10 h-10 text-primary"></i>
+                </div>
+            </div>
+            <h3 class="fw-bold mb-3">Complete Your Profile</h3>
+            <p class="text-muted mb-4">Please provide your Aadhaar Number and Occupation to unlock full features and
+                earn <span class="fw-bold text-success">50 Karma Points</span>!</p>
+
+            <form method="post" enctype="multipart/form-data" class="text-start mx-auto" style="max-width: 500px;">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-uppercase text-muted">Aadhaar Number</label>
+                    {{ form.aadhaar_number }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-uppercase text-muted">Occupation</label>
+                    {{ form.occupation }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-uppercase text-muted">Bio</label>
+                    {{ form.bio }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-uppercase text-muted">Profile Picture</label>
+                    {{ form.profile_picture }}
+                </div>
+
+                <!-- Hidden fields for existing data if needed, or just let them be updated if in form -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-uppercase text-muted">Phone Number</label>
+                    {{ form.phone_number }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-uppercase text-muted">Address</label>
+                    {{ form.address }}
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg rounded-pill">
+                        Save & Earn 50 Points
+                    </button>
+                </div>
+            </form>
+        </div>
+        {% else %}
         <div class="card-body p-0">
             <div class="bg-primary p-4 text-white text-center"
                 style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
                 <div class="mb-3 position-relative d-inline-block">
                     <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center mx-auto fs-1 fw-bold shadow-lg border border-4 border-white"
                         style="width: 120px; height: 120px;">
+                        {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="Profile"
+                            class="rounded-circle w-100 h-100 object-fit-cover">
+                        {% else %}
                         {{ user.username|slice:":1"|upper }}
+                        {% endif %}
                     </div>
                     <span
                         class="position-absolute bottom-0 end-0 p-2 bg-success border border-4 border-white rounded-circle"
@@ -22,11 +80,13 @@
                     </span>
                 </div>
                 <h3 class="fw-bold mb-1">{{ user.get_full_name|default:user.username }}</h3>
-                <p class="opacity-75 mb-3">Citizen ID: #{{ user.id|stringformat:"06d" }}</p>
+                <p class="opacity-75 mb-1">Citizen ID: #{{ user.id|stringformat:"06d" }}</p>
+                <p class="opacity-75 mb-3 badge bg-white bg-opacity-25">{{ user.occupation|default:"Citizen" }}</p>
 
                 <div class="d-flex justify-content-center gap-3">
                     <span class="badge bg-white bg-opacity-25 rounded-pill px-3 py-2">
-                        <i data-lucide="map-pin" class="w-4 h-4 me-1"></i> {{ user.address|default:"Location Not Set" }}
+                        <i data-lucide="map-pin" class="w-4 h-4 me-1"></i> {{
+                        user.state|default:user.address|default:"Location Not Set" }}
                     </span>
                     <span class="badge bg-white bg-opacity-25 rounded-pill px-3 py-2">
                         <i data-lucide="shield" class="w-4 h-4 me-1"></i> Civic Guardian (Level 1)
@@ -49,6 +109,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 
     <div class="row g-4">

@@ -31,6 +31,7 @@ urlpatterns = [
     path('citizen/complaints/<int:pk>/', complaints_views.complaint_detail, name='complaint_detail'),
     path('citizen/complaints/<int:pk>/feedback/', dashboard_views.citizen_feedback, name='complaint_feedback'),
     path('citizen/profile/', dashboard_views.citizen_profile, name='citizen_profile'),
+    path('citizen/profile/<int:user_id>/', dashboard_views.view_citizen_profile, name='view_citizen_profile'),
     path('citizen/notifications/', dashboard_views.citizen_notifications, name='citizen_notifications'),
     
     # Community & Assistant

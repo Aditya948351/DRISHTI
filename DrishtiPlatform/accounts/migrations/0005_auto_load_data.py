@@ -8,7 +8,7 @@ def load_fixture(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0004_user_points_user_rank'),
+        ('accounts', '0008_user_aadhaar_number_user_occupation_user_state'),
         ('complaints', '0001_initial'),
     ]
 

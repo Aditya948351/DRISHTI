@@ -105,6 +105,29 @@ def citizen_profile(request):
     if request.user.role != 'citizen':
         return redirect('dashboard')
         
+    from accounts.forms import CitizenProfileForm
+    
+    # Check if profile is complete (using aadhaar as proxy)
+    is_complete = bool(request.user.aadhaar_number)
+    
+    if not is_complete:
+        if request.method == 'POST':
+            form = CitizenProfileForm(request.POST, request.FILES, instance=request.user)
+            if form.is_valid():
+                user = form.save(commit=False)
+                # Award points for first-time completion
+                if not user.aadhaar_number: # Double check
+                     user.points += 50
+                user.save()
+                return redirect('citizen_profile')
+        else:
+            form = CitizenProfileForm(instance=request.user)
+        
+        return render(request, 'Citizen/profile.html', {
+            'is_complete': False,
+            'form': form
+        })
+
     # Mock Rewards Data
     rewards = [
         {'title': 'Municipal Tax Rebate', 'description': 'Get 5% off on property tax', 'points': 500, 'icon': 'percent', 'color': 'success'},
@@ -114,7 +137,22 @@ def citizen_profile(request):
         {'title': 'Tree Plantation Certificate', 'description': 'Plant a tree in your name', 'points': 100, 'icon': 'leaf', 'color': 'success'},
     ]
     
-    return render(request, 'Citizen/profile.html', {'rewards': rewards})
+    return render(request, 'Citizen/profile.html', {'rewards': rewards, 'is_complete': True})
+
+@login_required
+def view_citizen_profile(request, user_id):
+    # Only officers and admins can view
+    if request.user.role not in ['officer', 'dept_admin', 'city_admin', 'super_admin']:
+        return redirect('dashboard')
+        
+    from accounts.models import User
+    target_user = get_object_or_404(User, id=user_id)
+    
+    # Ensure we are viewing a citizen
+    if target_user.role != 'citizen':
+        return redirect('dashboard') # Or show error
+        
+    return render(request, 'Citizen/view_profile.html', {'target_user': target_user})
 
 # Officer Views
 @login_required

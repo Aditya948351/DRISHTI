@@ -8,7 +8,7 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'role', 'department', 'phone_number', 'address']
+        fields = ['username', 'email', 'first_name', 'last_name', 'role', 'department', 'phone_number', 'address', 'state']
         widgets = {
             'address': forms.Textarea(attrs={'rows': 3}),
         }
@@ -27,3 +27,17 @@ class UserRegistrationForm(UserCreationForm):
             self.add_error('department', 'Department is required for this role.')
         
         return cleaned_data
+
+class CitizenProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['aadhaar_number', 'occupation', 'address', 'phone_number', 'bio', 'profile_picture']
+        widgets = {
+            'address': forms.Textarea(attrs={'rows': 3}),
+            'bio': forms.Textarea(attrs={'rows': 3}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
