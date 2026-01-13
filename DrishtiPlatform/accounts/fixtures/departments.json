@@ -1,2 +1,11 @@
 [
+    {
+        "model": "complaints.department",
+        "pk": 6,
+        "fields": {
+            "name": "General Administration",
+            "description": "General department for administrative tasks",
+            "created_at": "2026-01-13T00:00:00Z"
+        }
+    }
 ]
