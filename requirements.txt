@@ -9,3 +9,5 @@ pandas
 scikit-learn
 requests
 mysqlclient
+PyYAML
+python-dotenv

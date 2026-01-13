@@ -1,0 +1,463 @@
+- model: sessions.session
+  pk: 8z2yfpcc9pmlnowudvxane191ui66ozo
+  fields:
+    session_data: .eJxVjEEOwiAQRe_C2pBQGGBcuvcMBJhBqgaS0q6Md9cmXej2v_f-S4S4rTVsg5cwkziLSZx-txTzg9sO6B7brcvc27rMSe6KPOiQ1078vBzu30GNo35r8AktoEJWrCNA8a6AIouMyqLVBp0rxQHbxGSyo-wBAZ1BMxltSbw_xso3BQ:1vfOjJ:4IklV0SnlGTcJygnYnU6xmcRthsu_e0bCZTWTSaTbko
+    expire_date: 2026-01-26 20:41:37.392655+00:00
+- model: sessions.session
+  pk: b6a8h10i5j8l4kyi5p6iozlgbjtbzbr5
+  fields:
+    session_data: .eJxVjEEOwiAQRe_C2pBQGGBcuvcMBJhBqgaS0q6Md9cmXej2v_f-S4S4rTVsg5cwkziLSZx-txTzg9sO6B7brcvc27rMSe6KPOiQ1078vBzu30GNo35r8AktoEJWrCNA8a6AIouMyqLVBp0rxQHbxGSyo-wBAZ1BMxltSbw_xso3BQ:1vfW2r:hV4xqNhueUOdum591aK8gL_jzq9Q7-7ScMaioEkGcO4
+    expire_date: 2026-01-27 04:30:17.365490+00:00
+- model: accounts.user
+  pk: 1
+  fields:
+    password: pbkdf2_sha256$1200000$58VyqK815Sm9kHK4HJdBT5$JSGm840tkJDXfTuZXOXUVEnIe1aXtjAfPMaZswf6sxE=
+    last_login: null
+    is_superuser: false
+    username: Aditya948351
+    first_name: ''
+    last_name: ''
+    email: Aditya948351@example.com
+    is_staff: false
+    is_active: true
+    date_joined: 2026-01-12 20:02:05.626000+00:00
+    role: citizen
+    phone_number: null
+    address: null
+    department: null
+    profile_picture: ''
+    bio: ''
+    points: 0
+    rank: Novice Citizen
+    groups: []
+    user_permissions: []
+- model: accounts.user
+  pk: 2
+  fields:
+    password: pbkdf2_sha256$1200000$coJcu711XaBgj4tajOjoKe$xjw2KQ20jBPCcOVe4o1a2Bx62UczRZ7kg4gCyD0kg00=
+    last_login: 2026-01-13 04:30:17.362000+00:00
+    is_superuser: false
+    username: siddhu123
+    first_name: ''
+    last_name: ''
+    email: siddhu123@example.com
+    is_staff: false
+    is_active: true
+    date_joined: 2026-01-12 20:02:06.166000+00:00
+    role: citizen
+    phone_number: null
+    address: null
+    department: null
+    profile_picture: ''
+    bio: ''
+    points: 0
+    rank: Novice Citizen
+    groups: []
+    user_permissions: []
+- model: accounts.user
+  pk: 3
+  fields:
+    password: pbkdf2_sha256$1200000$6lE6f87wdGCqIVSmFdWo6i$Zz5UXoo4M1bLsnycKCmirdMQBJ1nxACocGXyoddQvHE=
+    last_login: 2026-01-13 04:29:13.672000+00:00
+    is_superuser: false
+    username: sakshi_rote
+    first_name: ''
+    last_name: ''
+    email: sakshi@gov.in
+    is_staff: false
+    is_active: true
+    date_joined: 2026-01-12 20:09:12.627000+00:00
+    role: dept_admin
+    phone_number: null
+    address: null
+    department: 6
+    profile_picture: ''
+    bio: ''
+    points: 0
+    rank: Novice Citizen
+    groups: []
+    user_permissions: []
+- model: accounts.user
+  pk: 4
+  fields:
+    password: pbkdf2_sha256$1200000$E189GNMQXCVCzcfTJGTTim$sQpMlBlKKw1PO64qiNLgcuKsB8yBMjlad2yOLw9cpI8=
+    last_login: 2026-01-12 20:25:38.886000+00:00
+    is_superuser: false
+    username: Sejal
+    first_name: ''
+    last_name: ''
+    email: sejal@mh.gov
+    is_staff: false
+    is_active: true
+    date_joined: 2026-01-12 20:10:00.716000+00:00
+    role: city_admin
+    phone_number: null
+    address: null
+    department: null
+    profile_picture: ''
+    bio: ''
+    points: 0
+    rank: Novice Citizen
+    groups: []
+    user_permissions: []
+- model: accounts.user
+  pk: 5
+  fields:
+    password: pbkdf2_sha256$1200000$21avEs7wkblc8Md1XrJjj2$eWK0N5bPPurED3UUnTQMeuobL3QyrVf+N9acZn4DRfg=
+    last_login: 2026-01-12 20:20:20.258000+00:00
+    is_superuser: false
+    username: Dimpal
+    first_name: ''
+    last_name: ''
+    email: dimpal@gj.gov
+    is_staff: false
+    is_active: true
+    date_joined: 2026-01-12 20:10:01.304000+00:00
+    role: city_admin
+    phone_number: null
+    address: null
+    department: null
+    profile_picture: ''
+    bio: ''
+    points: 0
+    rank: Novice Citizen
+    groups: []
+    user_permissions: []
+- model: accounts.user
+  pk: 6
+  fields:
+    password: pbkdf2_sha256$1200000$VIQvaegpPCRmeOx3Nfv0Cy$zxp1GW/tWLUihzQWYxL6xcg8086hB4FiWzGZHBxru6o=
+    last_login: 2026-01-13 04:28:17.890000+00:00
+    is_superuser: false
+    username: diksha_patil
+    first_name: ''
+    last_name: ''
+    email: diksha@gov.in
+    is_staff: false
+    is_active: true
+    date_joined: 2026-01-12 20:25:49.894000+00:00
+    role: officer
+    phone_number: null
+    address: null
+    department: null
+    profile_picture: ''
+    bio: ''
+    points: 25
+    rank: Novice Citizen
+    groups: []
+    user_permissions: []
+- model: complaints.department
+  pk: 1
+  fields:
+    name: Water Board
+    description: ''
+    created_at: 2026-01-12 20:02:06.703157+00:00
+- model: complaints.department
+  pk: 2
+  fields:
+    name: Public Works
+    description: ''
+    created_at: 2026-01-12 20:02:06.710260+00:00
+- model: complaints.department
+  pk: 3
+  fields:
+    name: Sanitation Dept
+    description: ''
+    created_at: 2026-01-12 20:02:06.717683+00:00
+- model: complaints.department
+  pk: 4
+  fields:
+    name: Traffic Police
+    description: ''
+    created_at: 2026-01-12 20:02:06.723892+00:00
+- model: complaints.department
+  pk: 5
+  fields:
+    name: Police Dept
+    description: ''
+    created_at: 2026-01-12 20:02:06.729955+00:00
+- model: complaints.department
+  pk: 6
+  fields:
+    name: General Administration
+    description: ''
+    created_at: 2026-01-12 20:09:12.623702+00:00
+- model: complaints.category
+  pk: 1
+  fields:
+    name: Water Supply
+    department: 1
+    sla_hours: 48
+- model: complaints.category
+  pk: 2
+  fields:
+    name: Roads & Transport
+    department: 2
+    sla_hours: 48
+- model: complaints.category
+  pk: 3
+  fields:
+    name: Electricity
+    department: 2
+    sla_hours: 48
+- model: complaints.category
+  pk: 4
+  fields:
+    name: Sanitation
+    department: 3
+    sla_hours: 48
+- model: complaints.category
+  pk: 5
+  fields:
+    name: Traffic
+    department: 4
+    sla_hours: 48
+- model: complaints.category
+  pk: 6
+  fields:
+    name: Public Safety
+    department: 5
+    sla_hours: 48
+- model: complaints.complaint
+  pk: 1
+  fields:
+    title: Suspicious Activity in Park
+    description: Group of people gathering late at night, looks unsafe.
+    citizen: 1
+    category: 6
+    department: 5
+    assigned_officer: null
+    status: new
+    workflow_state: pending_verification
+    is_verified: false
+    priority: medium
+    location: Central Park
+    latitude: null
+    longitude: null
+    attachment: ''
+    resolution_photo: ''
+    is_final_verified: false
+    created_at: 2026-01-12 20:02:06.740147+00:00
+    updated_at: 2026-01-12 20:02:06.740165+00:00
+    resolved_at: null
+    ai_predicted_category: Public Safety
+    ai_predicted_priority: critical
+    ai_confidence_score: 93.13565737142505
+    sla_deadline: null
+    rejection_reason: null
+- model: complaints.complaint
+  pk: 2
+  fields:
+    title: Streetlight Flickering
+    description: Light causing distraction.
+    citizen: 1
+    category: 3
+    department: 2
+    assigned_officer: null
+    status: rejected
+    workflow_state: rejected
+    is_verified: false
+    priority: medium
+    location: Block B
+    latitude: null
+    longitude: null
+    attachment: ''
+    resolution_photo: ''
+    is_final_verified: false
+    created_at: 2026-01-12 20:02:06.743192+00:00
+    updated_at: 2026-01-12 20:28:44.193816+00:00
+    resolved_at: null
+    ai_predicted_category: Electricity
+    ai_predicted_priority: medium
+    ai_confidence_score: 85.15213028336821
+    sla_deadline: null
+    rejection_reason: useless issue, are u mad
+- model: complaints.complaint
+  pk: 3
+  fields:
+    title: Pothole on Main Road
+    description: Small pothole but growing.
+    citizen: 1
+    category: 2
+    department: 2
+    assigned_officer: null
+    status: rejected
+    workflow_state: rejected
+    is_verified: false
+    priority: medium
+    location: Main Market
+    latitude: null
+    longitude: null
+    attachment: ''
+    resolution_photo: ''
+    is_final_verified: false
+    created_at: 2026-01-12 20:02:06.745715+00:00
+    updated_at: 2026-01-13 04:29:01.083622+00:00
+    resolved_at: null
+    ai_predicted_category: Roads & Transport
+    ai_predicted_priority: low
+    ai_confidence_score: 98.07278796804609
+    sla_deadline: null
+    rejection_reason: the no need
+- model: complaints.complaint
+  pk: 4
+  fields:
+    title: Major Pipe Burst
+    description: Water flooding the street, urgent!
+    citizen: 2
+    category: 1
+    department: 1
+    assigned_officer: null
+    status: in_progress
+    workflow_state: verified_by_officer
+    is_verified: true
+    priority: medium
+    location: Sector 7
+    latitude: null
+    longitude: null
+    attachment: ''
+    resolution_photo: ''
+    is_final_verified: false
+    created_at: 2026-01-12 20:02:06.750484+00:00
+    updated_at: 2026-01-12 20:28:16.526360+00:00
+    resolved_at: null
+    ai_predicted_category: Water Supply
+    ai_predicted_priority: critical
+    ai_confidence_score: 98.92745019690261
+    sla_deadline: null
+    rejection_reason: null
+- model: complaints.complaint
+  pk: 5
+  fields:
+    title: Traffic Signal Stuck Red
+    description: Causing huge jam at crossing.
+    citizen: 2
+    category: 5
+    department: 4
+    assigned_officer: null
+    status: in_progress
+    workflow_state: verified_by_officer
+    is_verified: true
+    priority: medium
+    location: Sector 7 Crossing
+    latitude: null
+    longitude: null
+    attachment: ''
+    resolution_photo: ''
+    is_final_verified: false
+    created_at: 2026-01-12 20:02:06.753793+00:00
+    updated_at: 2026-01-12 20:35:52.146140+00:00
+    resolved_at: null
+    ai_predicted_category: Traffic
+    ai_predicted_priority: high
+    ai_confidence_score: 94.82962861261429
+    sla_deadline: null
+    rejection_reason: null
+- model: complaints.complaint
+  pk: 6
+  fields:
+    title: Garbage Dump Overflow
+    description: Smell is unbearable, health hazard.
+    citizen: 2
+    category: 4
+    department: 3
+    assigned_officer: null
+    status: new
+    workflow_state: pending_verification
+    is_verified: false
+    priority: medium
+    location: Block D
+    latitude: null
+    longitude: null
+    attachment: ''
+    resolution_photo: ''
+    is_final_verified: false
+    created_at: 2026-01-12 20:02:06.756385+00:00
+    updated_at: 2026-01-12 20:02:06.756401+00:00
+    resolved_at: null
+    ai_predicted_category: Sanitation
+    ai_predicted_priority: high
+    ai_confidence_score: 87.2784448907823
+    sla_deadline: null
+    rejection_reason: null
+- model: complaints.complaint
+  pk: 7
+  fields:
+    title: Illegal Parking Blocking Gate
+    description: Cannot take car out.
+    citizen: 2
+    category: 5
+    department: 4
+    assigned_officer: null
+    status: in_progress
+    workflow_state: verified_by_officer
+    is_verified: true
+    priority: medium
+    location: Market
+    latitude: null
+    longitude: null
+    attachment: ''
+    resolution_photo: ''
+    is_final_verified: false
+    created_at: 2026-01-12 20:02:06.758509+00:00
+    updated_at: 2026-01-12 20:28:26.828148+00:00
+    resolved_at: null
+    ai_predicted_category: Traffic
+    ai_predicted_priority: medium
+    ai_confidence_score: 93.01655833344013
+    sla_deadline: null
+    rejection_reason: null
+- model: complaints.complaint
+  pk: 8
+  fields:
+    title: Construction Debris
+    description: Left on sidewalk.
+    citizen: 2
+    category: 2
+    department: 2
+    assigned_officer: null
+    status: in_progress
+    workflow_state: verified_by_officer
+    is_verified: true
+    priority: medium
+    location: Lane 5
+    latitude: null
+    longitude: null
+    attachment: ''
+    resolution_photo: ''
+    is_final_verified: false
+    created_at: 2026-01-12 20:02:06.761501+00:00
+    updated_at: 2026-01-13 04:28:35.408745+00:00
+    resolved_at: null
+    ai_predicted_category: Roads & Transport
+    ai_predicted_priority: low
+    ai_confidence_score: 97.2439320184586
+    sla_deadline: null
+    rejection_reason: null
+- model: complaints.complaint
+  pk: 9
+  fields:
+    title: Stray Dog Aggression
+    description: Chasing bikers.
+    citizen: 2
+    category: 6
+    department: 5
+    assigned_officer: null
+    status: in_progress
+    workflow_state: forwarded_to_redressal
+    is_verified: true
+    priority: medium
+    location: School Road
+    latitude: null
+    longitude: null
+    attachment: ''
+    resolution_photo: ''
+    is_final_verified: false
+    created_at: 2026-01-12 20:02:06.764085+00:00
+    updated_at: 2026-01-12 20:31:54.205005+00:00
+    resolved_at: null
+    ai_predicted_category: Public Safety
+    ai_predicted_priority: high
+    ai_confidence_score: 95.53744067200827
+    sla_deadline: null
+    rejection_reason: null
