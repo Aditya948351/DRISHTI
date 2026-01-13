@@ -29,6 +29,8 @@ DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app']
+
 
 # Application definition
 
