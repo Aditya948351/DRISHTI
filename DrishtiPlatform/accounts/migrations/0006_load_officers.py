@@ -7,7 +7,7 @@ def load_fixture(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0004_user_points_user_rank'),
+        ('accounts', '0005_auto_load_data'),
     ]
 
     operations = [
