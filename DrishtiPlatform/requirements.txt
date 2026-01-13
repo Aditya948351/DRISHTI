@@ -9,3 +9,4 @@ pandas
 scikit-learn
 requests
 mysqlclient
+openai
