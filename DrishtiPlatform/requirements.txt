@@ -10,3 +10,4 @@ scikit-learn
 requests
 mysqlclient
 openai
+python-dotenv
