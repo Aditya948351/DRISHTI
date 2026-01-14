@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'dashboard',
     'ai_engine',
     'community',
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +156,16 @@ AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = '/'
+
+# Cloudinary Storage
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    'MEDIA_TAG': 'drishti_media',
+    'STATIC_TAG': 'drishti_static',
+    'PREFIX': 'Drishti/'  # Upload to 'Drishti' folder
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+

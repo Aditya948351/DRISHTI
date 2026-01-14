@@ -11,3 +11,5 @@ requests
 mysqlclient
 openai
 python-dotenv
+cloudinary
+django-cloudinary-storage
