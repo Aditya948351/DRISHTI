@@ -114,10 +114,15 @@ def citizen_profile(request):
         if request.method == 'POST':
             form = CitizenProfileForm(request.POST, request.FILES, instance=request.user)
             if form.is_valid():
+                # Check if profile was incomplete before this update
+                was_incomplete = not request.user.aadhaar_number
+                
                 user = form.save(commit=False)
-                # Award points for first-time completion
-                if not is_complete: # Check if it was incomplete BEFORE this save
+                
+                # Award points if it was incomplete and now has aadhaar (meaning it's being completed)
+                if was_incomplete and user.aadhaar_number:
                      user.points += 50
+                
                 user.save()
                 return redirect('citizen_profile')
         else:

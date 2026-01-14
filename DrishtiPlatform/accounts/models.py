@@ -24,7 +24,11 @@ class User(AbstractUser):
     occupation = models.CharField(max_length=100, blank=True, null=True)
     
     # Profile Fields
-    profile_picture = models.ImageField(upload_to='profiles/', null=True, blank=True)
+    def user_directory_path(instance, filename):
+        # file will be uploaded to MEDIA_ROOT/citizen_<id>/<filename>
+        return 'citizen_{0}/{1}'.format(instance.id, filename)
+
+    profile_picture = models.ImageField(upload_to=user_directory_path, null=True, blank=True)
     bio = models.TextField(max_length=500, blank=True)
     
     # Gamification

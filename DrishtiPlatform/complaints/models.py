@@ -58,10 +58,16 @@ class Complaint(models.Model):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     
-    attachment = models.FileField(upload_to='complaints/', null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    
+    def complaint_directory_path(instance, filename):
+        # file will be uploaded to MEDIA_ROOT/citizen_<id>/complaints/<filename>
+        return 'citizen_{0}/complaints/{1}'.format(instance.citizen.id, filename)
+
+    attachment = models.FileField(upload_to=complaint_directory_path, null=True, blank=True)
     
     # Resolution Proof
-    resolution_photo = models.ImageField(upload_to='resolutions/', null=True, blank=True)
+    resolution_photo = models.ImageField(upload_to=complaint_directory_path, null=True, blank=True)
     is_final_verified = models.BooleanField(default=False, help_text="True if local officer verifies the resolution")
     
     created_at = models.DateTimeField(auto_now_add=True)
