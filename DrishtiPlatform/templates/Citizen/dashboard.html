@@ -10,8 +10,8 @@
             <div class="card-body text-center py-5">
                 <div class="mb-3 position-relative d-inline-block">
                     {% if user.profile_picture %}
-                    <img src="{{ user.profile_picture.url }}" alt="Profile"
-                        class="rounded-circle shadow object-fit-cover" style="width: 100px; height: 100px;">
+                    <img src="{{ user.profile_picture.url }}" alt="" class="rounded-circle shadow object-fit-cover"
+                        style="width: 100px; height: 100px;">
                     {% else %}
                     <div class="rounded-circle bg-gradient-primary text-white d-flex align-items-center justify-content-center mx-auto fs-1 fw-bold shadow"
                         style="width: 100px; height: 100px;">
@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="d-grid gap-2 mt-4">
-                    <a href="{% url 'citizen_profile' %}" class="btn btn-outline-primary btn-sm rounded-pill">View
+                    <a href="{% url 'citizen_profile' %}" class="btn btn-dark btn-sm rounded-pill">View
                         Profile</a>
                 </div>
             </div>
