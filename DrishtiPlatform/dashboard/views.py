@@ -116,7 +116,7 @@ def citizen_profile(request):
             if form.is_valid():
                 user = form.save(commit=False)
                 # Award points for first-time completion
-                if not user.aadhaar_number: # Double check
+                if not is_complete: # Check if it was incomplete BEFORE this save
                      user.points += 50
                 user.save()
                 return redirect('citizen_profile')

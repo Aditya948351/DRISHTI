@@ -40,16 +40,16 @@ def predict_category(text):
             # Fallback if AI returns something else
             return 'General', 0.50
             
-        return category, 0.90 # Mock confidence for now as API doesn't always give it easily without logprobs
+        return category, 0.90 
     except Exception as e:
         print(f"Error in predict_category: {e}")
-        # Fallback to keyword matching if API fails
+        # API fails then do this
         text = text.lower()
         if 'water' in text or 'leak' in text or 'pipe' in text:
             return 'Water Supply', 0.85
         elif 'road' in text or 'pothole' in text:
             return 'Roads & Transport', 0.80
-        elif 'garbage' in text or 'trash' in text:
+        elif 'garbage' in text or 'trash' in text or 'waste' in text or 'dump' in text or 'litter' in text:
             return 'Sanitation', 0.90
         elif 'light' in text or 'electricity' in text:
             return 'Electricity', 0.88

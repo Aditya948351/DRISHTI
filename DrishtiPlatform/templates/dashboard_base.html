@@ -106,9 +106,9 @@
                 </ul>
 
                 {% if user.is_authenticated %}
-                <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-4">
                     <div class="text-end lh-1 d-none d-sm-block">
-                        <div class="fw-bold small text-dark">{{ user.get_full_name|default:user.username }}</div>
+                        <div class="fw-bold small text-dark mb-1">{{ user.get_full_name|default:user.username }}</div>
                         <div class="d-flex align-items-center justify-content-end gap-2">
                             <div class="small text-muted" style="font-size: 0.75rem;">{{ user.get_role_display }}</div>
                             {% if user.role == 'citizen' %}
@@ -121,10 +121,15 @@
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
                             data-bs-toggle="dropdown">
+                            {% if user.profile_picture %}
+                            <img src="{{ user.profile_picture.url }}" alt="Profile"
+                                class="rounded-circle shadow-sm object-fit-cover" style="width: 40px; height: 40px;">
+                            {% else %}
                             <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm"
-                                style="width: 35px; height: 35px;">
+                                style="width: 40px; height: 40px;">
                                 {{ user.username|slice:":1"|upper }}
                             </div>
+                            {% endif %}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                             <li><a class="dropdown-item" href="{% url 'citizen_profile' %}">Profile</a></li>

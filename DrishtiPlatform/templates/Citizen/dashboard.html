@@ -9,10 +9,15 @@
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body text-center py-5">
                 <div class="mb-3 position-relative d-inline-block">
+                    {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="Profile"
+                        class="rounded-circle shadow object-fit-cover" style="width: 100px; height: 100px;">
+                    {% else %}
                     <div class="rounded-circle bg-gradient-primary text-white d-flex align-items-center justify-content-center mx-auto fs-1 fw-bold shadow"
                         style="width: 100px; height: 100px;">
                         {{ user.username|slice:":1"|upper }}
                     </div>
+                    {% endif %}
                     <span class="position-absolute bottom-0 end-0 p-2 bg-success border border-white rounded-circle">
                         <span class="visually-hidden">Verified</span>
                     </span>
@@ -44,7 +49,7 @@
                 </div>
 
                 <div class="d-grid gap-2 mt-4">
-                    <a href="#" class="btn btn-outline-primary btn-sm rounded-pill">Edit Profile</a>
+                    <a href="{% url 'citizen_profile' %}" class="btn btn-primary btn-sm rounded-pill">View Profile</a>
                 </div>
             </div>
         </div>
