@@ -1,116 +1,89 @@
+import spacy
 import random
-import os
-from django.conf import settings
-from openai import OpenAI
 
-# Initialize OpenAI client with OpenRouter configuration
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=settings.OPENROUTER_API_KEY,
-    default_headers={
-        "HTTP-Referer": "https://drishti-platform.com",
-        "X-Title": "Drishti Platform",
-    }
-)
+# Load SpaCy model
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    # Fallback if model is not found (e.g., during build)
+    print("SpaCy model 'en_core_web_sm' not found. Please download it.")
+    nlp = None
 
 def predict_category(text):
     """
-    Predict category using OpenRouter API.
-    Supports 6 Categories: Water Supply, Roads & Transport, Sanitation, Electricity, Traffic, Public Safety.
+    Predict category using SpaCy NLP (Keyword & Similarity based).
     """
-    try:
-        completion = client.chat.completions.create(
-            model=settings.AI_MODEL, # Use configured model from settings
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are an AI assistant for a civic grievance platform. Categorize the following complaint into EXACTLY one of these categories: 'Water Supply', 'Roads & Transport', 'Sanitation', 'Electricity', 'Traffic', 'Public Safety'. If it doesn't fit well, use 'General'. Return ONLY the category name."
-                },
-                {
-                    "role": "user",
-                    "content": text
-                }
-            ]
-        )
-        category = completion.choices[0].message.content.strip()
-        
-        # Validate category
-        valid_categories = ['Water Supply', 'Roads & Transport', 'Sanitation', 'Electricity', 'Traffic', 'Public Safety', 'General']
-        if category not in valid_categories:
-            # Fallback if AI returns something else
-            return 'General', 0.50
-            
-        return category, 0.90 
-    except Exception as e:
-        print(f"Error in predict_category: {e}")
-        # API fails then do this
-        text = text.lower()
-        if 'water' in text or 'leak' in text or 'pipe' in text:
-            return 'Water Supply', 0.85
-        elif 'road' in text or 'pothole' in text:
-            return 'Roads & Transport', 0.80
-        elif 'garbage' in text or 'trash' in text or 'waste' in text or 'dump' in text or 'litter' in text:
-            return 'Sanitation', 0.90
-        elif 'light' in text or 'electricity' in text:
-            return 'Electricity', 0.88
-        elif 'traffic' in text:
-            return 'Traffic', 0.85
-        elif 'safety' in text or 'crime' in text:
-            return 'Public Safety', 0.92
-        else:
-            return 'General', 0.50
+    if not nlp:
+        return 'General', 0.50
+
+    doc = nlp(text.lower())
+    
+    # Define keywords for each category
+    categories = {
+        'Water Supply': ['water', 'leak', 'pipe', 'supply', 'drinking', 'sewage', 'drain', 'tap'],
+        'Roads & Transport': ['road', 'pothole', 'street', 'transport', 'bus', 'traffic', 'highway', 'pavement'],
+        'Sanitation': ['garbage', 'trash', 'waste', 'dump', 'litter', 'dustbin', 'clean', 'smell'],
+        'Electricity': ['light', 'electricity', 'power', 'pole', 'wire', 'current', 'voltage', 'lamp'],
+        'Traffic': ['traffic', 'jam', 'signal', 'congestion', 'parking', 'vehicle'],
+        'Public Safety': ['safety', 'crime', 'theft', 'danger', 'police', 'security', 'harassment']
+    }
+
+    scores = {cat: 0 for cat in categories}
+
+    # Lemmatize and match keywords
+    for token in doc:
+        lemma = token.lemma_
+        for cat, keywords in categories.items():
+            if lemma in keywords:
+                scores[cat] += 1
+
+    # Find category with max score
+    best_category = max(scores, key=scores.get)
+    max_score = scores[best_category]
+
+    if max_score > 0:
+        # Calculate pseudo-confidence
+        confidence = min(0.5 + (max_score * 0.1), 0.95)
+        return best_category, confidence
+    else:
+        return 'General', 0.50
 
 def predict_priority(text, category):
     """
-    Predict priority using OpenRouter API.
+    Predict priority using SpaCy NLP.
     """
-    try:
-        completion = client.chat.completions.create(
-            model=settings.AI_MODEL,
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are an AI assistant. Determine the priority of this complaint based on urgency and potential danger. Return ONLY one of: 'low', 'medium', 'high', 'critical'."
-                },
-                {
-                    "role": "user",
-                    "content": f"Category: {category}\nComplaint: {text}"
-                }
-            ]
-        )
-        priority = completion.choices[0].message.content.strip().lower()
+    if not nlp:
+        return 'medium', 0.70
         
-        valid_priorities = ['low', 'medium', 'high', 'critical']
-        if priority not in valid_priorities:
-            return 'medium', 0.70
+    doc = nlp(text.lower())
+    
+    urgent_keywords = ['urgent', 'danger', 'critical', 'emergency', 'immediately', 'severe', 'accident', 'fire', 'threat']
+    high_keywords = ['blocked', 'broken', 'heavy', 'serious', 'major', 'stuck']
+    
+    score = 0
+    for token in doc:
+        if token.lemma_ in urgent_keywords:
+            score += 2
+        elif token.lemma_ in high_keywords:
+            score += 1
             
-        return priority, 0.85
-    except Exception as e:
-        print(f"Error in predict_priority: {e}")
-        # Fallback
-        text = text.lower()
-        if 'urgent' in text or 'danger' in text or 'fire' in text:
-            return 'critical', 0.95
-        elif 'blocked' in text or 'broken' in text:
-            return 'high', 0.80
-        else:
-            return 'medium', 0.70
+    if score >= 2:
+        return 'critical', 0.90
+    elif score == 1:
+        return 'high', 0.80
+    else:
+        return 'medium', 0.70
 
 def suggest_department(category_name):
     """
     Suggest department based on category.
     """
-    if category_name == 'Water Supply':
-        return 'Water Board'
-    elif category_name == 'Roads & Transport':
-        return 'Public Works'
-    elif category_name == 'Sanitation':
-        return 'Sanitation Dept'
-    elif category_name == 'Electricity':
-        return 'Public Works' # Or Electricity Board if it existed
-    elif category_name == 'Traffic':
-        return 'Traffic Police'
-    elif category_name == 'Public Safety':
-        return 'Police Dept'
-    else:
-        return 'General Administration'
+    mapping = {
+        'Water Supply': 'Water Board',
+        'Roads & Transport': 'Public Works',
+        'Sanitation': 'Sanitation Dept',
+        'Electricity': 'Electricity Board',
+        'Traffic': 'Traffic Police',
+        'Public Safety': 'Police Dept'
+    }
+    return mapping.get(category_name, 'General Administration')

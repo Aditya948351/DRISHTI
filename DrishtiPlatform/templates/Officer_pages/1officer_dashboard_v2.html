@@ -149,6 +149,10 @@
             <p class="text-muted mb-0">Here's your daily briefing and case overview.</p>
         </div>
         <div class="col-md-4 text-md-end">
+            <a href="{% url 'analytics_dashboard' %}"
+                class="btn btn-light border rounded-pill me-2 fw-bold text-primary shadow-sm">
+                <i data-lucide="bar-chart-2" class="w-4 h-4 me-2"></i>Analytics
+            </a>
             <div class="d-inline-flex align-items-center bg-white px-4 py-2 rounded-pill shadow-sm border">
                 <div class="me-3 text-end lh-1">
                     <div class="small fw-bold text-dark">{{ dept_name }}</div>
@@ -288,8 +292,10 @@
                                     <span class="status-badge bg-danger bg-opacity-10 text-danger">Critical</span>
                                     {% elif complaint.ai_predicted_priority == 'high' %}
                                     <span class="status-badge bg-warning bg-opacity-10 text-warning">High</span>
+                                    {% elif complaint.ai_predicted_priority == 'medium' %}
+                                    <span class="status-badge bg-info bg-opacity-10 text-info">Medium</span>
                                     {% else %}
-                                    <span class="status-badge bg-success bg-opacity-10 text-success">Normal</span>
+                                    <span class="status-badge bg-success bg-opacity-10 text-success">Low</span>
                                     {% endif %}
                                 </td>
                                 <td>

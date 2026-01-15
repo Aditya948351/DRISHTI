@@ -124,3 +124,22 @@ def update_status(request, pk):
         return redirect('complaint_detail', pk=pk)
     
     return redirect('complaint_detail', pk=pk)
+
+def track_complaint_status(request):
+    complaint = None
+    error = None
+    
+    if request.method == 'GET' and 'complaint_id' in request.GET:
+        c_id = request.GET.get('complaint_id')
+        if c_id:
+            try:
+                complaint = Complaint.objects.get(id=c_id)
+            except Complaint.DoesNotExist:
+                error = f"Complaint #{c_id} not found. Please check the ID."
+            except ValueError:
+                error = "Invalid Complaint ID format."
+    
+    return render(request, 'PublicPages/track_complaint.html', {
+        'complaint': complaint,
+        'error': error
+    })

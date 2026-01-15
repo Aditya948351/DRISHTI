@@ -7,33 +7,56 @@
 <style>
     /* Premium White Home Styles */
     .hero-section {
-        background: radial-gradient(circle at top right, #f8f9fa, #ffffff);
+        background: radial-gradient(circle at center, #f8f9fa, #ffffff);
         padding: 8rem 0 6rem;
         position: relative;
         overflow: hidden;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        cursor: default;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 100%;
+        /* Allow full width */
+        padding: 0 2rem;
+        /* Minimal padding */
     }
 
     .hero-title {
-        font-size: 4.5rem;
+        font-size: 6rem;
+        /* Larger title */
         font-weight: 800;
         letter-spacing: -2px;
-        background: linear-gradient(135deg, #0b4a8f 0%, #002a5c 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 1.5rem;
-        line-height: 1.1;
+        color: #0b4a8f;
+        margin-bottom: 0.5rem;
+        line-height: 1;
     }
 
-    .hero-subtitle {
-        font-size: 1.25rem;
-        color: #6c757d;
-        max-width: 600px;
-        margin-bottom: 2.5rem;
+    .hero-subtitle-main {
+        font-size: 1.75rem;
+        color: #64748b;
+        margin-bottom: 0.5rem;
         font-weight: 500;
     }
 
+    .hero-subtitle-sub {
+        font-size: 1.25rem;
+        color: #1e293b;
+        margin-bottom: 3rem;
+        font-weight: 700;
+    }
+
     .premium-btn {
-        padding: 1rem 2.5rem;
+        padding: 1rem 3rem;
+        /* Larger buttons */
         border-radius: 50px;
         font-weight: 600;
         transition: all 0.3s ease;
@@ -43,6 +66,60 @@
     .premium-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 15px 30px -5px rgba(11, 74, 143, 0.4);
+    }
+
+    /* 3D Model Background */
+    .model-background {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        opacity: 0.8;
+        /* Increased opacity for better visibility */
+        pointer-events: none;
+    }
+
+    /* Stats Bar */
+    .stats-bar-floating {
+        position: relative;
+        z-index: 3;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+        padding: 2rem 4rem;
+        margin-top: 5rem;
+        width: 98%;
+        max-width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #0b4a8f;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #64748b;
+        font-weight: 600;
     }
 
     .glass-card {
@@ -74,22 +151,6 @@
 
     .glass-card:hover .feature-icon {
         transform: scale(1.1) rotate(5deg);
-    }
-
-    .stat-number {
-        font-size: 3rem;
-        font-weight: 800;
-        color: #0b4a8f;
-        line-height: 1;
-        margin-bottom: 0.5rem;
-    }
-
-    .stat-label {
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #6c757d;
-        font-weight: 600;
     }
 
     .process-step {
@@ -149,105 +210,111 @@
         }
     }
 
-    /* Floating Shapes Background */
-    .shape {
+    /* CPGRAMS Styles */
+    .cpgrams-card {
+        transition: all 0.3s ease;
+    }
+
+    .cpgrams-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .cpgrams-hover-box {
         position: absolute;
-        border-radius: 50%;
-        filter: blur(80px);
-        z-index: -1;
-        opacity: 0.6;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        width: 320px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        z-index: 10;
+        pointer-events: none;
     }
 
-    .shape-1 {
-        top: -10%;
-        right: -5%;
-        width: 600px;
-        height: 600px;
-        background: rgba(11, 74, 143, 0.1);
+    .cpgrams-card:hover .cpgrams-hover-box {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(-10px);
+        pointer-events: auto;
     }
 
-    .shape-2 {
-        bottom: 10%;
-        left: -10%;
-        width: 500px;
-        height: 500px;
-        background: rgba(243, 146, 0, 0.08);
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 3.5rem;
+        }
+
+        .stats-bar-floating {
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 2rem;
+        }
     }
 </style>
 
 <!-- Hero Section -->
 <div class="hero-section">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
+    <!-- 3D Model Background -->
+    <div class="model-background">
+        <script type="module"
+            src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+        <model-viewer src="{% static 'models/Drishti-logo.glb' %}" alt="Drishti Logo 3D" auto-rotate camera-controls
+            disable-zoom shadow-intensity="1" interaction-prompt="none"
+            style="width: 100%; height: 100%; --poster-color: transparent; cursor: default;"
+            camera-orbit="0deg 75deg 100%" rotation-per-second="-30deg" field-of-view="auto"
+            min-camera-orbit="auto auto 5%" max-camera-orbit="auto auto 100%">
+        </model-viewer>
+    </div>
 
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 animate-enter">
-                <div
-                    class="d-inline-block px-3 py-1 rounded-pill bg-primary bg-opacity-10 text-primary fw-bold small mb-4 border border-primary border-opacity-10">
-                    🚀 Next-Gen Governance
-                </div>
-                <h1 class="hero-title">
-                    Intelligent<br>
-                    Grievance<br>
-                    Redressal.
-                </h1>
-                <p class="hero-subtitle">
-                    Empowering citizens with AI-driven transparency. Track, resolve, and monitor public issues with
-                    unprecedented efficiency.
-                </p>
-                <div class="d-flex gap-3">
-                    <a href="{% url 'track_complaint' %}" class="btn btn-primary premium-btn">
-                        Track Complaint
-                    </a>
-                    <a href="{% url 'register' %}" class="btn btn-light premium-btn border">
-                        Register Now
-                    </a>
-                </div>
+    <!-- Content Overlay -->
+    <div class="hero-content animate-enter">
+        <h1 class="hero-title">Drishti</h1>
+        <p class="hero-subtitle-main">Digital Redressal Intelligent System with Human-in-loop Tracking Interface</p>
+        <p class="hero-subtitle-sub">AI-augmented grievance redressal with transparent human oversight</p>
 
-                <div class="mt-5 pt-4 border-top border-secondary border-opacity-10 d-flex gap-5">
-                    <div>
-                        <div class="h3 fw-bold text-dark mb-0">12k+</div>
-                        <div class="small text-muted">Resolved Cases</div>
-                    </div>
-                    <div>
-                        <div class="h3 fw-bold text-dark mb-0">48h</div>
-                        <div class="small text-muted">Avg. Time</div>
-                    </div>
-                    <div>
-                        <div class="h3 fw-bold text-dark mb-0">4.8</div>
-                        <div class="small text-muted">User Rating</div>
-                    </div>
-                </div>
-            </div>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="{% url 'track_complaint' %}" class="btn btn-primary premium-btn">
+                Track Complaint
+            </a>
+            <a href="{% url 'register' %}" class="btn btn-light premium-btn border">
+                Register Now
+            </a>
+        </div>
+    </div>
 
-            <div class="col-lg-6 animate-enter delay-2 position-relative">
-                <!-- 3D Model Container -->
-                <div style="height: 600px; width: 100%;">
-                    <script type="module"
-                        src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-                    <model-viewer src="{% static 'models/Drishti-logo.glb' %}" alt="Drishti Logo 3D" auto-rotate
-                        camera-controls disable-zoom shadow-intensity="1"
-                        style="width: 100%; height: 100%; --poster-color: transparent;" camera-orbit="45deg 55deg 2.5m"
-                        field-of-view="30deg">
-                    </model-viewer>
-                </div>
-            </div>
+    <!-- Floating Stats Bar -->
+    <div class="stats-bar-floating animate-enter delay-2">
+        <div class="stat-item">
+            <div class="stat-number">12,543</div>
+            <div class="stat-label">Total Complaints</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">10,230</div>
+            <div class="stat-label">Resolved</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">48h</div>
+            <div class="stat-label">Avg Resolution</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">4.8/5</div>
+            <div class="stat-label">User Satisfaction</div>
         </div>
     </div>
 </div>
 
 <!-- Key Features -->
 <div class="py-5 bg-white">
-    <div class="container py-5">
+    <div class="container-fluid px-4 py-5">
         <div class="text-center mb-5 animate-enter">
             <h6 class="text-uppercase text-primary fw-bold ls-1 mb-2">Key Features</h6>
             <h2 class="display-5 fw-bold text-dark">Why Choose Drishti?</h2>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
             <!-- Feature 1 -->
-            <div class="col-md-4 animate-enter delay-1">
+            <div class="col-md-4 col-lg-3 animate-enter delay-1">
                 <div class="glass-card h-100">
                     <div class="feature-icon bg-primary bg-opacity-10 text-primary">
                         📱
@@ -261,7 +328,7 @@
             </div>
 
             <!-- Feature 2 -->
-            <div class="col-md-4 animate-enter delay-2">
+            <div class="col-md-4 col-lg-3 animate-enter delay-2">
                 <div class="glass-card h-100">
                     <div class="feature-icon bg-warning bg-opacity-10 text-warning">
                         🤖
@@ -275,7 +342,7 @@
             </div>
 
             <!-- Feature 3 -->
-            <div class="col-md-4 animate-enter delay-3">
+            <div class="col-md-4 col-lg-3 animate-enter delay-3">
                 <div class="glass-card h-100">
                     <div class="feature-icon bg-success bg-opacity-10 text-success">
                         ⚡
@@ -293,29 +360,29 @@
 
 <!-- Process Flow -->
 <div class="py-5 bg-light position-relative overflow-hidden">
-    <div class="container py-5">
+    <div class="container-fluid px-4 py-5">
         <div class="text-center mb-5 animate-enter">
             <h6 class="text-uppercase text-primary fw-bold ls-1 mb-2">How It Works</h6>
             <h2 class="display-5 fw-bold text-dark">Simple 3-Step Process</h2>
         </div>
 
-        <div class="row position-relative">
-            <div class="d-none d-md-block process-line"></div>
+        <div class="row position-relative justify-content-center">
+            <div class="d-none d-md-block process-line" style="width: 80%; left: 10%;"></div>
 
-            <div class="col-md-4 text-center process-step animate-enter delay-1">
+            <div class="col-md-3 text-center process-step animate-enter delay-1">
                 <div class="step-number">1</div>
                 <h4 class="fw-bold mb-3">Lodge Complaint</h4>
                 <p class="text-muted px-4">Upload photos, add description, and tag location via our secure portal.</p>
             </div>
 
-            <div class="col-md-4 text-center process-step animate-enter delay-2">
+            <div class="col-md-3 text-center process-step animate-enter delay-2">
                 <div class="step-number">2</div>
                 <h4 class="fw-bold mb-3">AI Processing</h4>
                 <p class="text-muted px-4">Our system analyzes, categorizes, and assigns the issue to the nearest
                     officer.</p>
             </div>
 
-            <div class="col-md-4 text-center process-step animate-enter delay-3">
+            <div class="col-md-3 text-center process-step animate-enter delay-3">
                 <div class="step-number">3</div>
                 <h4 class="fw-bold mb-3">Resolution</h4>
                 <p class="text-muted px-4">Track progress in real-time and rate the service once the issue is resolved.
@@ -327,14 +394,14 @@
 
 <!-- Government Initiatives -->
 <div class="py-5 bg-white">
-    <div class="container py-5">
+    <div class="container-fluid px-4 py-5">
         <div class="text-center mb-5 animate-enter">
             <h6 class="text-uppercase text-primary fw-bold ls-1 mb-2">Aligned With</h6>
             <h2 class="display-5 fw-bold text-dark">National Initiatives</h2>
         </div>
 
         <div class="row g-4 justify-content-center">
-            <div class="col-md-3 animate-enter delay-1">
+            <div class="col-md-4 animate-enter delay-1">
                 <div class="p-4 text-center border rounded-4 h-100 bg-light">
                     <img src="https://upload.wikimedia.org/wikipedia/en/9/95/Digital_India_logo.svg" alt="Digital India"
                         class="img-fluid mb-3" style="height: 60px;">
@@ -342,15 +409,35 @@
                     <p class="small text-muted mb-0">Empowering citizens digitally.</p>
                 </div>
             </div>
-            <div class="col-md-3 animate-enter delay-2">
-                <div class="p-4 text-center border rounded-4 h-100 bg-light">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Swachh_Bharat_Mission_Logo.svg/1200px-Swachh_Bharat_Mission_Logo.svg.png"
-                        alt="Swachh Bharat" class="img-fluid mb-3" style="height: 60px;">
-                    <h5 class="fw-bold">Swachh Bharat</h5>
-                    <p class="small text-muted mb-0">Clean India Mission.</p>
+
+            <!-- CPGRAMS Section (Replaces Swachh Bharat) -->
+            <div class="col-md-4 animate-enter delay-2">
+                <div class="p-4 text-center border rounded-4 h-100 bg-light position-relative cpgrams-card">
+                    <img src="https://pgportal.gov.in/Images/icon_home.png" alt="CPGRAMS" class="img-fluid mb-3"
+                        style="height: 60px;">
+                    <h5 class="fw-bold">CPGRAMS</h5>
+                    <p class="small text-muted mb-0">Centralized Grievance Redress.</p>
+
+                    <!-- Hover Dropdown -->
+                    <div class="cpgrams-hover-box">
+                        <div class="p-3 bg-white rounded-3 shadow-lg border text-start">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <img src="https://pgportal.gov.in/Images/icon_home.png" height="24" alt="Icon">
+                                <h6 class="fw-bold mb-0 text-primary">CPGRAMS Portal</h6>
+                            </div>
+                            <p class="small text-muted mb-2" style="font-size: 0.8rem;">
+                                The Centralized Public Grievance Redress and Monitoring System (CPGRAMS) is an online
+                                platform available to the citizens 24x7 to lodge their grievances to the public
+                                authorities on any subject related to service delivery.
+                            </p>
+                            <a href="https://pgportal.gov.in/" target="_blank"
+                                class="btn btn-sm btn-primary w-100 rounded-pill">Visit Official Site</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3 animate-enter delay-3">
+
+            <div class="col-md-4 animate-enter delay-3">
                 <div class="p-4 text-center border rounded-4 h-100 bg-light">
                     <img src="https://smartcities.gov.in/themes/habeeb/assets/images/logo.png" alt="Smart Cities"
                         class="img-fluid mb-3" style="height: 60px;">
@@ -364,13 +451,13 @@
 
 <!-- Success Stories -->
 <div class="py-5 bg-light">
-    <div class="container py-5">
+    <div class="container-fluid px-4 py-5">
         <div class="text-center mb-5 animate-enter">
             <h6 class="text-uppercase text-primary fw-bold ls-1 mb-2">Impact</h6>
             <h2 class="display-5 fw-bold text-dark">Success Stories</h2>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
             <div class="col-md-6 animate-enter delay-1">
                 <div class="glass-card p-4 h-100">
                     <div class="d-flex align-items-center mb-3">

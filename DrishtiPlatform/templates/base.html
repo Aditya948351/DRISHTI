@@ -22,9 +22,6 @@
             --bg-lighter: #ffffff;
             --text-dark: #1e293b;
             --text-muted: #64748b;
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
         }
 
         body {
@@ -34,6 +31,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+            /* Prevent horizontal scroll */
         }
 
         /* Background Gradient */
@@ -47,207 +46,99 @@
             background: radial-gradient(circle at 50% 0%, #e2e8f0 0%, #f1f5f9 100%);
         }
 
-        /* Glass Navigation */
-        .glass-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 5%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
+        /* Circular Floating Navbar */
+        .circular-nav-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            max-width: 90%;
         }
 
-        .logo a {
+        .circular-nav-container:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transform: translateX(-50%) translateY(-2px);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 20px;
             text-decoration: none;
-            font-size: 1.5rem;
+        }
+
+        .nav-logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        .nav-logo span {
             font-weight: 700;
             color: var(--gov-blue);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 1.2rem;
+            white-space: nowrap;
         }
 
-        .logo-accent {
-            color: var(--gov-orange);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-links a {
+        .nav-item {
+            position: relative;
+            padding: 8px 16px;
             color: var(--text-muted);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
-        .nav-links a:hover {
+        .nav-item:hover,
+        .nav-item.active {
             color: var(--gov-blue);
+            background: rgba(11, 74, 143, 0.05);
         }
 
-        .nav-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            text-align: center;
-            padding: 6rem 2rem 4rem;
-            width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #0b4a8f, #072a53);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 800px;
-            margin: 0 auto 3rem;
-            line-height: 1.6;
-        }
-
-        .hero-cta {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 4rem;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+        .nav-auth-btn {
+            padding: 8px 20px;
+            border-radius: 20px;
             font-weight: 600;
-            transition: all 0.3s;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
-        .btn-primary {
-            background-color: var(--gov-blue);
-            border-color: var(--gov-blue);
+        .btn-login {
+            color: var(--gov-blue);
+            background: transparent;
+        }
+
+        .btn-register {
+            background: var(--gov-blue);
+            color: white;
+            box-shadow: 0 4px 12px rgba(11, 74, 143, 0.2);
+        }
+
+        .btn-register:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(11, 74, 143, 0.3);
+            background: var(--gov-dark-blue);
             color: white;
         }
 
-        .btn-primary:hover {
-            background-color: var(--gov-dark-blue);
-            border-color: var(--gov-dark-blue);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(11, 74, 143, 0.3);
-        }
-
-        .btn-secondary {
-            background-color: white;
-            border: 1px solid #e2e8f0;
-            color: var(--text-dark);
-        }
-
-        .btn-secondary:hover {
-            background-color: #f8fafc;
-            border-color: #cbd5e1;
-            transform: translateY(-2px);
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-            width: 90%;
-            max-width: 100%;
-            margin: 0 auto;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--gov-blue);
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        /* Glass Cards */
-        .glass-card {
-            background: white;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 16px;
-            padding: 2.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            height: 100%;
-        }
-
-        .glass-card h2 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--text-dark);
-        }
-
-        .glass-card h3,
-        .glass-card h4,
-        .glass-card h5 {
-            color: var(--text-dark);
-        }
-
-        .glass-card p {
-            color: var(--text-muted);
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 2rem;
+        /* Utility */
+        .content-wrapper {
+            flex: 1;
             width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            display: block;
         }
 
         .glass-footer {
@@ -258,74 +149,20 @@
             text-align: center;
         }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--gov-blue);
-        }
-
-        /* Utility */
-        .content-wrapper {
-            flex: 1;
-            padding-bottom: 4rem;
-        }
-
-        /* Form Controls for Light Mode */
-        .form-control {
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            color: var(--text-dark);
-        }
-
-        .form-control:focus {
-            background-color: white;
-            border-color: var(--gov-blue);
-            box-shadow: 0 0 0 0.25rem rgba(11, 74, 143, 0.15);
-            color: var(--text-dark);
-        }
-
-        .form-control::placeholder {
-            color: #94a3b8;
-        }
-
-        /* Text Utilities */
-        .text-muted {
-            color: var(--text-muted) !important;
-        }
-
-        .text-white {
-            color: var(--text-dark) !important;
-            /* Override for light mode compatibility */
-        }
-
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .stats-bar {
-                flex-direction: column;
-                gap: 2rem;
-            }
-
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-links {
+        /* Responsive Nav */
+        @media (max-width: 992px) {
+            .nav-links-desktop {
                 display: none;
+            }
+
+            .circular-nav-container {
+                padding: 10px;
+                width: 90%;
+                justify-content: space-between;
+            }
+
+            .nav-logo {
+                margin-right: 0;
             }
         }
     </style>
@@ -335,31 +172,34 @@
 <body>
     <div class="background-gradient"></div>
 
-    <nav class="glass-nav">
-        <div class="logo">
-            <a href="{% url 'home' %}">
-                <img src="https://github.com/Aditya948351/DRISHTI/blob/main/Drishti-logo.png?raw=true"
-                    alt="Drishti Logo" style="height: 40px; margin-right: 10px;">
-                <span>Drishti</span>
-                <span class="logo-accent">Platform</span>
-            </a>
+    <div class="circular-nav-container">
+        <a href="{% url 'home' %}" class="nav-logo">
+            <img src="https://github.com/Aditya948351/DRISHTI/blob/main/Drishti-logo.png?raw=true" alt="Logo">
+            <span>Drishti</span>
+        </a>
+
+        <div class="nav-links-desktop d-none d-lg-flex align-items-center gap-1">
+            <a href="{% url 'home' %}"
+                class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+            <a href="{% url 'about' %}"
+                class="nav-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a>
+            <a href="{% url 'track_complaint' %}"
+                class="nav-item {% if request.resolver_match.url_name == 'track_complaint' %}active{% endif %}">Track</a>
+            <a href="{% url 'faq' %}"
+                class="nav-item {% if request.resolver_match.url_name == 'faq' %}active{% endif %}">FAQ</a>
+            <a href="{% url 'contact' %}"
+                class="nav-item {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a>
         </div>
-        <div class="nav-links">
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'about' %}">About</a>
-            <a href="{% url 'track_complaint' %}">Track</a>
-            <a href="{% url 'faq' %}">FAQ</a>
-            <a href="{% url 'contact' %}">Contact</a>
+
+        <div class="d-flex align-items-center gap-2 ms-lg-3">
+            <a href="{% url 'login' %}" class="nav-auth-btn btn-login">Login</a>
+            <a href="{% url 'register' %}" class="nav-auth-btn btn-register">Register</a>
         </div>
-        <div class="nav-actions">
-            <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
-            <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
-        </div>
-    </nav>
+    </div>
 
     <main class="content-wrapper">
         {% if messages %}
-        <div class="messages container mt-3">
+        <div class="messages container mt-5 pt-5">
             {% for message in messages %}
             <div class="alert {{ message.tags }}">
                 {{ message }}
@@ -372,16 +212,13 @@
     </main>
 
     <footer class="glass-footer">
-        <div class="footer-links">
-            <a href="{% url 'about' %}">About Us</a>
-            <a href="{% url 'contact' %}">Contact</a>
-            <a href="{% url 'faq' %}">FAQ</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+        <div class="d-flex justify-content-center gap-4 mb-3">
+            <a href="{% url 'about' %}" class="text-decoration-none text-muted">About Us</a>
+            <a href="{% url 'contact' %}" class="text-decoration-none text-muted">Contact</a>
+            <a href="{% url 'faq' %}" class="text-decoration-none text-muted">FAQ</a>
         </div>
-        <p>&copy; {% now "Y" %} Drishti Platform. All rights reserved.</p>
-        <p class="text-muted" style="font-size: 0.8rem; margin-top: 0.5rem;">Empowering citizens with transparent
-            governance.</p>
+        <p class="mb-1">&copy; {% now "Y" %} Drishti Platform. All rights reserved.</p>
+        <p class="text-muted small">Empowering citizens with transparent governance.</p>
     </footer>
 
     {% block extra_js %}

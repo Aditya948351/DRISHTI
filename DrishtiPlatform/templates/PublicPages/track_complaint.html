@@ -2,13 +2,188 @@
 {% block title %}Track Complaint - Drishti{% endblock %}
 {% block content %}
 <div class="container py-5">
-    <h2>Track Your Complaint</h2>
-    <form>
-        <div class="mb-3">
-            <label class="form-label">Complaint ID</label>
-            <input type="text" class="form-control" placeholder="Enter Complaint ID">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-primary text-white p-4 text-center">
+                    <h2 class="fw-bold mb-0">Track Your Grievance</h2>
+                    <p class="mb-0 opacity-75">Enter your Complaint ID to see real-time status</p>
+                </div>
+                <div class="card-body p-5">
+                    <form method="GET" action="{% url 'track_complaint' %}" class="mb-5">
+                        <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden">
+                            <span class="input-group-text bg-white border-0 ps-4"><i data-lucide="search"
+                                    class="text-muted"></i></span>
+                            <input type="text" name="complaint_id" class="form-control border-0"
+                                placeholder="Enter Complaint ID (e.g., 123)" value="{{ request.GET.complaint_id }}"
+                                required>
+                            <button type="submit" class="btn btn-primary px-4 fw-bold">Track Status</button>
+                        </div>
+                    </form>
+
+                    {% if error %}
+                    <div class="alert alert-danger rounded-3 d-flex align-items-center" role="alert">
+                        <i data-lucide="alert-circle" class="me-2"></i>
+                        <div>{{ error }}</div>
+                    </div>
+                    {% endif %}
+
+                    {% if complaint %}
+                    <div class="border rounded-4 p-4 bg-light bg-opacity-50">
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div>
+                                <h5 class="fw-bold text-dark mb-1">Complaint #{{ complaint.id }}</h5>
+                                <p class="text-muted mb-0 small">{{ complaint.created_at|date:"d M Y, h:i A" }}</p>
+                            </div>
+                            <span class="badge rounded-pill px-3 py-2 
+                                {% if complaint.status == 'resolved' %}
+                                    bg-success
+                                {% elif complaint.status == 'rejected' %}
+                                    bg-danger
+                                {% elif complaint.status == 'in_progress' %}
+                                    bg-warning text-dark
+                                {% else %}
+                                    bg-secondary
+                                {% endif %}">
+                                {{ complaint.get_status_display }}
+                            </span>
+                        </div>
+
+                        <!-- Timeline -->
+                        <div class="position-relative py-2">
+                            <!-- Vertical Line -->
+                            <div class="position-absolute top-0 bottom-0 start-0 ms-3 border-start border-2 border-primary border-opacity-25"
+                                style="z-index: 0;"></div>
+
+                            <!-- Step 1: Received -->
+                            <div class="d-flex mb-4 position-relative" style="z-index: 1;">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center border border-4 border-white shadow-sm"
+                                        style="width: 40px; height: 40px;">
+                                        <i data-lucide="check" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Grievance Received</h6>
+                                    <p class="text-muted small mb-0">Your complaint has been successfully registered in
+                                        the system.</p>
+                                    <small class="text-muted">{{ complaint.created_at|date:"d M Y" }}</small>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: AI Analysis & Routing -->
+                            <div class="d-flex mb-4 position-relative" style="z-index: 1;">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="rounded-circle 
+                                        {% if complaint.ai_predicted_category %}
+                                            bg-success text-white
+                                        {% else %}
+                                            bg-light text-muted border
+                                        {% endif %} 
+                                        d-flex align-items-center justify-content-center border border-4 border-white shadow-sm"
+                                        style="width: 40px; height: 40px;">
+                                        {% if complaint.ai_predicted_category %}
+                                        <i data-lucide="check" class="w-4 h-4"></i>
+                                        {% else %}
+                                        <i data-lucide="cpu" class="w-4 h-4"></i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6
+                                        class="fw-bold mb-1 {% if not complaint.ai_predicted_category %}text-muted{% endif %}">
+                                        AI Analysis & Routing</h6>
+                                    <p class="text-muted small mb-0">Analyzed by AI and routed to <strong>{{
+                                            complaint.department.name|default:"General Administration" }}</strong>.</p>
+                                    {% if complaint.ai_predicted_category %}
+                                    <span class="badge bg-info bg-opacity-10 text-info border mt-1">{{
+                                        complaint.ai_predicted_category }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Officer Verification -->
+                            <div class="d-flex mb-4 position-relative" style="z-index: 1;">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="rounded-circle 
+                                        {% if complaint.workflow_state == 'verified_by_officer' or complaint.status == 'resolved' %}
+                                            bg-success text-white
+                                        {% elif complaint.status == 'in_progress' %}
+                                            bg-warning text-dark
+                                        {% else %}
+                                            bg-light text-muted border
+                                        {% endif %} 
+                                        d-flex align-items-center justify-content-center border border-4 border-white shadow-sm"
+                                        style="width: 40px; height: 40px;">
+                                        {% if complaint.workflow_state == 'verified_by_officer' or complaint.status ==
+                                        'resolved' %}
+                                        <i data-lucide="check" class="w-4 h-4"></i>
+                                        {% else %}
+                                        <i data-lucide="user-check" class="w-4 h-4"></i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6
+                                        class="fw-bold mb-1 {% if complaint.status == 'pending' %}text-muted{% endif %}">
+                                        Field Officer Verification</h6>
+                                    <p class="text-muted small mb-0">Assigned to Field Officer for on-site verification.
+                                    </p>
+                                    {% if complaint.status == 'in_progress' %}
+                                    <span class="badge bg-warning text-dark mt-1">In Progress</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Step 4: Resolution -->
+                            <div class="d-flex position-relative" style="z-index: 1;">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="rounded-circle 
+                                        {% if complaint.status == 'resolved' %}
+                                            bg-success text-white
+                                        {% elif complaint.status == 'rejected' %}
+                                            bg-danger text-white
+                                        {% else %}
+                                            bg-light text-muted border
+                                        {% endif %} 
+                                        d-flex align-items-center justify-content-center border border-4 border-white shadow-sm"
+                                        style="width: 40px; height: 40px;">
+                                        {% if complaint.status == 'resolved' %}
+                                        <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                                        {% elif complaint.status == 'rejected' %}
+                                        <i data-lucide="x-circle" class="w-4 h-4"></i>
+                                        {% else %}
+                                        <i data-lucide="flag" class="w-4 h-4"></i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6
+                                        class="fw-bold mb-1 {% if complaint.status != 'resolved' and complaint.status != 'rejected' %}text-muted{% endif %}">
+                                        Final Resolution</h6>
+                                    {% if complaint.status == 'resolved' %}
+                                    <p class="text-success small mb-0">Complaint successfully resolved!</p>
+                                    <small class="text-muted">{{ complaint.resolved_at|date:"d M Y" }}</small>
+                                    {% if complaint.resolution_photo %}
+                                    <div class="mt-2">
+                                        <a href="{{ complaint.resolution_photo.url }}" target="_blank"
+                                            class="btn btn-sm btn-outline-success">View Proof</a>
+                                    </div>
+                                    {% endif %}
+                                    {% elif complaint.status == 'rejected' %}
+                                    <p class="text-danger small mb-0">Complaint rejected. Reason: {{
+                                        complaint.rejection_reason|default:"Not specified" }}</p>
+                                    {% else %}
+                                    <p class="text-muted small mb-0">Pending final resolution.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary">Track</button>
-    </form>
+    </div>
 </div>
 {% endblock %}

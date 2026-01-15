@@ -16,7 +16,7 @@ urlpatterns = [
     path('about/', TemplateView.as_view(template_name='PublicPages/about.html'), name='about'),
     path('contact/', TemplateView.as_view(template_name='PublicPages/contact.html'), name='contact'),
     path('faq/', TemplateView.as_view(template_name='PublicPages/faq.html'), name='faq'),
-    path('complaint/track/', TemplateView.as_view(template_name='PublicPages/track_complaint.html'), name='track_complaint'),
+    path('complaint/track/', complaints_views.track_complaint_status, name='track_complaint'),
 
     # --- Authentication ---
     path('login/', accounts_views.CustomLoginView.as_view(), name='login'),
@@ -31,7 +31,7 @@ urlpatterns = [
     path('citizen/complaints/', complaints_views.complaint_list, name='citizen_complaints'),
     path('citizen/complaints/<int:pk>/', complaints_views.complaint_detail, name='complaint_detail'),
     path('citizen/complaints/<int:pk>/feedback/', dashboard_views.citizen_feedback, name='complaint_feedback'),
-    path('citizen/profile/', dashboard_views.citizen_profile, name='citizen_profile'),
+    path('citizen/profile/', dashboard_views.user_profile, name='citizen_profile'),
     path('citizen/profile/<int:user_id>/', dashboard_views.view_citizen_profile, name='view_citizen_profile'),
     path('citizen/notifications/', dashboard_views.citizen_notifications, name='citizen_notifications'),
     
@@ -44,6 +44,7 @@ urlpatterns = [
     path('officer/complaints/assigned/', complaints_views.complaint_list, {'filter': 'assigned'}, name='officer_assigned_complaints'),
     path('officer/complaints/<int:pk>/work/', complaints_views.update_status, name='officer_work_complaint'),
     path('officer/ai/inbox/', TemplateView.as_view(template_name='ai_engine/inbox.html'), name='officer_ai_inbox'),
+    path('officer/analytics/', dashboard_views.analytics_dashboard, name='analytics_dashboard'),
 
     # --- Department Admin ---
     path('dept/dashboard/', dashboard_views.dept_dashboard, name='dept_dashboard'),

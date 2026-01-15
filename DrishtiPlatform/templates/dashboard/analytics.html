@@ -1,0 +1,106 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Analytics Dashboard | Drishti{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 fw-bold text-dark">Analytics Overview</h1>
+        <div class="text-muted small">Real-time insights</div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase text-muted small fw-bold mb-2">Total Complaints</h6>
+                    <h2 class="display-6 fw-bold text-primary mb-0">{{ total_complaints }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase text-muted small fw-bold mb-2">Resolved</h6>
+                    <h2 class="display-6 fw-bold text-success mb-0">{{ resolved_complaints }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase text-muted small fw-bold mb-2">Pending</h6>
+                    <h2 class="display-6 fw-bold text-warning mb-0">{{ pending_complaints }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-uppercase text-muted small fw-bold mb-2">Resolution Rate</h6>
+                    <h2 class="display-6 fw-bold text-info mb-0">{{ resolution_rate }}%</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Category Distribution -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h5 class="fw-bold mb-0">Category Distribution (AI)</h5>
+                </div>
+                <div class="card-body">
+                    {% for item in category_data %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="fw-medium">{{ item.ai_predicted_category|default:"Uncategorized" }}</span>
+                            <span class="fw-bold">{{ item.count }}</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-primary" role="progressbar"
+                                style="width: {% widthratio item.count total_complaints 100 %}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Priority Distribution -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h5 class="fw-bold mb-0">Priority Breakdown (AI)</h5>
+                </div>
+                <div class="card-body">
+                    {% for item in priority_data %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="fw-medium text-capitalize">{{ item.ai_predicted_priority|default:"Unknown"
+                                }}</span>
+                            <span class="fw-bold">{{ item.count }}</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            {% if item.ai_predicted_priority == 'critical' %}
+                            <div class="progress-bar bg-danger" role="progressbar"
+                                style="width: {% widthratio item.count total_complaints 100 %}%"></div>
+                            {% elif item.ai_predicted_priority == 'high' %}
+                            <div class="progress-bar bg-warning" role="progressbar"
+                                style="width: {% widthratio item.count total_complaints 100 %}%"></div>
+                            {% else %}
+                            <div class="progress-bar bg-success" role="progressbar"
+                                style="width: {% widthratio item.count total_complaints 100 %}%"></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

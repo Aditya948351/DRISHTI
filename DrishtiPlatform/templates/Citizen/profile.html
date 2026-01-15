@@ -75,13 +75,14 @@
                     </div>
                     <span
                         class="position-absolute bottom-0 end-0 p-2 bg-success border border-4 border-white rounded-circle"
-                        title="Verified Citizen">
+                        title="Verified User">
                         <span class="visually-hidden">Verified</span>
                     </span>
                 </div>
                 <h3 class="fw-bold mb-1">{{ user.get_full_name|default:user.username }}</h3>
-                <p class="opacity-75 mb-1">Citizen ID: #{{ user.id|stringformat:"06d" }}</p>
-                <p class="opacity-75 mb-3 badge bg-white bg-opacity-25">{{ user.occupation|default:"Citizen" }}</p>
+                <p class="opacity-75 mb-1">{{ user.get_role_display }} ID: #{{ user.id|stringformat:"06d" }}</p>
+                <p class="opacity-75 mb-3 badge bg-white bg-opacity-25">{{ user.occupation|default:user.get_role_display
+                    }}</p>
 
                 <div class="d-flex justify-content-center gap-3">
                     <span class="badge bg-white bg-opacity-25 rounded-pill px-3 py-2">
@@ -89,7 +90,7 @@
                         user.state|default:user.address|default:"Location Not Set" }}
                     </span>
                     <span class="badge bg-white bg-opacity-25 rounded-pill px-3 py-2">
-                        <i data-lucide="shield" class="w-4 h-4 me-1"></i> Civic Guardian (Level 1)
+                        <i data-lucide="shield" class="w-4 h-4 me-1"></i> {{ user.rank|default:"Civic Guardian" }}
                     </span>
                 </div>
             </div>

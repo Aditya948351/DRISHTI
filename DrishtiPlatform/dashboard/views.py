@@ -101,8 +101,9 @@ def citizen_notifications(request):
     return render(request, 'Citizen/notification.html')
 
 @login_required
-def citizen_profile(request):
-    if request.user.role != 'citizen':
+def user_profile(request):
+    # Allow citizens and officers
+    if request.user.role not in ['citizen', 'officer', 'dept_admin', 'city_admin', 'super_admin']:
         return redirect('dashboard')
         
     from accounts.forms import CitizenProfileForm
@@ -124,7 +125,7 @@ def citizen_profile(request):
                      user.points += 50
                 
                 user.save()
-                return redirect('citizen_profile')
+                return redirect('user_profile')
         else:
             form = CitizenProfileForm(instance=request.user)
         
@@ -391,3 +392,43 @@ def national_dashboard(request):
         'recent_complaints': recent_complaints,
     }
     return render(request, 'NationalAdminPages/national_dashboard.html', context)
+
+@login_required
+def analytics_dashboard(request):
+    if request.user.role not in ['officer', 'dept_admin', 'city_admin', 'super_admin']:
+        return redirect('dashboard')
+        
+    complaints = Complaint.objects.all()
+    
+    # Filter by department for officers/dept_admins
+    if request.user.role in ['officer', 'dept_admin'] and request.user.department:
+        if request.user.department.name != 'General Administration':
+             complaints = complaints.filter(department=request.user.department)
+
+    # Key Metrics
+    total_complaints = complaints.count()
+    resolved_complaints = complaints.filter(status='resolved').count()
+    pending_complaints = complaints.exclude(status='resolved').count()
+    
+    resolution_rate = int((resolved_complaints / total_complaints * 100)) if total_complaints > 0 else 0
+    
+    # Category Distribution
+    from django.db.models import Count
+    category_data = complaints.values('ai_predicted_category').annotate(count=Count('id')).order_by('-count')
+    
+    # Priority Distribution
+    priority_data = complaints.values('ai_predicted_priority').annotate(count=Count('id')).order_by('-count')
+    
+    # Status Distribution
+    status_data = complaints.values('status').annotate(count=Count('id')).order_by('-count')
+
+    context = {
+        'total_complaints': total_complaints,
+        'resolved_complaints': resolved_complaints,
+        'pending_complaints': pending_complaints,
+        'resolution_rate': resolution_rate,
+        'category_data': category_data,
+        'priority_data': priority_data,
+        'status_data': status_data,
+    }
+    return render(request, 'dashboard/analytics.html', context)

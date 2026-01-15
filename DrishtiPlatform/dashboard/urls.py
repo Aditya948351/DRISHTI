@@ -15,10 +15,11 @@ urlpatterns = [
     path('citizen/complaint-details/<int:id>/', views.citizen_complaint_details, name='citizen_complaint_details'),
     path('citizen/feedback/', views.citizen_feedback, name='citizen_feedback'),
     path('citizen/notifications/', views.citizen_notifications, name='citizen_notifications'),
-    path('citizen/profile/', views.citizen_profile, name='citizen_profile'),
+    path('citizen/profile/', views.user_profile, name='citizen_profile'),
     
     # Officer
     path('officer/dashboard/', views.officer_dashboard, name='officer_dashboard'),
+    path('officer/profile/', views.user_profile, name='officer_profile'),
     
     # Dept Admin
     path('dept/dashboard/', views.dept_dashboard, name='dept_dashboard'),
@@ -28,4 +29,7 @@ urlpatterns = [
     
     # National Admin
     path('national/dashboard/', views.national_dashboard, name='national_dashboard'),
+    
+    # Analytics
+    path('analytics/dashboard/', views.analytics_dashboard, name='analytics_dashboard'),
 ]
