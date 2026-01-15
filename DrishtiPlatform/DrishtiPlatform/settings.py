@@ -92,19 +92,11 @@ WSGI_APPLICATION = 'DrishtiPlatform.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# Production Database
-import dj_database_url
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config(
-        conn_max_age=600,
-        conn_health_checks=True,
+    'default': dj_database_url.config(
+        default='mysql://root:Aditya@123@localhost:3306/drishti_db',
+        conn_max_age=600
     )
+}
 
 
 # Password validation
@@ -158,6 +150,7 @@ LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = '/'
 
 # Cloudinary Storage
+# Cloudinary Storage
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
@@ -168,4 +161,8 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# OpenRouter AI Configuration
+OPENROUTER_API_KEY = "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"
+AI_MODEL = "google/gemini-2.0-flash-exp:free"
 

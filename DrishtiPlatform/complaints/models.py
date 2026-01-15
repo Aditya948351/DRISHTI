@@ -55,9 +55,8 @@ class Complaint(models.Model):
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='medium')
     
     location = models.CharField(max_length=255, help_text="Area/Locality")
+    district = models.CharField(max_length=100, blank=True, null=True)
     latitude = models.FloatField(null=True, blank=True)
-    longitude = models.FloatField(null=True, blank=True)
-    
     longitude = models.FloatField(null=True, blank=True)
     
     def complaint_directory_path(instance, filename):
@@ -66,8 +65,14 @@ class Complaint(models.Model):
 
     attachment = models.FileField(upload_to=complaint_directory_path, null=True, blank=True)
     
+    def resolution_directory_path(instance, filename):
+        # Organize by officer if assigned, otherwise generic resolutions folder
+        if instance.assigned_officer:
+            return 'officer_uploads/{0}/{1}'.format(instance.assigned_officer.username, filename)
+        return 'resolutions/{0}'.format(filename)
+
     # Resolution Proof
-    resolution_photo = models.ImageField(upload_to=complaint_directory_path, null=True, blank=True)
+    resolution_photo = models.ImageField(upload_to=resolution_directory_path, null=True, blank=True)
     is_final_verified = models.BooleanField(default=False, help_text="True if local officer verifies the resolution")
     
     created_at = models.DateTimeField(auto_now_add=True)

@@ -20,6 +20,7 @@ class User(AbstractUser):
         ('Gujarat', 'Gujarat'),
     )
     state = models.CharField(max_length=50, choices=STATE_CHOICES, blank=True, null=True)
+    district = models.CharField(max_length=100, blank=True, null=True, help_text="District for Local Officers")
     aadhaar_number = models.CharField(max_length=12, blank=True, null=True)
     occupation = models.CharField(max_length=100, blank=True, null=True)
     

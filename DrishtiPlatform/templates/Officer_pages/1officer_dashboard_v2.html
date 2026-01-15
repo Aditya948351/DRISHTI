@@ -1,0 +1,322 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Officer Command Center | Drishti{% endblock %}
+
+{% block content %}
+<style>
+    /* Dashboard Specific Styles */
+    .dashboard-container {
+        font-family: 'Inter', sans-serif;
+    }
+
+    .glass-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .welcome-text {
+        background: linear-gradient(45deg, #0b4a8f, #002a5c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+    }
+
+    .premium-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        overflow: hidden;
+    }
+
+    .premium-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.12);
+    }
+
+    .stat-icon-wrapper {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .premium-card:hover .stat-icon-wrapper {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .profile-section {
+        background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+        border-right: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 24px;
+        background: linear-gradient(135deg, #0b4a8f 0%, #002a5c 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        box-shadow: 0 10px 20px rgba(11, 74, 143, 0.2);
+        margin: 0 auto;
+    }
+
+    .table-premium thead th {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        border: none;
+        padding: 1rem 1.5rem;
+    }
+
+    .table-premium tbody td {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: middle;
+        font-size: 0.9rem;
+    }
+
+    .table-premium tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table-premium tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    .table-premium tbody tr:hover {
+        background-color: #fcfcfc;
+    }
+
+    .status-badge {
+        padding: 0.5em 1em;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        letter-spacing: 0.3px;
+    }
+
+    .animate-enter {
+        animation: fadeUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    .delay-1 {
+        animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+        animation-delay: 0.2s;
+    }
+
+    .delay-3 {
+        animation-delay: 0.3s;
+    }
+
+    @keyframes fadeUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="dashboard-container pb-5">
+    <!-- Header Section -->
+    <div class="row mb-5 align-items-end animate-enter">
+        <div class="col-md-8">
+            <h6 class="text-uppercase text-muted fw-bold small mb-2 ls-1">Officer Dashboard</h6>
+            <h1 class="display-5 fw-bold text-dark mb-1">Welcome back, <span class="welcome-text">{{ welcome_name
+                    }}</span></h1>
+            <p class="text-muted mb-0">Here's your daily briefing and case overview.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <div class="d-inline-flex align-items-center bg-white px-4 py-2 rounded-pill shadow-sm border">
+                <div class="me-3 text-end lh-1">
+                    <div class="small fw-bold text-dark">{{ dept_name }}</div>
+                    <div class="text-muted" style="font-size: 0.75rem;">{{ zone }}</div>
+                </div>
+                <div class="bg-light rounded-circle p-2">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Sidebar Profile -->
+        <div class="col-lg-3 animate-enter delay-1">
+            <div class="premium-card h-100 p-4 text-center position-relative">
+                <div class="position-absolute top-0 end-0 p-3">
+                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2">
+                        <span class="d-inline-block bg-success rounded-circle me-1"
+                            style="width: 6px; height: 6px;"></span>
+                        Active
+                    </span>
+                </div>
+
+                <div class="profile-avatar mb-4">
+                    {{ user.username|slice:":1"|upper }}
+                </div>
+
+                <h4 class="fw-bold text-dark mb-1">{{ user.get_full_name|default:user.username }}</h4>
+                <p class="text-muted small mb-4">{{ emp_id }}</p>
+
+                <div class="d-grid gap-2 mb-4">
+                    <div class="p-3 rounded-3 bg-light text-start d-flex align-items-center">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-primary me-3"></i>
+                        <div>
+                            <div class="small text-muted fw-bold text-uppercase" style="font-size: 0.65rem;">Role</div>
+                            <div class="fw-bold text-dark">Field Officer</div>
+                        </div>
+                    </div>
+                    <div class="p-3 rounded-3 bg-light text-start d-flex align-items-center">
+                        <i data-lucide="building-2" class="w-5 h-5 text-primary me-3"></i>
+                        <div>
+                            <div class="small text-muted fw-bold text-uppercase" style="font-size: 0.65rem;">Department
+                            </div>
+                            <div class="fw-bold text-dark">{{ dept_name }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if critical_case %}
+                <div
+                    class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger text-start p-3 rounded-3 mb-0">
+                    <div class="d-flex align-items-center mb-2">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 me-2"></i>
+                        <span class="fw-bold small">Critical Alert</span>
+                    </div>
+                    <p class="small mb-2 lh-sm">Case #{{ critical_case.id }} requires immediate attention.</p>
+                    <a href="{% url 'complaint_detail' critical_case.id %}"
+                        class="btn btn-sm btn-danger w-100 fw-bold">View Case</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <!-- Stats Grid -->
+            <div class="row g-4 mb-4 animate-enter delay-2">
+                <div class="col-md-4">
+                    <div class="premium-card p-4 h-100">
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div class="stat-icon-wrapper bg-primary bg-opacity-10 text-primary">
+                                <i data-lucide="briefcase"></i>
+                            </div>
+                            <span class="badge bg-light text-dark border">+2 New</span>
+                        </div>
+                        <h2 class="display-5 fw-bold text-dark mb-1">{{ assigned_cases }}</h2>
+                        <p class="text-muted small mb-0">Total Assigned Cases</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="premium-card p-4 h-100">
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div class="stat-icon-wrapper bg-warning bg-opacity-10 text-warning">
+                                <i data-lucide="clock"></i>
+                            </div>
+                            <span class="badge bg-warning bg-opacity-10 text-warning">Action Needed</span>
+                        </div>
+                        <h2 class="display-5 fw-bold text-dark mb-1">{{ pending_action }}</h2>
+                        <p class="text-muted small mb-0">Pending Actions</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="premium-card p-4 h-100">
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div class="stat-icon-wrapper bg-success bg-opacity-10 text-success">
+                                <i data-lucide="check-circle-2"></i>
+                            </div>
+                            <span class="badge bg-success bg-opacity-10 text-success">Top 10%</span>
+                        </div>
+                        <h2 class="display-5 fw-bold text-dark mb-1">{{ resolved_month }}</h2>
+                        <p class="text-muted small mb-0">Resolved this Month</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Cases Table -->
+            <div class="premium-card animate-enter delay-3">
+                <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0">Recent Assignments</h5>
+                    <button class="btn btn-sm btn-light border fw-bold text-muted">View All</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-premium mb-0">
+                        <thead>
+                            <tr>
+                                <th>Case ID</th>
+                                <th>Subject</th>
+                                <th>Category</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for complaint in recent_assignments %}
+                            <tr>
+                                <td class="fw-bold text-primary">#{{ complaint.id }}</td>
+                                <td class="fw-bold text-dark">{{ complaint.title|truncatechars:30 }}</td>
+                                <td>
+                                    <span class="badge bg-light text-dark border fw-normal">
+                                        {{ complaint.ai_predicted_category|default:"General" }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if complaint.ai_predicted_priority == 'critical' %}
+                                    <span class="status-badge bg-danger bg-opacity-10 text-danger">Critical</span>
+                                    {% elif complaint.ai_predicted_priority == 'high' %}
+                                    <span class="status-badge bg-warning bg-opacity-10 text-warning">High</span>
+                                    {% else %}
+                                    <span class="status-badge bg-success bg-opacity-10 text-success">Normal</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="status-badge bg-info bg-opacity-10 text-info">
+                                        {{ complaint.get_status_display }}
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <a href="{% url 'complaint_detail' complaint.id %}"
+                                        class="btn btn-sm btn-light border fw-bold text-primary shadow-sm">
+                                        Inspect
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <div class="mb-3 opacity-50"><i data-lucide="inbox" class="w-10 h-10"></i></div>
+                                    <p class="mb-0">No active assignments found.</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -15,13 +15,16 @@
 }
 
 .btn-primary {
-    background-color: var(--gov-blue);
-    border-color: var(--gov-blue);
+    background: linear-gradient(135deg, var(--gov-blue) 0%, var(--gov-dark-blue) 100%);
+    border: none;
+    box-shadow: 0 4px 6px rgba(11, 74, 143, 0.2);
+    transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: var(--gov-dark-blue);
-    border-color: var(--gov-dark-blue);
+    background: linear-gradient(135deg, var(--gov-dark-blue) 0%, #001f3f 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(11, 74, 143, 0.3);
 }
 
 /* Navbar Tweaks */

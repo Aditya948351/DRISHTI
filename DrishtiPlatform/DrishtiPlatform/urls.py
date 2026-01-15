@@ -25,6 +25,7 @@ urlpatterns = [
     path('password/reset/', TemplateView.as_view(template_name='PublicPages/reset_password.html'), name='reset_password'),
 
     # --- Citizen Portal ---
+    path('dashboard/', dashboard_views.dashboard, name='dashboard'),
     path('citizen/dashboard/', dashboard_views.citizen_dashboard, name='citizen_dashboard'),
     path('citizen/complaints/new/', complaints_views.file_complaint, name='file_complaint'),
     path('citizen/complaints/', complaints_views.complaint_list, name='citizen_complaints'),
@@ -56,6 +57,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     # --- Shared/Errors ---
+    path('health/', TemplateView.as_view(template_name='health.html'), name='health'),
     path('health/', TemplateView.as_view(template_name='health.html'), name='health'),
 ]
 

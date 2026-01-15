@@ -4,393 +4,429 @@
 {% block title %}Home - Drishti Platform{% endblock %}
 
 {% block content %}
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+<style>
+    /* Premium White Home Styles */
+    .hero-section {
+        background: radial-gradient(circle at top right, #f8f9fa, #ffffff);
+        padding: 8rem 0 6rem;
+        position: relative;
+        overflow: hidden;
+    }
 
-<section class="hero-section position-relative overflow-hidden">
-    <!-- 3D Background Logo -->
-    <div class="position-absolute start-50 translate-middle w-100 h-100"
-        style="top: 40%; z-index: -1; opacity: 0.6; pointer-events: none;">
-        <model-viewer src="{% static 'models/Drishti-logo.glb' %}" alt="Drishti Logo 3D" auto-rotate
-            interaction-prompt="none" disable-zoom shadow-intensity="1"
-            style="width: 100%; height: 100%; --poster-color: transparent;" camera-orbit="45deg 45deg 2.5m"
-            field-of-view="30deg">
-        </model-viewer>
-    </div>
+    .hero-title {
+        font-size: 4.5rem;
+        font-weight: 800;
+        letter-spacing: -2px;
+        background: linear-gradient(135deg, #0b4a8f 0%, #002a5c 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+    }
 
-    <h1 class="hero-title">Drishti</h1>
-    <p class="lead text-dark mb-2">Digital Redressal Intelligent System with Human-in-loop Tracking Interface</p>
-    <!-- Updated Subtitle: Black and Bold -->
-    <p class="hero-subtitle fw-bold text-dark" style="color: black !important; font-weight: 800 !important;">
-        AI-augmented grievance redressal with transparent human oversight
-    </p>
-    <div class="hero-cta">
-        <a href="{% url 'track_complaint' %}" class="btn btn-primary">Track Complaint</a>
-        <a href="{% url 'register' %}" class="btn btn-secondary">Register Now</a>
-    </div>
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: #6c757d;
+        max-width: 600px;
+        margin-bottom: 2.5rem;
+        font-weight: 500;
+    }
 
-    <div class="stats-bar">
-        <div class="stat-item">
-            <div class="stat-value">12,543</div>
-            <div class="stat-label">Total Complaints</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value">10,230</div>
-            <div class="stat-label">Resolved</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value">48h</div>
-            <div class="stat-label">Avg Resolution</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value">4.8/5</div>
-            <div class="stat-label">User Satisfaction</div>
-        </div>
-    </div>
-</section>
+    .premium-btn {
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px -5px rgba(11, 74, 143, 0.3);
+    }
 
-<!-- Problem & Objectives Section -->
-<section class="mb-5 py-5 bg-white">
-    <div class="container-fluid px-5">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-6">
-                <h2 class="fw-bold mb-4" style="color: var(--gov-dark-blue);">The Challenge</h2>
-                <p class="text-muted lead mb-4">
-                    In many cities, citizen complaints related to essential services like water, roads, and sanitation
-                    are handled through fragmented channels.
-                    Existing systems often lack intelligent categorization, prioritization, and routing, leading to
-                    delays and reduced trust.
+    .premium-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px -5px rgba(11, 74, 143, 0.4);
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 24px;
+        padding: 2.5rem;
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .glass-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .glass-card:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #0b4a8f;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #6c757d;
+        font-weight: 600;
+    }
+
+    .process-step {
+        position: relative;
+        z-index: 1;
+    }
+
+    .process-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #e9ecef;
+        z-index: 0;
+        transform: translateY(-50%);
+    }
+
+    .step-number {
+        width: 50px;
+        height: 50px;
+        background: white;
+        border: 2px solid #0b4a8f;
+        color: #0b4a8f;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        margin: 0 auto 1.5rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .animate-enter {
+        animation: fadeUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    .delay-1 {
+        animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+        animation-delay: 0.2s;
+    }
+
+    .delay-3 {
+        animation-delay: 0.3s;
+    }
+
+    @keyframes fadeUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Floating Shapes Background */
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        z-index: -1;
+        opacity: 0.6;
+    }
+
+    .shape-1 {
+        top: -10%;
+        right: -5%;
+        width: 600px;
+        height: 600px;
+        background: rgba(11, 74, 143, 0.1);
+    }
+
+    .shape-2 {
+        bottom: 10%;
+        left: -10%;
+        width: 500px;
+        height: 500px;
+        background: rgba(243, 146, 0, 0.08);
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 animate-enter">
+                <div
+                    class="d-inline-block px-3 py-1 rounded-pill bg-primary bg-opacity-10 text-primary fw-bold small mb-4 border border-primary border-opacity-10">
+                    🚀 Next-Gen Governance
+                </div>
+                <h1 class="hero-title">
+                    Intelligent<br>
+                    Grievance<br>
+                    Redressal.
+                </h1>
+                <p class="hero-subtitle">
+                    Empowering citizens with AI-driven transparency. Track, resolve, and monitor public issues with
+                    unprecedented efficiency.
                 </p>
-                <p class="text-muted">
-                    Fragmented channels like phone calls and emails result in high-impact issues getting delayed or
-                    misrouted.
-                    There is a critical need for a centralized, AI-assisted platform that supports the complete
-                    lifecycle from intake to closure.
-                </p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'track_complaint' %}" class="btn btn-primary premium-btn">
+                        Track Complaint
+                    </a>
+                    <a href="{% url 'register' %}" class="btn btn-light premium-btn border">
+                        Register Now
+                    </a>
+                </div>
+
+                <div class="mt-5 pt-4 border-top border-secondary border-opacity-10 d-flex gap-5">
+                    <div>
+                        <div class="h3 fw-bold text-dark mb-0">12k+</div>
+                        <div class="small text-muted">Resolved Cases</div>
+                    </div>
+                    <div>
+                        <div class="h3 fw-bold text-dark mb-0">48h</div>
+                        <div class="small text-muted">Avg. Time</div>
+                    </div>
+                    <div>
+                        <div class="h3 fw-bold text-dark mb-0">4.8</div>
+                        <div class="small text-muted">User Rating</div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-6">
-                <div class="glass-card bg-light border-0">
-                    <h3 class="fw-bold mb-4" style="color: var(--gov-blue);">Our Objectives</h3>
-                    <ul class="list-unstyled">
-                        <li class="d-flex gap-3 mb-3">
-                            <span class="text-success fw-bold">✓</span>
-                            <span><strong>Digitize & Standardize:</strong> Streamline the entire grievance redressal
-                                workflow with proper audit trails.</span>
-                        </li>
-                        <li class="d-flex gap-3 mb-3">
-                            <span class="text-success fw-bold">✓</span>
-                            <span><strong>AI Assistance:</strong> Assist officials with categorization, priority
-                                prediction, and routing suggestions.</span>
-                        </li>
-                        <li class="d-flex gap-3 mb-3">
-                            <span class="text-success fw-bold">✓</span>
-                            <span><strong>Transparency:</strong> Ensure accountability through real-time tracking and
-                                citizen feedback.</span>
-                        </li>
-                        <li class="d-flex gap-3 mb-3">
-                            <span class="text-success fw-bold">✓</span>
-                            <span><strong>Engagement:</strong> Improve citizen engagement via community discussions and
-                                AI guidance.</span>
-                        </li>
-                        <li class="d-flex gap-3">
-                            <span class="text-success fw-bold">✓</span>
-                            <span><strong>Data Insights:</strong> Provide data-driven insights for policy-level
-                                decisions.</span>
-                        </li>
-                    </ul>
+
+            <div class="col-lg-6 animate-enter delay-2 position-relative">
+                <!-- 3D Model Container -->
+                <div style="height: 600px; width: 100%;">
+                    <script type="module"
+                        src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+                    <model-viewer src="{% static 'models/Drishti-logo.glb' %}" alt="Drishti Logo 3D" auto-rotate
+                        camera-controls disable-zoom shadow-intensity="1"
+                        style="width: 100%; height: 100%; --poster-color: transparent;" camera-orbit="45deg 55deg 2.5m"
+                        field-of-view="30deg">
+                    </model-viewer>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<!-- Key Features Section -->
-<section class="mb-5 py-5">
-    <div class="text-center mb-5">
-        <h2 class="fw-bold" style="font-size: 2.5rem; color: var(--gov-dark-blue);">Key Features</h2>
-        <p class="text-muted">A comprehensive suite of tools for modern governance.</p>
-    </div>
-    <div class="grid-3">
-        <!-- Feature 1 -->
-        <div class="glass-card">
-            <div class="feature-icon text-primary">📱</div>
-            <h4 class="fw-bold mb-3">Citizen Complaint Management</h4>
-            <p class="small text-muted">
-                Online submission with location & attachments. Detailed timeline tracking, status updates, and feedback
-                mechanisms.
-            </p>
+<!-- Key Features -->
+<div class="py-5 bg-white">
+    <div class="container py-5">
+        <div class="text-center mb-5 animate-enter">
+            <h6 class="text-uppercase text-primary fw-bold ls-1 mb-2">Key Features</h6>
+            <h2 class="display-5 fw-bold text-dark">Why Choose Drishti?</h2>
         </div>
-        <!-- Feature 2 -->
-        <div class="glass-card">
-            <div class="feature-icon text-warning">🤖</div>
-            <h4 class="fw-bold mb-3">AI-Assisted Decision Support</h4>
-            <p class="small text-muted">
-                NLP-based categorization, priority prediction, and SLA breach risk analysis. Human-in-the-loop design
-                for accuracy.
-            </p>
-        </div>
-        <!-- Feature 3 -->
-        <div class="glass-card">
-            <div class="feature-icon text-success">🏛️</div>
-            <h4 class="fw-bold mb-3">Role-Based Governance</h4>
-            <p class="small text-muted">
-                Multi-layer structure: Citizen, Local Officer, Dept Admin, and Super Admin. Clear workflow and
-                escalation paths.
-            </p>
-        </div>
-        <!-- Feature 4 -->
-        <div class="glass-card">
-            <div class="feature-icon text-info">💬</div>
-            <h4 class="fw-bold mb-3">Community Discussion</h4>
-            <p class="small text-muted">
-                Public issue threads for broader civic issues. Link complaints to discussions to reduce duplicates.
-            </p>
-        </div>
-        <!-- Feature 5 -->
-        <div class="glass-card">
-            <div class="feature-icon text-danger">🎙️</div>
-            <h4 class="fw-bold mb-3">AI Talking Assistant</h4>
-            <p class="small text-muted">
-                Conversational guidance for filing complaints and explaining status. Answers FAQs about services and
-                timelines.
-            </p>
-        </div>
-        <!-- Feature 6 -->
-        <div class="glass-card">
-            <div class="feature-icon text-secondary">📊</div>
-            <h4 class="fw-bold mb-3">Analytics & Monitoring</h4>
-            <p class="small text-muted">
-                Department-wise statistics, SLA compliance reports, hotspot analysis, and AI performance metrics.
-            </p>
-        </div>
-    </div>
-</section>
 
-<!-- How It Works Section -->
-<section class="mb-5 py-5 bg-white">
-    <div class="text-center mb-5">
-        <h2 class="fw-bold" style="font-size: 2.5rem; color: var(--gov-dark-blue);">How It Works</h2>
-        <p class="text-muted">Simple 3-step process to get your grievances resolved.</p>
+        <div class="row g-4">
+            <!-- Feature 1 -->
+            <div class="col-md-4 animate-enter delay-1">
+                <div class="glass-card h-100">
+                    <div class="feature-icon bg-primary bg-opacity-10 text-primary">
+                        📱
+                    </div>
+                    <h4 class="fw-bold mb-3">Smart Reporting</h4>
+                    <p class="text-muted mb-0">
+                        Lodge grievances instantly with location tagging and photo evidence. Our AI automatically
+                        categorizes your issue.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="col-md-4 animate-enter delay-2">
+                <div class="glass-card h-100">
+                    <div class="feature-icon bg-warning bg-opacity-10 text-warning">
+                        🤖
+                    </div>
+                    <h4 class="fw-bold mb-3">AI Analysis</h4>
+                    <p class="text-muted mb-0">
+                        Advanced NLP algorithms predict priority and route complaints to the correct department
+                        instantly.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="col-md-4 animate-enter delay-3">
+                <div class="glass-card h-100">
+                    <div class="feature-icon bg-success bg-opacity-10 text-success">
+                        ⚡
+                    </div>
+                    <h4 class="fw-bold mb-3">Real-time Tracking</h4>
+                    <p class="text-muted mb-0">
+                        Monitor your complaint status at every step. Receive SMS and email notifications upon
+                        resolution.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="grid-3">
-        <div class="glass-card text-center border-0 shadow-none">
-            <div class="feature-icon text-primary display-4 mb-3">📝</div>
-            <h3>1. Register & File</h3>
-            <p>Create an account and lodge your complaint with details and photos.</p>
+</div>
+
+<!-- Process Flow -->
+<div class="py-5 bg-light position-relative overflow-hidden">
+    <div class="container py-5">
+        <div class="text-center mb-5 animate-enter">
+            <h6 class="text-uppercase text-primary fw-bold ls-1 mb-2">How It Works</h6>
+            <h2 class="display-5 fw-bold text-dark">Simple 3-Step Process</h2>
         </div>
-        <div class="glass-card text-center border-0 shadow-none">
-            <div class="feature-icon text-warning display-4 mb-3">⚙️</div>
-            <h3>2. AI Processing</h3>
-            <p>Our AI automatically categorizes and assigns it to the right officer.</p>
-        </div>
-        <div class="glass-card text-center border-0 shadow-none">
-            <div class="feature-icon text-success display-4 mb-3">✅</div>
-            <h3>3. Resolution</h3>
-            <p>Track status in real-time and get notified upon resolution.</p>
+
+        <div class="row position-relative">
+            <div class="d-none d-md-block process-line"></div>
+
+            <div class="col-md-4 text-center process-step animate-enter delay-1">
+                <div class="step-number">1</div>
+                <h4 class="fw-bold mb-3">Lodge Complaint</h4>
+                <p class="text-muted px-4">Upload photos, add description, and tag location via our secure portal.</p>
+            </div>
+
+            <div class="col-md-4 text-center process-step animate-enter delay-2">
+                <div class="step-number">2</div>
+                <h4 class="fw-bold mb-3">AI Processing</h4>
+                <p class="text-muted px-4">Our system analyzes, categorizes, and assigns the issue to the nearest
+                    officer.</p>
+            </div>
+
+            <div class="col-md-4 text-center process-step animate-enter delay-3">
+                <div class="step-number">3</div>
+                <h4 class="fw-bold mb-3">Resolution</h4>
+                <p class="text-muted px-4">Track progress in real-time and rate the service once the issue is resolved.
+                </p>
+            </div>
         </div>
     </div>
-</section>
+</div>
 
 <!-- Government Initiatives -->
-<section class="mb-5 py-5">
-    <div class="text-center mb-5">
-        <h2 class="fw-bold" style="font-size: 2.5rem; color: var(--gov-dark-blue);">Government Initiatives</h2>
-        <p class="text-muted">Aligned with Digital India's vision for a connected nation.</p>
-    </div>
-    <div class="grid-3">
-        <div class="glass-card">
-            <h4 class="fw-bold mb-3">Digital India</h4>
-            <p class="small text-muted">Empowering society through digital access and inclusion.</p>
+<div class="py-5 bg-white">
+    <div class="container py-5">
+        <div class="text-center mb-5 animate-enter">
+            <h6 class="text-uppercase text-primary fw-bold ls-1 mb-2">Aligned With</h6>
+            <h2 class="display-5 fw-bold text-dark">National Initiatives</h2>
         </div>
-        <div class="glass-card">
-            <h4 class="fw-bold mb-3">Swachh Bharat</h4>
-            <p class="small text-muted">Promoting cleanliness and hygiene across the nation.</p>
-        </div>
-        <div class="glass-card">
-            <h4 class="fw-bold mb-3">Smart Cities</h4>
-            <p class="small text-muted">Building sustainable and citizen-friendly urban areas.</p>
-        </div>
-    </div>
-</section>
 
-<!-- ================================================================================== -->
-<!-- EXPLAINABLE README FOR JUDGES -->
-<!-- ================================================================================== -->
-<section id="hackathon-readme" class="py-5"
-    style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-top: 4px solid var(--gov-orange);">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-lg-8 text-center">
-                <span class="badge bg-dark mb-2">HACKATHON JUDGES ONLY</span>
-                <h2 class="fw-bold display-6 mb-3">Project Under the Hood</h2>
-                <p class="lead text-muted">A transparent look at how <strong>Drishti</strong> powers intelligent
-                    governance.</p>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-3 animate-enter delay-1">
+                <div class="p-4 text-center border rounded-4 h-100 bg-light">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/9/95/Digital_India_logo.svg" alt="Digital India"
+                        class="img-fluid mb-3" style="height: 60px;">
+                    <h5 class="fw-bold">Digital India</h5>
+                    <p class="small text-muted mb-0">Empowering citizens digitally.</p>
+                </div>
             </div>
-        </div>
-
-        <!-- 1. The Core Architecture -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-12">
-                <div class="card border-0 shadow-sm h-100 overflow-hidden">
-                    <div class="card-header bg-white border-0 pt-4 px-4">
-                        <h4 class="fw-bold text-primary"><i class="bi bi-cpu me-2"></i>Tech Stack & Architecture</h4>
-                    </div>
-                    <div class="card-body px-4 pb-4">
-                        <div class="row text-center g-3">
-                            <div class="col-6 col-md-2">
-                                <div class="p-3 bg-light rounded-3">
-                                    <img src="https://static.djangoproject.com/img/logos/django-logo-negative.png"
-                                        alt="Django" class="img-fluid mb-2"
-                                        style="max-height: 30px; filter: invert(1);">
-                                    <div class="small fw-bold">Django 5.0</div>
-                                    <div class="text-xs text-muted">Core Backend</div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-2">
-                                <div class="p-3 bg-light rounded-3">
-                                    <div class="display-6 mb-1">🐍</div>
-                                    <div class="small fw-bold">Python 3.10+</div>
-                                    <div class="text-xs text-muted">Logic Layer</div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-2">
-                                <div class="p-3 bg-light rounded-3">
-                                    <div class="display-6 mb-1">🤖</div>
-                                    <div class="small fw-bold">Scikit-Learn</div>
-                                    <div class="text-xs text-muted">AI Classification</div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-2">
-                                <div class="p-3 bg-light rounded-3">
-                                    <div class="display-6 mb-1">💬</div>
-                                    <div class="small fw-bold">OpenRouter/LLM</div>
-                                    <div class="text-xs text-muted">Smart Assistant</div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-2">
-                                <div class="p-3 bg-light rounded-3">
-                                    <div class="display-6 mb-1">🎨</div>
-                                    <div class="small fw-bold">Bootstrap 5</div>
-                                    <div class="text-xs text-muted">Responsive UI</div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-2">
-                                <div class="p-3 bg-light rounded-3">
-                                    <div class="display-6 mb-1">🗄️</div>
-                                    <div class="small fw-bold">PostgreSQL</div>
-                                    <div class="text-xs text-muted">Data Storage</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="col-md-3 animate-enter delay-2">
+                <div class="p-4 text-center border rounded-4 h-100 bg-light">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Swachh_Bharat_Mission_Logo.svg/1200px-Swachh_Bharat_Mission_Logo.svg.png"
+                        alt="Swachh Bharat" class="img-fluid mb-3" style="height: 60px;">
+                    <h5 class="fw-bold">Swachh Bharat</h5>
+                    <p class="small text-muted mb-0">Clean India Mission.</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate-enter delay-3">
+                <div class="p-4 text-center border rounded-4 h-100 bg-light">
+                    <img src="https://smartcities.gov.in/themes/habeeb/assets/images/logo.png" alt="Smart Cities"
+                        class="img-fluid mb-3" style="height: 60px;">
+                    <h5 class="fw-bold">Smart Cities</h5>
+                    <p class="small text-muted mb-0">Urban transformation.</p>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- 2. The Smart Grievance Flow -->
-        <div class="row mb-5">
-            <div class="col-12">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-white border-0 pt-4 px-4">
-                        <h4 class="fw-bold text-success"><i class="bi bi-diagram-3 me-2"></i>Intelligent Grievance Flow
-                        </h4>
-                    </div>
-                    <div class="card-body p-4">
-                        <div
-                            class="d-flex flex-column flex-md-row justify-content-between align-items-center text-center position-relative">
-                            <!-- Step 1 -->
-                            <div class="position-relative z-1 mb-4 mb-md-0" style="flex: 1;">
-                                <div class="bg-white rounded-circle shadow-sm mx-auto d-flex align-items-center justify-content-center border border-3 border-primary"
-                                    style="width: 80px; height: 80px;">
-                                    <span class="fs-1">📸</span>
-                                </div>
-                                <h6 class="mt-3 fw-bold">1. Intake</h6>
-                                <p class="small text-muted px-2">Citizen uploads photo/location.
-                                    <br><strong>Input:</strong> Image + Text</p>
-                            </div>
-
-                            <!-- Connector -->
-                            <div class="d-none d-md-block position-absolute top-50 start-0 w-100 border-top border-2 border-secondary border-opacity-25"
-                                style="transform: translateY(-40px); z-index: 0;"></div>
-
-                            <!-- Step 2 -->
-                            <div class="position-relative z-1 mb-4 mb-md-0" style="flex: 1;">
-                                <div class="bg-white rounded-circle shadow-sm mx-auto d-flex align-items-center justify-content-center border border-3 border-warning"
-                                    style="width: 80px; height: 80px;">
-                                    <span class="fs-1">🧠</span>
-                                </div>
-                                <h6 class="mt-3 fw-bold">2. AI Analysis</h6>
-                                <p class="small text-muted px-2">NLP classifies category. <br><strong>Output:</strong>
-                                    "Sanitation" | Priority: High</p>
-                            </div>
-
-                            <!-- Step 3 -->
-                            <div class="position-relative z-1 mb-4 mb-md-0" style="flex: 1;">
-                                <div class="bg-white rounded-circle shadow-sm mx-auto d-flex align-items-center justify-content-center border border-3 border-info"
-                                    style="width: 80px; height: 80px;">
-                                    <span class="fs-1">👮</span>
-                                </div>
-                                <h6 class="mt-3 fw-bold">3. Routing</h6>
-                                <p class="small text-muted px-2">Auto-assigned to nearest officer.
-                                    <br><strong>Action:</strong> Notification Sent</p>
-                            </div>
-
-                            <!-- Step 4 -->
-                            <div class="position-relative z-1" style="flex: 1;">
-                                <div class="bg-white rounded-circle shadow-sm mx-auto d-flex align-items-center justify-content-center border border-3 border-success"
-                                    style="width: 80px; height: 80px;">
-                                    <span class="fs-1">✅</span>
-                                </div>
-                                <h6 class="mt-3 fw-bold">4. Resolution</h6>
-                                <p class="small text-muted px-2">Officer updates status. <br><strong>Result:</strong>
-                                    Citizen Feedback Loop</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- Success Stories -->
+<div class="py-5 bg-light">
+    <div class="container py-5">
+        <div class="text-center mb-5 animate-enter">
+            <h6 class="text-uppercase text-primary fw-bold ls-1 mb-2">Impact</h6>
+            <h2 class="display-5 fw-bold text-dark">Success Stories</h2>
         </div>
 
-        <!-- 3. Key Differentiators & Roadmap -->
         <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold mb-3 text-dark">🚀 Why Drishti?</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-transparent px-0"><i
-                                    class="bi bi-check-circle-fill text-success me-2"></i><strong>Human-in-the-Loop
-                                    AI:</strong> AI suggests, Officer approves.</li>
-                            <li class="list-group-item bg-transparent px-0"><i
-                                    class="bi bi-check-circle-fill text-success me-2"></i><strong>Offline-First
-                                    Design:</strong> Works in low connectivity areas.</li>
-                            <li class="list-group-item bg-transparent px-0"><i
-                                    class="bi bi-check-circle-fill text-success me-2"></i><strong>Multilingual
-                                    Support:</strong> Accessible to all citizens.</li>
-                        </ul>
+            <div class="col-md-6 animate-enter delay-1">
+                <div class="glass-card p-4 h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3"
+                            style="width: 48px; height: 48px;">R</div>
+                        <div>
+                            <h5 class="fw-bold mb-0">Rahul Sharma</h5>
+                            <small class="text-muted">Bangalore, Karnataka</small>
+                        </div>
                     </div>
+                    <p class="text-muted fst-italic">"The pothole on my street was fixed within 24 hours of reporting it
+                        on Drishti. The AI tracking is amazing!"</p>
+                    <div class="text-warning">★★★★★</div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100 bg-dark text-white"
-                    style="background: linear-gradient(45deg, #1a1a1a, #2c3e50);">
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold mb-3 text-white">🔮 Future Roadmap</h5>
-                        <div class="d-flex align-items-center mb-3">
-                            <span class="badge bg-primary me-2">Q2 2026</span>
-                            <span class="small">Predictive Maintenance using IoT Sensors</span>
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <span class="badge bg-info me-2">Q3 2026</span>
-                            <span class="small">Blockchain-based Audit Trails</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <span class="badge bg-warning text-dark me-2">Q4 2026</span>
-                            <span class="small">Voice-First Vernacular Interface</span>
+            <div class="col-md-6 animate-enter delay-2">
+                <div class="glass-card p-4 h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3"
+                            style="width: 48px; height: 48px;">P</div>
+                        <div>
+                            <h5 class="fw-bold mb-0">Priya Patel</h5>
+                            <small class="text-muted">Ahmedabad, Gujarat</small>
                         </div>
                     </div>
+                    <p class="text-muted fst-italic">"I love how transparent the process is. I got notifications at
+                        every step, and the officer was very responsive."</p>
+                    <div class="text-warning">★★★★★</div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
+
+<!-- CTA Section -->
+<div class="py-5 bg-white">
+    <div class="container py-5">
+        <div class="glass-card bg-primary text-white text-center position-relative overflow-hidden border-0">
+            <div class="position-relative z-1">
+                <h2 class="display-5 fw-bold mb-4">Ready to make a difference?</h2>
+                <p class="lead mb-5 opacity-75">Join thousands of citizens contributing to a better community.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'register' %}" class="btn btn-light premium-btn text-primary">
+                        Get Started Now
+                    </a>
+                    <button class="btn btn-outline-light premium-btn">
+                        Download App
+                    </button>
+                </div>
+            </div>
+            <!-- Decorative Circles -->
+            <div class="position-absolute top-0 start-0 translate-middle rounded-circle bg-white opacity-10"
+                style="width: 400px; height: 400px;"></div>
+            <div class="position-absolute bottom-0 end-0 translate-middle rounded-circle bg-white opacity-10"
+                style="width: 300px; height: 300px;"></div>
+        </div>
+    </div>
+</div>
 {% endblock %}

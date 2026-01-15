@@ -20,7 +20,7 @@ def predict_category(text):
     """
     try:
         completion = client.chat.completions.create(
-            model="openai/gpt-3.5-turbo", # Use a cost-effective model available on OpenRouter
+            model=settings.AI_MODEL, # Use configured model from settings
             messages=[
                 {
                     "role": "system",
@@ -66,7 +66,7 @@ def predict_priority(text, category):
     """
     try:
         completion = client.chat.completions.create(
-            model="openai/gpt-3.5-turbo",
+            model=settings.AI_MODEL,
             messages=[
                 {
                     "role": "system",

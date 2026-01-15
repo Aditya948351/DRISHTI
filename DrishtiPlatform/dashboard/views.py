@@ -159,11 +159,17 @@ def view_citizen_profile(request, user_id):
         
     return render(request, 'Citizen/view_profile.html', {'target_user': target_user})
 
+from django.views.decorators.cache import never_cache
+
 # Officer Views
 @login_required
+@never_cache
 def officer_dashboard(request):
     if request.user.role != 'officer':
+        print(f"DEBUG: User {request.user.username} is not an officer (Role: {request.user.role}). Redirecting.")
         return redirect('dashboard')
+    
+    print(f"DEBUG: officer_dashboard view called for user {request.user.username}")
     
     # Fetch complaints assigned to this officer (or their department for now if direct assignment isn't used)
     # Allow General Administration (Diksha) to see ALL complaints for triage
@@ -207,7 +213,8 @@ def officer_dashboard(request):
         'critical_case': critical_case
     }
     
-    return render(request, 'Officer_pages/1officer_dashboard.html', context)
+    # Use the consolidated V2 template
+    return render(request, 'Officer_pages/1officer_dashboard_v2.html', context)
 
 # Dept Admin Views
 @login_required
