@@ -8,6 +8,9 @@
 ## Overview
 Drishti is a comprehensive platform designed to bridge the gap between citizens and administration. It leverages AI to categorize, track, and resolve public grievances efficiently.
 
+## Problem Statement
+Traditional grievance systems (like CPGRAMS) often struggle with manual processing bottlenecks, lack of real-time updates, and inefficient complaint routing. **DRISHTI** solves these issues by integrating **Artificial Intelligence** to automate classification and prioritization, ensuring faster resolution times, complete transparency for citizens, and enhanced accountability for government officers.
+
 ## Features
 - **AI-Powered Categorization**: Automatically routes complaints to the right department.
 - **Real-time Tracking**: Citizens can track the status of their complaints.
