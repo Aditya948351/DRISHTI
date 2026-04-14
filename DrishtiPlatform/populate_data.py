@@ -31,7 +31,7 @@ def create_data():
 
     # Create Citizens
     citizens_data = [
-        {'username': 'aarav_mh', 'first_name': 'Aarav', 'last_name': 'Patil', 'state': 'Maharashtra', 'email': 'aarav@example.com'},
+        {'username': 'aditya_mh', 'first_name': 'Aditya', 'last_name': 'Patil', 'state': 'Maharashtra', 'email': 'aditya@example.com'},
         {'username': 'vihaan_mh', 'first_name': 'Vihaan', 'last_name': 'Deshmukh', 'state': 'Maharashtra', 'email': 'vihaan@example.com'},
         {'username': 'diya_gj', 'first_name': 'Diya', 'last_name': 'Patel', 'state': 'Gujarat', 'email': 'diya@example.com'},
         {'username': 'ishaan_gj', 'first_name': 'Ishaan', 'last_name': 'Shah', 'state': 'Gujarat', 'email': 'ishaan@example.com'},

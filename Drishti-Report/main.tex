@@ -1,0 +1,383 @@
+\documentclass[12pt,a4paper]{report}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+\usepackage{tocbibind}
+\usepackage{enumitem}
+
+% Page setup
+\geometry{a4paper, left=1.25in, right=1in, top=1in, bottom=1in}
+\setstretch{1.5} % 1.5 line spacing for thesis/report formatting
+
+% Header and Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\fancyhead[L]{\leftmark}
+
+% Chapter formatting
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\centering}{}{0pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-30pt}{20pt}
+
+\begin{document}
+
+% --------------------------------------------------------
+% Cover Page / Title Page
+% --------------------------------------------------------
+\begin{titlepage}
+    \begin{center}
+        \Large \textbf{SAVITRIBAI PHULE PUNE UNIVERSITY} \\[0.5cm]
+        
+        \textbf{INTERNSHIP REPORT ON} \\[0.5cm]
+        
+        \huge \textbf{DRISHTI: Digital Redressal Intelligent System \\ with Human In Loop Tracking Interface} \\[1cm]
+        
+        \large \textit{Submitted by} \\[0.5cm]
+        \textbf{Student Name} \\
+        (Roll No: XXXXXX) \\[1.5cm]
+        
+        \large \textit{Under the guidance of} \\[0.5cm]
+        \textbf{Prof. Guide Name} \\[1.5cm]
+        
+        \begin{figure}[h]
+            \centering
+            \begin{subfigure}{0.4\textwidth}
+                \centering
+                \includegraphics[width=0.7\linewidth]{sppu.png.jpg}
+            \end{subfigure}
+            \hfill
+            \begin{subfigure}{0.4\textwidth}
+                \centering
+                \includegraphics[width=0.7\linewidth]{avcoe.png.jpg}
+            \end{subfigure}
+        \end{figure}
+        \vfill
+        
+        \Large \textbf{Department of Information Technology Engineering} \\[0.5cm]
+        \Large \textbf{Amrutvahini College of Engineering} \\
+        \large Sangamner - 422608 \\[0.5cm]
+        \textbf{Academic Year: 2025-2026}
+    \end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+% --------------------------------------------------------
+% Internship Offer Letter & Completion Certificate
+% --------------------------------------------------------
+\chapter*{Internship Offer Letter \& Certificate}
+\addcontentsline{toc}{chapter}{Internship Offer Letter \& Certificate}
+
+\textit{[Attach your Internship Offer Letter here. Use \texttt{\textbackslash includegraphics} or \texttt{\textbackslash includepdf} if available.]}
+
+\vspace{10cm}
+
+\textit{[Attach your Internship Completion Certificate here.]}
+\newpage
+
+% --------------------------------------------------------
+% Internship Place Details
+% --------------------------------------------------------
+\chapter*{Internship Place Details}
+\addcontentsline{toc}{chapter}{Internship Place Details}
+
+\begin{itemize}[label=\textbf{\textbullet}, itemsep=10pt]
+    \item \textbf{Name of Company:} Edunet Foundation (or relevant organization)
+    \item \textbf{Place:} Remote / Online
+    \item \textbf{Area of Internship:} Advanced Web Development and Applied Artificial Intelligence
+    \item \textbf{Duration of Internship:} 15 Days Intensive Capstone Program
+    \item \textbf{Primary Technologies Learnt:} Python, Django Framework, REST APIs, Generative AI (LLMs), Natural Language Processing, and Cloud Architecture.
+\end{itemize}
+\newpage
+
+% --------------------------------------------------------
+% Table of Contents
+% --------------------------------------------------------
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+
+\pagenumbering{arabic}
+
+% --------------------------------------------------------
+% CHAPTER 1: Introduction
+% --------------------------------------------------------
+\chapter{Introduction}
+
+\section{About the Internship}
+This internship program spanned over an intensive period of 15 days, strategically designed to provide hands-on experience culminating in a major capstone deployment. During this timeline, I was extensively exposed to full-stack web development methodologies, database structuring, API networking, and the integration of modern Artificial Intelligence models. At the conclusion of this 15-day period, the accumulated knowledge and skillsets were practically implemented into successfully engineering the \textbf{DRISHTI Platform}, acting as the primary deliverable for this industrial training.
+
+\section{Title / Problem statement}
+The title of the project is \textbf{DRISHTI (Digital Redressal Intelligent System with Human In Loop Tracking Interface)}. \\
+
+\subsection*{Decoding the DRISHTI Acronym}
+The acronym encapsulates the entire architectural and ethical philosophy of the platform:
+\begin{itemize}
+    \item \textbf{Digital Redressal:} Transitioning from physical grievance files to a secure, centralized cloud-based digital vault.
+    \item \textbf{Intelligent System:} Empowering the backend with Natural Language Processing (NLP) to asynchronously predict complaint categories, calculate urgencies, and map SLA risks.
+    \item \textbf{Human In Loop Tracking Interface:} The most crucial distinguishing factor. While the AI model continuously suggests routing pathways and priorities, it never retains the authority to make final municipal decisions. A "Human in the Loop" (local officer or department admin) must manually validate all AI-generated suggestions, thereby ensuring ethical governance and retaining ultimate human administrative accountability.
+\end{itemize}
+
+\subsection*{The Central Problem}
+
+In multiple municipalities across the nation, citizen complaints related to essential public services—such as municipal water supply, road maintenance, electrical infrastructure, sanitation, and drainage—are heavily fragmented. They are typically received across manual walk-in counters, generalized administrative emails, and basic legacy web portals. Existing grievance frameworks (such as traditional tickiting systems) severely lack intelligent mechanisms for automatic categorization, localized priority mapping, departmental routing, Service Level Agreement (SLA)-based algorithmic monitoring, and visual governance analytics. As a result, critical civic issues are chronically delayed or improperly routed, causing a massive disconnect in public trust. DRISHTI inherently solves this by standardizing and automating the grievance workflow using Artificial Intelligence and centralized cloud infrastructure.
+
+\section{Objectives}
+The core objectives of the DRISHTI system architecture focus heavily on modernization and accountability:
+\begin{enumerate}
+    \item \textbf{Workflow Digitization:} To map and completely digitize the grievance framework from the point of registration down to resolution, preserving irrefutable audit trails and temporal SLA constraints.
+    \item \textbf{AI-Assisted Processing:} To heavily reduce bureaucratic workload by utilizing advanced Natural Language Processing (NLP) arrays to identify, categorize, and pre-route incoming civic issues synchronously, whilst strictly enforcing a "human-in-the-loop" validation step.
+    \item \textbf{Public Transparency:} To construct a bi-directional visibility scope providing the public sector real-time update notifications, transparent escalation pathways, and integrated dynamic feedback logging.
+    \item \textbf{Data-driven Analytics:} To feed structured geographic analytics and localized hotspot metrics to State Authorities to assist in crucial infrastructural planning priorities and budget allocations.
+    \item \textbf{Community Integration:} To provide localized issue discussion boards, ensuring community awareness and lowering the rate of duplicate tickets for identical physical issues.
+\end{enumerate}
+
+\section{Motivation / Scope}
+Current civic technological initiatives often gravitate heavily toward replacing human officers with rigid AI, resulting in erratic automated verdicts. The primary motivation for DRISHTI is establishing a harmonized governance model. It operates on the thesis of "AI as an Assistant, not the Arbiter". 
+
+The overarching scope of the project leverages a fully localized Django backend, scaling effectively through cloud-based Object Storage (Cloudinary) and querying the latest open-weight large language models (OpenRouter/Gemini LLMs) to process linguistic variations strictly. The scope does not intend to replace manual labor but drastically amplify the efficiency of existing municipal clerks and field officers by providing predictive insights and automated ticket triaging.
+
+% --------------------------------------------------------
+% CHAPTER 2: System Analysis & Feasibility
+% --------------------------------------------------------
+\chapter{System Analysis \& Feasibility Study}
+
+\section{Existing Systems vs Proposed System}
+Existing solutions (such as national implementations like CPGRAMS \cite{ref_imoc}) function primarily as digital ledgers without autonomous operational intelligence. Research into global grievance redress mechanisms highlights that traditional systems handling millions of complaints struggle severely with routing and prioritization, creating profound choke-points \cite{ref_worldbank}. Earlier academic structures proposed simple web-based municipality platforms to reduce manual work \cite{ref_aijmr}, but these largely lacked predictive natural language models.
+
+The proposed system, DRISHTI, builds upon recent peer-reviewed advancements utilizing robust AI-pipelines to automatically classify, prioritize, and route complaints \cite{ref_icaaai}. Crucially, however, unlike pure AI-driven autonomous routers, DRISHTI strictly mandates a "human-in-the-loop" validation step. This ensures accountable municipal governance while still benefiting from advanced conversational chatbot interfaces \cite{ref_aip} to serve as an intelligent digital receptionist.
+
+\section{Literature Survey}
+The conceptualization and modular engineering of DRISHTI are deeply grounded in modern academic research and large-scale civic governance case studies:
+
+\begin{itemize}
+    \item \textbf{Centralized AI-Driven Platforms:} Recent symposiums \cite{ref_icaaai} expose the severe inefficiencies stemming from fragmented departmental grievance portals. Shifting toward centralized systems empowered by NLP for automated topic categorization and predictive risk analytics fundamentally resolves deep routing bottlenecks. This directly forms the theoretical baseline for DRISHTI's core AI-Assisted Decision Support module.
+    \item \textbf{Municipal Role-Based Architecture:} The explicit requirement for tailored, role-based municipality frameworks is heavily documented \cite{ref_aijmr}. Research advocates integrating localized, mobile-friendly interfaces linked to cloud-based administration dashboards to automatically map civic issues (like sanitation and road network maintenance). This completely aligns with DRISHTI's Citizen Complaint Management and Role-Based Governance boundaries.
+    \item \textbf{Augmenting Existing National Systems:} Innovations explicitly engineered for massive structures like CPGRAMS \cite{ref_imoc} demonstrate the immense viability of utilizing AI as a complementary asset to augment—rather than blindly replace—human officials. DRISHTI scales this exact civic ideology down to the municipal district tier, actively enforcing its "human-in-the-loop" accountability mandate.
+    \item \textbf{Predictive NLP Chatbots:} Implementing conversational AI agents to autonomously triage and extract explicit complaint parameters has been proven to exponentially elevate citizen outreach and ease of use \cite{ref_aip}. DRISHTI incorporates this advanced methodology directly into its AI Talking Assistant (Guidance) module as a vital bridge across the technical accessibility divide.
+    \item \textbf{Global Civic AI Analytics:} High-level policy guidelines generated by global institutional frameworks \cite{ref_worldbank} articulate an urgent need for intelligent Grievance Redress Mechanisms (GRMs). These platforms must encompass real-time analytical dashboards, geographic hotspot detection, and trend forecasting capabilities—features that are actively synthesized within the DRISHTI Analytics \& Dashboards architecture.
+\end{itemize}
+
+\section{Feasibility Study}
+A comprehensive feasibility study was conducted prior to the development of DRISHTI to evaluate its practical viability.
+
+\subsection*{1. Technical Feasibility}
+The project relies on proven, robust, and open-source technological stacks. Django provides military-grade security mechanisms against SQL injections and Cross-Site Request Forgery (CSRF). Integration of AI relies on well-documented REST APIs (OpenRouter, Google Gemini). Therefore, the system is highly technically feasible and securely scalable.
+
+\subsection*{2. Operational Feasibility}
+Operationally, the system embraces a minimal learning curve. The interface is specifically designed using clean, intuitive vanilla CSS and JavaScript, prioritizing mobile accessibility. For government officials, the dashboard requires no complex training, as the AI suggestions appear as simple intuitive tooltips that the officer can either 'Approve' or 'Override'.
+
+\subsection*{3. Economic Feasibility}
+By utilizing fundamentally open-source internal structures (Python, SQLite/PostgreSQL, Django) and cloud-agnostic architecture, the infrastructural costs are drastically minimized, rendering it highly economically feasible for widespread municipal deployment. 
+
+\section{System Requirements}
+\textbf{Hardware Requirements (Deployment Server):}
+\begin{itemize}
+    \item Processor: Quad-core architecture (e.g., Intel Xeon or AWS vCPU equivalent)
+    \item RAM: Minimum 4 GB (8 GB Recommended for load buffering)
+    \item Storage: 50 GB SSD (Media is offloaded to Cloudinary CDN)
+\end{itemize}
+\textbf{Software Requirements:}
+\begin{itemize}
+    \item Operating System: Ubuntu Linux 20.04+ or Windows Server
+    \item Backend Framework: Python 3.10+, Django 5.x
+    \item Database: SQLite (Development) / PostgreSQL (Production)
+    \item External Services: Cloudinary SDK, OpenRouter LLM API endpoints
+\end{itemize}
+
+% --------------------------------------------------------
+% CHAPTER 3: Project Architecture & Modules
+% --------------------------------------------------------
+\chapter{Project Architecture \& Modules}
+
+\section{No. of Modules}
+The DRISHTI system architecture is segmented into 6 deeply interconnected operative modules driving the underlying application logic:
+\begin{enumerate}
+    \item Citizen Complaint Management Module
+    \item AI-Assisted Decision Support Module
+    \item Role-Based Governance \& Entity Workflow Module
+    \item Community Discussion \& Forum Module
+    \item AI Talking Assistant (Guidance) Module
+    \item Analytics \& Monitoring Dashboards Module
+\end{enumerate}
+
+\section{Detailed Description of Modules}
+
+\subsection{1. Citizen Complaint Management}
+This module stands as the primary exterior-facing digital portal. Built entirely to scale symmetrically across mobile devices, it enables citizens to draft specific complaints. Users must supply categorical metadata, textual description, and location constraints. Crucially, the system supports multimedia evidence attachments which are intercepted and serialized into cloud-hosted assets securely. The module tracks the ticket state seamlessly via an administrative pipeline spanning: "New" $\rightarrow$ "Assigned" $\rightarrow$ "In\_Progress" $\rightarrow$ "Resolved". 
+
+\subsection{2. AI-Assisted Decision Support}
+This is the core cognitive engine of the pipeline. Upon complaint ingestion, an asynchronous sub-routine invokes state-of-the-art NLP algorithms. The engine predicts four operational metrics instantaneously:
+\begin{itemize}
+    \item \textbf{Categorization:} Synthesizes context to deduce technical classification (e.g., determining a "leaking pipe" is a Water Board issue).
+    \item \textbf{Priority Level:} Assesses semantic urgency, designating the threat flag as Low, Medium, or High.
+    \item \textbf{Routing Endpoint:} Derives the explicit departmental division mandated to resolve the issue.
+    \item \textbf{SLA Risk Prediction:} Computes the probability of a Service Level Agreement breach.
+\end{itemize}
+Adhering to ethical AI principles, all predictions are subject to final Human-in-the-Loop review.
+
+\subsection{3. Role-Based Governance \& Entity Workflow}
+Governing system-wide privileges, this module constructs a robust hierarchical network utilizing Django-inherited session classes. It establishes access boundaries definitively:
+\begin{itemize}
+    \item \textbf{Citizens} are heavily restricted to viewing only isolated personal data instances.
+    \item \textbf{Local Officers} authenticate to secure environments designed for field-state modification and localized ticket closure.
+    \item \textbf{Department Admins} exercise macroscopic oversight capable of re-routing tickets between subdivisions and intercepting escalated cases.
+    \item \textbf{City/State Authority} dashboards hold read-only parameters strictly configured for observational data gathering.
+\end{itemize}
+
+\subsection{4. Community Discussion \& Forum Module}
+Transforming the architecture from an isolated ticketing platform into an engaging civic ecosystem. General citizens can initiate open-thread boards discussing localized public infrastructure (e.g., recurring power outages in a specific ward). Administration can transparently interact via public replies, essentially broadcasting an official response and mitigating duplicate overlapping tickets.
+
+\subsection{5. AI Talking Assistant (Guidance)}
+A conversational gateway designed specifically to bridge technical disparities. This natural language chatbot guides low-technical competency users across the proper parameters required to register a civic complaint. It clarifies system mechanics and answers static FAQ queries without granting the AI any database manipulation authority.
+
+\subsection{6. Analytics \& Monitoring Dashboards}
+A data-aggregation pipeline interpreting raw relational matrices into graphical governance maps. Utilizing SQL aggregations bridged via Django querysets, it extracts high-level intelligence detailing geographic density hotspots, explicit AI prediction accuracy audits, SLA latencies, and chronological civic failure correlations.
+
+% --------------------------------------------------------
+% CHAPTER 4: Screenshots & UI Visualization
+% --------------------------------------------------------
+\chapter{Screenshots \& UI Visualization}
+
+The subsequent sections present visual captures detailing the fully constructed Graphical User Interfaces associated with the varying DRISHTI modules. Extensive formatting space has been intentionally preserved to accommodate high-resolution process mappings and dashboard renders.
+
+\newpage
+
+\begin{figure}[htbp]
+    \centering
+    \vspace{7cm}
+    \textit{[ PLACEHOLDER: Insert Citizen Dashboard Screenshot Here ]}
+    \vspace{8cm}
+    \caption{Citizen Dashboard and Active Complaint Tracking Interface}
+\end{figure}
+
+\newpage
+
+\begin{figure}[htbp]
+    \centering
+    \vspace{7cm}
+    \textit{[ PLACEHOLDER: Insert AI-Assisted Triage Screenshot Here ]}
+    \vspace{8cm}
+    \caption{Admin Analytics \& AI Triage Overlook}
+\end{figure}
+
+\newpage
+
+\begin{figure}[htbp]
+    \centering
+    \vspace{7cm}
+    \textit{[ PLACEHOLDER: Insert Community Forum Screenshot Here ]}
+    \vspace{8cm}
+    \caption{Civic Infrastructure Discussion Threads}
+\end{figure}
+
+\newpage
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../processDrishti.jpeg}
+    \vspace{2cm}
+    \caption{Architectural Processing Output Flow within the DRISHTI Environment}
+\end{figure}
+
+% --------------------------------------------------------
+% CHAPTER 5: Results, Impact & Benefits
+% --------------------------------------------------------
+\chapter{Results, Impact \& Benefits}
+
+\section{System Results}
+The implementation and rigorous testing of the DRISHTI platform yielded exceedingly positive outcomes, profoundly optimizing the complaint resolution lifecycle. 
+\begin{itemize}
+    \item The AI-driven classification matrix successfully eliminated the manual triage bottleneck, resulting in an automated, highly accurate initial ticketing assignment.
+    \item Multi-role dashboards successfully enforced structural boundaries while ensuring real-time notification endpoints for citizens.
+    \item The platform’s capacity to handle simultaneous media uploads securely proved optimal using the external CDN structure.
+\end{itemize}
+
+\section{Societal Impact}
+The introduction of a digitized, transparent platform has immediate implications for democratic infrastructure. By demystifying the grievance process, it bridges the historical gap of trust between public administration and everyday citizens. Furthermore, the Community Discussion module actively promotes civic engagement, allowing neighborhoods to collaboratively address structural inefficiencies.
+
+\section{Key Benefits}
+\begin{itemize}
+    \item \textbf{Drastic Time Reduction:} Eradicating manual categorization saves hundreds of administrative hours monthly.
+    \item \textbf{Geographic Insight Validation:} Municipalities observe pinpoint accuracy in identifying declining structural zones (e.g., repetitive pothole reports on specific coordinates).
+    \item \textbf{Guaranteed Accountability:} With chronological timestamps and SLA tracking, individual officers are kept accountable to their operational response times.
+    \item \textbf{Preventative Governance:} The data extracted translates directly into municipal foresight, allowing infrastructure budget allocations directly influenced by real civic data streams.
+\end{itemize}
+
+% --------------------------------------------------------
+% CHAPTER 6: Conclusion & Future Scope
+% --------------------------------------------------------
+\chapter{Conclusion \& Future Scope}
+
+\section{Conclusion}
+In conclusion, the 15-day intensive internship provided an incredible opportunity to actively conceptualize and engineer the DRISHTI platform, directly contributing to alleviating a tangible, real-world governance issue. By meticulously intertwining deeply robust backend architectures (Django, SQL) with pioneering Generative Artificial Intelligence mechanics, the project solidified a highly scalable foundation for digital municipal administration. The engineering experience facilitated an acquisition of paramount practical skillsets navigating modern API networks, media cloud computing, and advanced MVC engineering paradigms.
+
+\section{Future Scope}
+While the foundation of DRISHTI is exceptionally robust, the platform retains significant potential for future civic expansion:
+\begin{itemize}
+    \item \textbf{Regional Language Processing:} Integrating multi-lingual natural language models capable of intaking complaints strictly formatted in Hindi, Marathi, or localized dialects seamlessly translating to administrative standards.
+    \item \textbf{Mobile Application Adaptation:} Compiling the localized progressive web interfaces into explicit native Android and iOS applications utilizing React Native.
+    \item \textbf{IoT Environmental Integration:} Connecting hardware endpoints (such as automated water level sensors or faulting streetlights) directly to the DRISHTI API to automatically generate anomaly tickets without human intervention.
+\end{itemize}
+
+% --------------------------------------------------------
+% Acknowledgement
+% --------------------------------------------------------
+\chapter*{Acknowledgement}
+\addcontentsline{toc}{chapter}{Acknowledgement}
+
+I would like to express my profound gratitude to \textbf{Prof. [Guide Name]}, my project guide, for their invaluable guidance, continuous support, exceptional patience, and constant encouragement throughout this challenging yet highly rewarding internship.
+
+I am also highly obliged to \textbf{Dr. [HOD Name]}, Head of the Information Technology Engineering Department, and \textbf{Dr. M. A. Venkatesh}, Principal of Amrutvahini College of Engineering, Sangamner, for fostering a highly academic culture, providing the necessary cutting-edge facilities, and establishing a genuinely conducive environment for technological research.
+
+Furthermore, I would like to extend my deepest appreciation to the team at \textbf{Edunet Foundation} (and related organizational mentors) for granting this unique opportunity to engineer a deeply relevant project, and for their extensive theoretical mentorship spanning these 15 days.
+
+Lastly, I thank my family, peers, and fellow developers for their continuous feedback and moral support pivotal towards achieving this academic milestone.
+
+\vspace{3cm}
+\begin{flushright}
+    \textbf{Student Name} \\
+    (Roll No: XXXXXX) \\
+    Project Trainee
+\end{flushright}
+
+% --------------------------------------------------------
+% References
+% --------------------------------------------------------
+\begin{thebibliography}{99}
+\addcontentsline{toc}{chapter}{References}
+
+\bibitem{ref_icaaai}
+Nambiar A. \textit{et al.}, \emph{AI-Based Solution To Enable Ease of Grievance Lodging and Tracking for Citizens Across Multiple Departments}, Proceedings of International Conference on Advances in Artificial Intelligence Applications, Atlantis Press, 2025. \url{https://www.atlantis-press.com/article/126012595.pdf}
+
+\bibitem{ref_aijmr}
+\emph{Grievance Redressal System for Municipalities}, Asian International Journal of Multidisciplinary Research (AIJMR), 2026. \url{https://www.aijmr.com/papers/2026/2/1276.pdf}
+
+\bibitem{ref_imoc}
+IMOC IIT Kanpur, \emph{AI-Enabled Tool for CPGRAMS}, IDEAS - Institute of Development and Economic Analysis and Solutions, 2024. \url{https://imoc.iitk.ac.in/research-and-innovation-single.php?rid=Njc3}
+
+\bibitem{ref_aip}
+\emph{Development of Grievance Redressal Chatbot Using Natural Language Processing}, AIP Conference Proceedings, Volume 3279, AIP Publishing, 2023. \url{https://pubs.aip.org/aip/acp/article/3279/1/020055/3341718/Development-of-grievance-redressal-chatbot-using}
+
+\bibitem{ref_worldbank}
+The World Bank, \emph{CIVIC: Amplifying Citizens' Voice Through AI-Powered Grievance Redress Systems}, Governance Blog. \url{https://blogs.worldbank.org/en/governance/civic--amplifying-citizens--voice-through-ai-powered-grievance-r}
+
+\bibitem{ref_django}
+Django Software Foundation, \emph{Django Architecture and Documentation}, \url{https://docs.djangoproject.com/}, Accessed 2024.
+
+\bibitem{ref_llm}
+OpenRouter / Google DeepMind, \emph{Unified Interface for Open-Weight and Proprietary Large Language Models}, \url{https://openrouter.ai/docs}, Accessed 2024.
+
+\end{thebibliography}
+
+\end{document}

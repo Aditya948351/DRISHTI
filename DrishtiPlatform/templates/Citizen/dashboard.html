@@ -3,10 +3,30 @@
 {% block title %}Citizen Dashboard | Drishti{% endblock %}
 
 {% block content %}
-<div class="row g-4">
+<style>
+    /* Force premium glassy background for this specific dashboard view */
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+        position: relative;
+    }
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(circle at 15% 50%, rgba(11, 74, 143, 0.05), transparent 50%),
+                    radial-gradient(circle at 85% 30%, rgba(243, 146, 0, 0.05), transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+    }
+    .main-content-wrapper {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+<div class="row g-4 main-content-wrapper">
     <!-- Left Column: Profile Card -->
     <div class="col-lg-4 col-xl-3">
-        <div class="card border-0 shadow-sm h-100">
+        <div class="card border-0 shadow-sm h-100 glass-panel fade-in-up">
             <div class="card-body text-center py-5">
                 <div class="mb-3 position-relative d-inline-block">
                     {% if user.profile_picture %}
@@ -60,7 +80,7 @@
     <div class="col-lg-8 col-xl-9">
 
         <!-- Welcome Section -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 fade-in-up">
             <div>
                 <h2 class="fw-bold text-dark mb-0">Welcome back, {{ user.first_name|default:user.username }}!</h2>
                 <p class="text-muted mb-0">Here's what's happening with your grievances today.</p>
@@ -73,12 +93,12 @@
         <!-- Stats Row -->
         <div class="row g-3 mb-4">
             <div class="col-md-4">
-                <div class="card stat-card bg-gradient-primary h-100">
+                <div class="card stat-card bg-gradient-primary h-100 dynamic-hover fade-in-up stagger-1">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <p class="text-white-50 small fw-bold text-uppercase mb-1">Total Grievances</p>
-                                <h2 class="fw-bold text-white mb-0 display-5">{{ stats.total }}</h2>
+                                <h2 class="fw-bold text-white mb-0 display-5 counter" data-target="{{ stats.total }}">0</h2>
                             </div>
                             <div class="bg-white bg-opacity-25 p-2 rounded-circle text-white">
                                 <i data-lucide="file-text" class="w-6 h-6"></i>
@@ -91,31 +111,30 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card stat-card bg-gradient-warning h-100">
+                <div class="card stat-card bg-gradient-warning h-100 dynamic-hover fade-in-up stagger-2">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <p class="text-white-50 small fw-bold text-uppercase mb-1">Pending</p>
-                                <h2 class="fw-bold text-white mb-0 display-5">{{ stats.pending }}</h2>
+                                <h2 class="fw-bold text-white mb-0 display-5 counter" data-target="{{ stats.pending }}">0</h2>
                             </div>
                             <div class="bg-white bg-opacity-25 p-2 rounded-circle text-white">
                                 <i data-lucide="clock" class="w-6 h-6"></i>
                             </div>
                         </div>
                         <div class="mt-3">
-                            <span class="badge bg-white bg-opacity-25 text-white rounded-pill small">Needs
-                                Attention</span>
+                            <span class="badge bg-white bg-opacity-25 text-white rounded-pill small">Needs Attention</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card stat-card bg-gradient-success h-100">
+                <div class="card stat-card bg-gradient-success h-100 dynamic-hover fade-in-up stagger-3">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <p class="text-white-50 small fw-bold text-uppercase mb-1">Resolved</p>
-                                <h2 class="fw-bold text-white mb-0 display-5">{{ stats.resolved }}</h2>
+                                <h2 class="fw-bold text-white mb-0 display-5 counter" data-target="{{ stats.resolved }}">0</h2>
                             </div>
                             <div class="bg-white bg-opacity-25 p-2 rounded-circle text-white">
                                 <i data-lucide="check-circle" class="w-6 h-6"></i>
@@ -131,7 +150,7 @@
 
         <!-- Quick Actions -->
         <h5 class="fw-bold text-dark mb-3">Quick Actions</h5>
-        <div class="row g-3 mb-4">
+        <div class="row g-3 mb-4 fade-in-up stagger-2">
             <div class="col-md-4">
                 <a href="{% url 'file_complaint' %}" class="action-card p-4 text-center">
                     <div class="action-icon bg-primary bg-opacity-10 text-primary mx-auto">
@@ -164,7 +183,7 @@
         <div class="row g-4">
             <!-- Recent Activity -->
             <div class="col-lg-8">
-                <div class="card border-0 shadow-sm h-100">
+                <div class="card border-0 shadow-sm h-100 glass-panel fade-in-up stagger-3 dynamic-hover">
                     <div
                         class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
                         <h6 class="fw-bold mb-0 text-primary">Recent Grievances</h6>
@@ -233,7 +252,7 @@
 
             <!-- Community Pulse -->
             <div class="col-lg-4">
-                <div class="card border-0 shadow-sm h-100 bg-gradient-info text-white">
+                <div class="card border-0 shadow-sm h-100 bg-gradient-info text-white fade-in-up stagger-4 dynamic-hover glass-panel">
                     <div class="card-body p-4 d-flex flex-column">
                         <div class="mb-4">
                             <div class="bg-white bg-opacity-25 p-2 rounded-3 d-inline-block mb-3">
@@ -254,4 +273,39 @@
         </div>
     </div>
 </div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const targetStr = counter.getAttribute('data-target') || '0';
+            const target = parseInt(targetStr, 10);
+            
+            if (isNaN(target) || target === 0) {
+                counter.innerText = '0';
+                return;
+            }
+            
+            const speed = 200;
+            const inc = Math.max(1, Math.ceil(target / speed));
+            
+            let count = 0;
+            counter.innerText = '0';
+            
+            const updateCount = () => {
+                count += inc;
+                if (count < target) {
+                    counter.innerText = count;
+                    setTimeout(updateCount, 15);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            
+            setTimeout(updateCount, 300);
+        });
+    });
+</script>
+{% endblock %}
 {% endblock %}
