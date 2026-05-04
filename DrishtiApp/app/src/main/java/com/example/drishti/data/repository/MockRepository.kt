@@ -1,5 +1,7 @@
 package com.example.drishti.data.repository
 
+import com.example.drishti.data.model.Announcement
+import com.example.drishti.data.model.AnnouncementType
 import com.example.drishti.data.model.Complaint
 import com.example.drishti.data.model.ComplaintStatus
 import com.example.drishti.data.model.User
@@ -16,10 +18,32 @@ object MockRepository {
             id = "user_123",
             name = "Aditya Patil",
             email = "aditya@example.com",
-            aadhaarNumber = "1234-5678-9012"
+            aadhaarNumber = "1234-5678-9012",
+            karmaPoints = 850
         )
     )
     val currentUser: StateFlow<User?> = _currentUser.asStateFlow()
+
+    // Simulating announcements
+    private val _announcements = MutableStateFlow<List<Announcement>>(
+        listOf(
+            Announcement(
+                id = UUID.randomUUID().toString(),
+                title = "Water Supply Interruption",
+                message = "Water supply will be interrupted in the downtown area tomorrow from 10 AM to 2 PM due to pipeline maintenance.",
+                type = AnnouncementType.ALERT,
+                timestamp = System.currentTimeMillis() - 3600000
+            ),
+            Announcement(
+                id = UUID.randomUUID().toString(),
+                title = "Community Townhall",
+                message = "Join us this Friday for a townhall meeting to discuss the new park project.",
+                type = AnnouncementType.EVENT,
+                timestamp = System.currentTimeMillis() - 86400000
+            )
+        )
+    )
+    val announcements: StateFlow<List<Announcement>> = _announcements.asStateFlow()
 
     // Simulating complaints database
     private val _complaints = MutableStateFlow<List<Complaint>>(
